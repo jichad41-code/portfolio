@@ -444,7 +444,7 @@ const statObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.6 });
 
 stats.forEach(stat => statObserver.observe(stat));
-  /* ===== ABOUT TYPEWRITER (LOCKED) ===== */
+ /* ===== ABOUT TYPEWRITER (LOCKED + MICRO TICK FEEL) ===== */
 const typeTarget = document.getElementById("about-typewriter");
 
 if (typeTarget) {
@@ -457,11 +457,25 @@ if (typeTarget) {
     started = true;
 
     function type() {
-      if (index < text.length) {
-        typeTarget.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, 22); // typing speed
-      }
+      if (index >= text.length) return;
+
+      const char = text.charAt(index);
+      typeTarget.textContent += char;
+
+      // micro visual "tick"
+      typeTarget.style.opacity = "0.92";
+      requestAnimationFrame(() => {
+        typeTarget.style.opacity = "1";
+      });
+
+      index++;
+
+      // subtle human-like pauses
+      let delay = 22;
+      if (char === "," || char === ".") delay = 140;
+      if (char === " ") delay = 18;
+
+      setTimeout(type, delay);
     }
 
     type();

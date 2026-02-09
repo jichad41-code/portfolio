@@ -9,228 +9,243 @@
 :root{
   --bg:#0b0614;
   --bg-alt:#120a24;
+  --card:rgba(24,18,45,.75);
   --text:#f2efff;
   --muted:#b7aedf;
   --accent:#a855f7;
+  --accent-strong:#c084fc;
 }
 
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:system-ui,sans-serif;
-  background:linear-gradient(180deg,var(--bg),var(--bg-alt));
   color:var(--text);
+  background:linear-gradient(180deg,var(--bg),var(--bg-alt));
   overflow-x:hidden;
 }
 
-/* ================= PARTICLES ================= */
-#particles{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
-
 /* ================= STICKY ROX ================= */
-.brand{
+.brand-sticky{
   position:fixed;
   top:22px;
   right:32px;
   font-weight:900;
-  letter-spacing:.12em;
-  color:#c084fc;
+  letter-spacing:.1em;
+  color:var(--accent-strong);
   opacity:0;
-  transform:translateY(-10px) scale(.9);
+  transform:translateY(-10px) scale(.85);
   transition:.4s cubic-bezier(.22,1,.36,1);
   z-index:1000;
   cursor:pointer;
 }
-.brand.active{
+.brand-sticky.active{
   opacity:1;
-  transform:none;
+  transform:translateY(0) scale(1);
 }
 
-/* ================= HERO ================= */
+/* ================= HERO (LOCKED) ================= */
 .hero{
+  position:relative;
   min-height:100vh;
   display:flex;
   align-items:center;
   padding-left:clamp(2.5rem,8vw,6rem);
-  background:
-    radial-gradient(circle at 30% 40%,rgba(168,85,247,.35),transparent 60%),
-    linear-gradient(180deg,rgba(10,6,20,.35),rgba(10,6,20,.9)),
-    url("rox1-illustration.png") no-repeat right center / 110%;
-  position:relative;
   overflow:hidden;
-  z-index:1;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(168,85,247,.35), transparent 60%),
+    linear-gradient(180deg, rgba(10,6,20,.35), rgba(10,6,20,.9)),
+    url("rox1-illustration.png");
+  background-size:110%;
+  background-position:center right;
+  background-repeat:no-repeat;
 }
+
 .hero::after{
   content:"";
   position:absolute;
   left:0;right:0;bottom:0;
   height:260px;
-  background:linear-gradient(to bottom,rgba(11,6,20,0),rgba(11,6,20,1));
+  background:linear-gradient(
+    to bottom,
+    rgba(11,6,20,0),
+    rgba(11,6,20,1)
+  );
 }
-.hero-text{max-width:520px;z-index:2}
-.hero h1{
+
+.hero-overlay{max-width:520px;z-index:2}
+.hero-name{
   font-size:clamp(4.5rem,10vw,7.5rem);
   font-weight:900;
+  line-height:.95;
   color:#e9d5ff;
   text-shadow:
-    0 0 40px rgba(168,85,247,.8),
-    0 0 120px rgba(168,85,247,.6),
-    0 0 240px rgba(168,85,247,.4);
+    0 0 60px rgba(168,85,247,.9),
+    0 0 120px rgba(168,85,247,.6);
 }
-.hero p{margin-top:1rem;color:var(--muted)}
+.hero-sub{
+  margin-top:1rem;
+  font-size:1.1rem;
+  color:var(--muted);
+}
 
 /* ================= SECTIONS ================= */
 .section{
   max-width:1400px;
   margin:0 auto;
-  padding:7rem 3rem;
-  position:relative;
-  z-index:1;
+  padding:8rem 3rem;
 }
-h2{
-  font-size:2.4rem;
-  margin-bottom:3rem;
+.section h2{
+  font-size:2.5rem;
+  margin-bottom:3.5rem;
   border-left:4px solid var(--accent);
   padding-left:1rem;
 }
 
 /* ================= FEATURED MODS ================= */
-.featured-grid{
+.featured{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:56px;
+  gap:4rem;
 }
 .featured-card{
-  background:linear-gradient(180deg,rgba(60,30,120,.35),rgba(10,5,30,.9));
+  position:sticky;
+  top:120px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:2rem;
+  padding:2rem;
   border-radius:26px;
-  padding:40px;
-  min-height:220px;
-
+  background:var(--card);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(168,85,247,.35);
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.4),
+    0 0 0 1px rgba(168,85,247,.35),
     0 0 120px rgba(168,85,247,.35);
-
   opacity:0;
   transform:translateY(60px);
-  transition:
-    transform .5s cubic-bezier(.22,1,.36,1),
-    opacity .5s cubic-bezier(.22,1,.36,1),
-    box-shadow .4s;
+  transition:.9s cubic-bezier(.22,1,.36,1);
 }
 .featured-card.visible{
   opacity:1;
   transform:none;
 }
-.featured-card:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 180px rgba(168,85,247,.6);
+.featured-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  border-radius:18px;
 }
 
 /* ================= ALL MODS ================= */
 .mods-grid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(360px,1fr));
-  gap:56px;
+  grid-template-columns:repeat(3,1fr);
+  gap:48px;
 }
-.mods-grid-last{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(360px,1fr));
-  gap:56px;
-  margin-top:56px;
+.mods-grid.bottom{
+  grid-template-columns:repeat(2,1fr);
   justify-content:center;
+  margin-top:48px;
 }
 .mod-card{
-  background:linear-gradient(180deg,rgba(60,30,120,.3),rgba(10,5,30,.9));
-  border-radius:22px;
+  background:linear-gradient(180deg, rgba(60,30,120,.3), rgba(10,5,30,.9));
+  border-radius:24px;
   padding:32px;
   min-height:260px;
+  transition:.4s cubic-bezier(.22,1,.36,1);
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
-    0 0 120px rgba(168,85,247,.45);
-  transition:.4s cubic-bezier(.22,1,.36,1);
+    0 0 100px rgba(168,85,247,.45);
 }
 .mod-card:hover{
-  transform:translateY(-8px) scale(1.02);
+  transform:translateY(-8px) scale(1.03);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 200px rgba(168,85,247,.55);
+}
+.tag{
+  font-size:.7rem;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(168,85,247,.3);
+  display:inline-block;
+  margin-bottom:12px;
 }
 
-/* ================= ABOUT ================= */
-.about{margin-top:20rem}
-.about-grid{
+/* ================= ABOUT ME ================= */
+.about-section{
+  margin-top:20rem;
+  padding:6rem 3rem;
+  background:linear-gradient(
+    to bottom,
+    rgba(18,10,36,0),
+    rgba(18,10,36,.55),
+    rgba(18,10,36,0)
+  );
+}
+.about-wrapper{
+  max-width:1400px;
+  margin:0 auto;
   display:grid;
   grid-template-columns:1.2fr 1fr;
-  gap:64px;
+  gap:6rem;
+}
+.about-text p{
+  font-size:1.05rem;
+  line-height:1.75;
+  color:var(--muted);
 }
 .about-stats{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:28px;
 }
-.stat{
+.about-card{
   background:rgba(24,18,45,.65);
-  border-radius:18px;
+  border-radius:20px;
   padding:28px;
   box-shadow:
     0 0 0 1px rgba(168,85,247,.35),
-    0 0 80px rgba(168,85,247,.35),
-    0 0 160px rgba(168,85,247,.25);
+    0 0 120px rgba(168,85,247,.35);
 }
-.stat h3{font-size:2rem;color:#c084fc}
-
-/* ================= CONTACT ================= */
-.contact{margin-top:20rem}
-.contact-grid{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:80px;
-  align-items:center;
+.about-card h3{
+  font-size:2rem;
+  color:#c084fc;
 }
-.contact img{
-  width:100%;
-  border-radius:26px;
-}
-.contact-item{
-  background:rgba(24,18,45,.65);
-  border-radius:18px;
-  padding:28px;
-  margin-bottom:24px;
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 80px rgba(168,85,247,.35),
-    0 0 160px rgba(168,85,247,.25);
+.about-card span{
+  font-size:.85rem;
+  color:var(--muted);
 }
 
 /* ================= FOOTER ================= */
 footer{
   text-align:center;
-  padding:3rem;
+  padding:4rem;
   color:var(--muted);
+  font-size:.85rem;
 }
 
+/* ================= RESPONSIVE ================= */
 @media(max-width:900px){
-  .featured-grid,
+  .featured-card,
+  .about-wrapper{
+    grid-template-columns:1fr;
+  }
   .mods-grid,
-  .mods-grid-last,
-  .about-grid,
-  .contact-grid{grid-template-columns:1fr}
+  .mods-grid.bottom{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
-<div class="brand" id="brand">ROX</div>
+<div class="brand-sticky" id="brand">ROX</div>
 
 <header class="hero" id="hero">
-  <div class="hero-text" id="heroText">
-    <h1>ROX</h1>
-    <p>Minecraft Mod Developer</p>
+  <div class="hero-overlay" id="heroText">
+    <h1 class="hero-name">ROX</h1>
+    <p class="hero-sub">Minecraft Mod Developer</p>
   </div>
 </header>
 
@@ -238,52 +253,35 @@ footer{
 
 <section class="section">
   <h2>Featured Mods</h2>
-  <div class="featured-grid">
-    <div class="featured-card">Better Dungeons</div>
-    <div class="featured-card">Core Engine</div>
+  <div class="featured">
+    <div class="featured-card"><img src="mod1.png"><div><h3>Better Dungeons</h3><p>Advanced dungeon systems.</p></div></div>
+    <div class="featured-card"><img src="mod2.png"><div><h3>Core Engine</h3><p>High-performance backend.</p></div></div>
   </div>
 </section>
 
 <section class="section">
   <h2>All Mods</h2>
   <div class="mods-grid">
-    <div class="mod-card">Mod One</div>
-    <div class="mod-card">Mod Two</div>
-    <div class="mod-card">Mod Three</div>
-    <div class="mod-card">Mod Four</div>
-    <div class="mod-card">Mod Five</div>
-    <div class="mod-card">Mod Six</div>
-  </div>
-  <div class="mods-grid-last">
-    <div class="mod-card">Mod Seven</div>
-    <div class="mod-card">Mod Eight</div>
+    <div class="mod-card"><span class="tag">Utility</span><h3>Mod One</h3></div>
+[...]
   </div>
 </section>
 
-<section class="section about">
+<section class="about-section">
   <h2>About Me</h2>
-  <div class="about-grid">
-    <p>
-      I’m Rox, a Minecraft mod developer focused on building systems that players
-      understand instinctively. I turn complex ideas into polished, intuitive mods
-      through thoughtful design, balanced mechanics, and reliable code.
-    </p>
-    <div class="about-stats">
-      <div class="stat"><h3 data-count="2">0+</h3><p>Years Experience</p></div>
-      <div class="stat"><h3 data-count="100">0+</h3><p>Published Mods</p></div>
-      <div class="stat"><h3 data-count="50">0+</h3><p>Clients Served</p></div>
-      <div class="stat"><h3 data-count="4.6">0</h3><p>Avg Rating</p></div>
+  <div class="about-wrapper">
+    <div class="about-text">
+      <p>
+        I’m Rox, a Minecraft mod developer focused on building systems that players
+        understand instinctively. I turn complex ideas into polished, intuitive mods
+        through thoughtful design, balanced mechanics, and reliable code.
+      </p>
     </div>
-  </div>
-</section>
-
-<section class="section contact">
-  <h2>Get In Touch</h2>
-  <div class="contact-grid">
-    <img src="roxcontact1.png">
-    <div>
-      <div class="contact-item">Gmail: rox@gmail.com</div>
-      <div class="contact-item">Discord: kratos_897</div>
+    <div class="about-stats">
+      <div class="about-card"><h3>2+</h3><span>Years Experience</span></div>
+      <div class="about-card"><h3>100+</h3><span>Published Mods</span></div>
+      <div class="about-card"><h3>50+</h3><span>Clients Served</span></div>
+      <div class="about-card"><h3>4.6/5</h3><span>Avg Rating</span></div>
     </div>
   </div>
 </section>
@@ -293,33 +291,31 @@ footer{
 <footer>© 2026 Rox · Built for Minecraft modding</footer>
 
 <script>
-/* PIXEL PARTICLES */
-const c=document.getElementById("particles"),x=c.getContext("2d");
-function r(){c.width=innerWidth;c.height=innerHeight}
-addEventListener("resize",r);r();
-const p=[...Array(90)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,s:2+Math.random()*2,vx:(Math.random()-.5)*.12,vy:-Math.random()*.35,a:.3+Math.random()*.5}));
-(function d(){x.clearRect(0,0,c.width,c.height);for(const e of p){x.globalAlpha=e.a;x.shadowColor="#a855f7";x.shadowBlur=10;x.fillStyle="#a855f7";x.fillRect(e.x,e.y,e.s,e.s);e.x+=e.vx;e.y+=e.vy;if(e.y<-10){e.y=c.height+10;e.x=Math.random()*c.width}}requestAnimationFrame(d)})();
+const hero=document.getElementById("hero");
+const heroText=document.getElementById("heroText");
+const brand=document.getElementById("brand");
 
-/* HERO + BRAND */
-const hero=document.getElementById("hero"),heroText=document.getElementById("heroText"),brand=document.getElementById("brand");
-addEventListener("scroll",()=>{const p=Math.min(scrollY/500,1);hero.style.transform=`translateY(${-120*p}px)`;hero.style.opacity=1-p*.6;hero.style.backgroundSize=`${110+6*p}%`;heroText.style.transform=`translateY(${-40*p}px)`;brand.classList.toggle("active",p>.55)});
+window.addEventListener("scroll",()=>{
+  const y=scrollY;
+  const p=Math.min(y/500,1);
+  hero.style.transform=`translateY(${-120*p}px)`;
+  hero.style.opacity=1-p*.6;
+  hero.style.backgroundSize=`${110+6*p}%`;
+  heroText.style.transform=`translateY(${-40*p}px)`;
+  brand.classList.toggle("active",p>.55);
+});
 
-/* FEATURED SCROLL REVEAL */
-const obs=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){e.target.style.transitionDelay=`${i*150}ms`;e.target.classList.add("visible");obs.unobserve(e.target)}}),{threshold:.3});
+const obs=new IntersectionObserver(e=>{
+  e.forEach((x,i)=>{
+    if(x.isIntersecting){
+      x.target.style.transitionDelay=`${i*150}ms`;
+      x.target.classList.add("visible");
+    }
+  });
+},{threshold:.25});
 document.querySelectorAll(".featured-card").forEach(c=>obs.observe(c));
 
-/* STATS COUNT */
-document.querySelectorAll(".stat h3").forEach(el=>{
-  const t=parseFloat(el.dataset.count);
-  const o=new IntersectionObserver(e=>{
-    if(e[0].isIntersecting){
-      const s=performance.now();
-      (function a(n){const p=Math.min((n-s)/1200,1);const v=t*(1-Math.pow(1-p,3));el.textContent=t%1?v.toFixed(1):Math.floor(v);p<1?requestAnimationFrame(a):el.textContent=t+(el.textContent.includes("+")?"+":"")})(s);
-      o.disconnect();
-    }
-  },{threshold:.6});
-  o.observe(el);
-});
+brand.onclick=()=>scrollTo({top:0,behavior:"smooth"});
 </script>
 
 </body>

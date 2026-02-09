@@ -225,6 +225,36 @@ body {
   color: var(--accent-strong);
 }
 
+/* ================= GET IN TOUCH ================= */
+.contact {
+  margin-top: 24rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.contact-grid img {
+  width: 100%;
+  border-radius: 26px;
+}
+
+.contact-info {
+  background: rgba(24,18,45,.65);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 0 60px rgba(168,85,247,.25);
+}
+
+.contact-info p {
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+  color: var(--muted);
+}
+
 /* ================= FOOTER ================= */
 footer {
   text-align: center;
@@ -239,7 +269,8 @@ footer {
   .featured-grid,
   .mods-grid,
   .mods-grid-last,
-  .about-grid {
+  .about-grid,
+  .contact-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -301,6 +332,17 @@ footer {
       <div class="stat"><h3 data-count="100">0+</h3><p>Published Mods</p></div>
       <div class="stat"><h3 data-count="50">0+</h3><p>Clients Served</p></div>
       <div class="stat"><h3 data-count="4.6">0</h3><p>Avg Rating</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="mods-section contact">
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="contact-grid">
+    <img src="roxcontact1.png" alt="Contact">
+    <div class="contact-info">
+      <p>Email: <strong>rox@gmail.com</strong></p>
+      <p>Discord: <strong>kratos_897</strong></p>
     </div>
   </div>
 </section>
@@ -369,42 +411,6 @@ window.addEventListener("scroll", () => {
 
   brand.classList.toggle("active", p > 0.55);
 });
-
-/* ===== STATS COUNT UP ===== */
-const stats = document.querySelectorAll(".stat h3");
-const statObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-
-    const el = entry.target;
-    const target = parseFloat(el.dataset.count);
-    const isDecimal = target % 1 !== 0;
-    const suffix = el.textContent.includes("+") ? "+" : "";
-    const start = performance.now();
-    const duration = 1200;
-
-    function animate(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      let value = target * eased;
-
-      el.textContent = isDecimal
-        ? value.toFixed(1)
-        : Math.floor(value);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        el.textContent = target + suffix;
-      }
-    }
-
-    requestAnimationFrame(animate);
-    statObserver.unobserve(el);
-  });
-}, { threshold: 0.6 });
-
-stats.forEach(stat => statObserver.observe(stat));
 </script>
 
 </body>

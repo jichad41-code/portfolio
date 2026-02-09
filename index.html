@@ -492,10 +492,16 @@ footer {
   gap: 56px;
   transition: transform .6s cubic-bezier(.22,1,.36,1);
 }
+.featured-row {
+  display: flex;
+  width: max-content;
+}
 
 /* EXACTLY 2 cards */
 .featured-item {
-  flex: 0 0 calc(50% - 28px);
+  flex: 0 0 50%;
+  max-width: calc(50% - 28px);
+
   background: linear-gradient(
     180deg,
     rgba(70,40,140,.35),
@@ -570,6 +576,17 @@ footer {
     0 0 0 1px rgba(168,85,247,.7),
     0 0 80px rgba(168,85,247,.7);
 }
+  .featured-slider {
+  width: 100%;
+}
+.featured-btn.left {
+  margin-left: -8px;
+}
+
+.featured-btn.right {
+  margin-right: -8px;
+}
+
 
 /* ================= MOD MODAL ================= */
 .mod-modal {

@@ -243,22 +243,6 @@ body {
 .contact {
   margin-top: 24rem;
 }
-  .contact-row{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  font-size:1.05rem;
-  margin-bottom:22px;
-  color:var(--muted);
-}
-
-.contact-row svg{
-  width:22px;
-  height:22px;
-  fill:var(--accent-strong);
-  filter: drop-shadow(0 0 8px rgba(168,85,247,.6));
-}
-
 
 .contact-grid {
   display: grid;
@@ -269,64 +253,39 @@ body {
 
 .contact-grid img {
   width: 100%;
+  max-width: 520px;
   border-radius: 26px;
 }
 
 .contact-info {
   background: rgba(24,18,45,.65);
   border-radius: 20px;
-  padding: 40px;
+  padding: 28px 32px;
+
+  width: fit-content;           /* KEY FIX */
   box-shadow: 0 0 60px rgba(168,85,247,.25);
 }
 
-.contact-info p {
-  font-size: 1.05rem;
-  margin-bottom: 18px;
-  color: var(--muted);
-}
-  .contact-item {
+.contact-row {
   display: flex;
   align-items: center;
   gap: 14px;
-
-  font-size: 1rem;
-  color: var(--text);
+  font-size: 1.05rem;
+  color: var(--muted);
 }
 
-.contact-item h3,
-.contact-item p {
-  margin: 0;                 /* remove default spacing */
+.contact-row:not(:last-child) {
+  margin-bottom: 18px;
 }
-  .contact-grid > div {
-  align-self: flex-start;    /* prevents vertical stretching */
-}
-.contact-item {
-  padding: 14px 18px;
-  border-radius: 14px;
-}
-  .contact-item svg {
-  width: 20px;
-  height: 20px;
+
+.contact-row svg {
+  width: 22px;
+  height: 22px;
   fill: var(--accent-strong);
+  filter: drop-shadow(0 0 8px rgba(168,85,247,.6));
   flex-shrink: 0;
 }
-.contact-grid > div {
-  display: flex;
-  justify-content: center;
-}
-.contact-box {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 18px;
 
-  padding: 24px 28px;
-  border-radius: 20px;
-
-  background: rgba(24,18,45,0.65);
-  box-shadow: 0 0 60px rgba(168,85,247,0.25);
-
-  width: fit-content;   /* THIS is the key fix */
-}
 
 /* ================= FOOTER ================= */
 footer {

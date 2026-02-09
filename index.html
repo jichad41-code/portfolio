@@ -273,6 +273,85 @@ body {
 .featured-card:hover::before {
   opacity: .9;
 }
+/* ================= FEATURED SPOTLIGHT CAROUSEL ================= */
+
+.featured-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  position: relative;
+}
+
+.featured-card {
+  position: relative;
+  width: 420px;
+  min-height: 240px;
+  padding: 36px;
+  border-radius: 26px;
+  cursor: pointer;
+
+  background: linear-gradient(
+    180deg,
+    rgba(70,40,140,.35),
+    rgba(10,5,30,.95)
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.35),
+    0 0 70px rgba(168,85,247,.35);
+
+  transform: scale(.92);
+  opacity: .55;
+
+  transition:
+    transform .6s cubic-bezier(.22,1,.36,1),
+    opacity .45s ease,
+    box-shadow .6s cubic-bezier(.22,1,.36,1);
+}
+
+/* soft glow layer */
+.featured-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 80% at 50% 0%,
+    rgba(255,255,255,.12),
+    transparent 60%
+  );
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* CENTER CARD */
+.featured-card.active {
+  transform: scale(1.06);
+  opacity: 1;
+  z-index: 2;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 140px rgba(168,85,247,.65),
+    0 0 260px rgba(168,85,247,.45);
+}
+
+/* subtle lift on hover */
+.featured-card:hover {
+  transform: scale(1.02);
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .featured-carousel {
+    gap: 24px;
+  }
+
+  .featured-card {
+    width: 90%;
+  }
+}
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -618,16 +697,30 @@ footer {
 
 <main>
 
-<section class="mods-section" id="mods">
-
+<section class="mods-section" id="featured">
   <h2 class="section-title">Featured Mods</h2>
-  <div class="featured-wrapper">
-  <div class="featured-grid">
-    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
-    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
-  </div>
+
+  <div class="featured-carousel" id="featuredCarousel">
+    <div class="featured-card active" data-index="0">
+      <span class="tag">Flagship</span>
+      <h3>Better Dungeons</h3>
+      <p>Procedural dungeons with handcrafted pacing.</p>
+    </div>
+
+    <div class="featured-card" data-index="1">
+      <span class="tag">Core</span>
+      <h3>Core Engine</h3>
+      <p>Optimized systems and shared infrastructure.</p>
+    </div>
+
+    <div class="featured-card" data-index="2">
+      <span class="tag">Systems</span>
+      <h3>World Systems</h3>
+      <p>Deep control over terrain and progression.</p>
+    </div>
   </div>
 </section>
+
 
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
@@ -1007,6 +1100,37 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
+/* ===== FEATURED MODS SPOTLIGHT CAROUSEL ===== */
+
+const featuredCards = document.querySelectorAll(".featured-card");
+let activeIndex = 0;
+let autoSlideTimer;
+
+function updateFeatured(index) {
+  featuredCards.forEach((card, i) => {
+    card.classList.toggle("active", i === index);
+  });
+  activeIndex = index;
+}
+
+featuredCards.forEach(card => {
+  card.addEventListener("click", () => {
+    updateFeatured(Number(card.dataset.index));
+    resetAutoSlide();
+  });
+});
+
+function autoSlide() {
+  activeIndex = (activeIndex + 1) % featuredCards.length;
+  updateFeatured(activeIndex);
+}
+
+function resetAutoSlide() {
+  clearInterval(autoSlideTimer);
+  autoSlideTimer = setInterval(autoSlide, 5200);
+}
+
+autoSlideTimer = setInterval(autoSlide, 5200);
 
 
 </script>

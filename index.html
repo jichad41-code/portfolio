@@ -489,8 +489,7 @@ footer {
   );
 
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 120px rgba(168,85,247,.45);
+    0 20px 60px rgba(0,0,0,.6);
 
   transition:
     transform .6s cubic-bezier(.22,1,.36,1),
@@ -504,6 +503,10 @@ footer {
     0 0 180px rgba(168,85,247,.65),
     0 0 320px rgba(168,85,247,.45);
 }
+  .featured-card {
+  overflow: hidden;
+}
+
 
 /* background image layer */
 .featured-bg {
@@ -604,6 +607,37 @@ footer {
   .featured-card {
     flex: 0 0 100%;
   }
+}
+.featured-arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(24,18,45,.75);
+  color: var(--accent-strong);
+  font-size: 1.6rem;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.4),
+    0 0 40px rgba(168,85,247,.4);
+
+  transition:
+    transform .3s cubic-bezier(.22,1,.36,1),
+    box-shadow .3s ease;
+}
+
+.featured-arrow:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 80px rgba(168,85,247,.7);
 }
 
   .hero-name {

@@ -227,20 +227,14 @@ body {
   gap: 56px;
 }
 
-.featured-card {
-  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
-  border-radius: 26px;
-  padding: 40px;
-  min-height: 220px;
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 90px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
-}
 
-.featured-card:hover {
-  transform: translateY(-6px);
+
+
+.featured-viewport {
+  display: flex;
+  justify-content: center;
 }
+.featured-cinematic { overflow: visible; }
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -475,7 +469,7 @@ footer {
   /* === FEATURED CINEMATIC CARDS === */
 .featured-cinematic {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   min-height: 280px;
   cursor: pointer;
 
@@ -494,27 +488,12 @@ footer {
 }
   .featured-cinematic {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 26px;
 }
 
 /* soft ambient glow */
-.featured-cinematic::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(
-    circle at 50% 60%,
-    rgba(168,85,247,.35),
-    transparent 60%
-  );
-  opacity: .45;
-  transition: opacity .6s ease;
-  pointer-events: none;
-}
-.featured-cinematic:hover::after {
-  opacity: .8;
-}
+
 .featured-bg {
   filter: brightness(.7) contrast(1.05);
 }
@@ -524,9 +503,7 @@ footer {
   transform: translateY(-10px) scale(1.02);
 }
 
-  .featured-card {
-  overflow: hidden;
-}
+
 
 
 /* background image layer */
@@ -664,15 +641,11 @@ footer {
     0 0 60px rgba(168,85,247,.7);
 }
 
-  .featured-card {
-  background-clip: padding-box;
-}
+
 
 
 @media (max-width: 900px) {
-  .featured-card {
-    flex: 0 0 100%;
-  }
+ 
 }
 .featured-arrow {
   width: 46px;
@@ -1257,7 +1230,7 @@ window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
 
-document.querySelectorAll(".mod-card, .featured-card").forEach(card => {
+document.querySelectorAll(".mod-card").forEach(card => {
   card.addEventListener("click", () => {
     modalTitle.textContent = card.dataset.title;
     modalDesc.textContent = card.dataset.desc;
@@ -1290,6 +1263,7 @@ let index = 0;
 function updateSlider() {
   const cardWidth = cards[0].offsetWidth + 56; // card + gap
   track.style.transform = `translateX(-${index * cardWidth}px)`;
+  updateSlider();
 }
 
 nextBtn.addEventListener("click", () => {
@@ -1307,7 +1281,6 @@ prevBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", updateSlider);
-
 </script>
 
 </body>

@@ -538,7 +538,7 @@ footer {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: brightness(.65) contrast(1.1);
+  filter: brightness(.72) contrast(1.05);
   transform: scale(1.05);
   transition: transform .6s ease;
 }
@@ -597,6 +597,31 @@ footer {
 .featured-card {
   flex: 0 0 calc(50% - 28px);
 }
+.featured-cinematic {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+}
+
+/* ambient idle glow */
+.featured-cinematic::before {
+  content: "";
+  position: absolute;
+  inset: -35%;
+  background: radial-gradient(
+    circle at 50% 60%,
+    rgba(168,85,247,.35),
+    transparent 65%
+  );
+  opacity: .55;
+  transition: opacity .6s ease;
+  pointer-events: none;
+}
+
+/* hover glow */
+.featured-cinematic:hover::before {
+  opacity: .9;
+}
 
 /* arrows */
 .featured-arrow {
@@ -628,8 +653,8 @@ footer {
     box-shadow .25s ease;
 }
 
-.featured-arrow.left { left: -18px; }
-.featured-arrow.right { right: -18px; }
+.featured-arrow.left { left: -23px; }
+.featured-arrow.right { right: -23px; }
 
 .featured-arrow:hover {
   transform: translateY(-50%) scale(1.12);
@@ -805,7 +830,7 @@ footer {
       <div class="featured-track" id="featuredTrack">
 
         <!-- CARD 1 -->
-        <div class="featured-card featured-cinematic"
+        <div class="featured-cinematic"
              data-title="Better Dungeons"
              data-desc="Advanced dungeon systems with custom rooms, bosses, and progression."
              data-images="mod1.png,mod2.png">
@@ -818,7 +843,7 @@ footer {
         </div>
 
         <!-- CARD 2 -->
-        <div class="featured-card featured-cinematic"
+        <div class="featured-cinematic"
              data-title="Core Engine"
              data-desc="High-performance backend powering multiple large-scale mods."
              data-images="mod2.png">
@@ -831,7 +856,7 @@ footer {
         </div>
 
         <!-- CARD 3 (NEW) -->
-        <div class="featured-card featured-cinematic"
+        <div class="featured-cinematic"
              data-title="World Systems"
              data-desc="Custom world mechanics and generation logic."
              data-images="mod3.png">

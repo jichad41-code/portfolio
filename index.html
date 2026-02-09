@@ -6,14 +6,100 @@
 <title>Rox — Minecraft Mod Developer</title>
 
 <style>
+
+  /* ================= EXPANDABLE NAV ================= */
+
+.nav-wrapper {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  z-index: 1001;
+}
+
+.nav-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+
+  background: rgba(24,18,45,.65);
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.35),
+    0 0 40px rgba(168,85,247,.35);
+
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.nav-toggle.open {
+  transform: rotate(45deg);
+}
+
+.nav-menu {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  align-items: center;
+
+  padding: 14px 20px;
+  border-radius: 18px;
+
+  background: rgba(24,18,45,.65);
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.35),
+    0 0 70px rgba(168,85,247,.35);
+
+  opacity: 0;
+  transform: translateY(-10px) scale(.96);
+  pointer-events: none;
+
+  transition:
+    opacity .35s ease,
+    transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.nav-menu.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.nav-menu a:hover {
+  color: var(--accent-strong);
+}
+/* === ACTIVE NAV LINK === */
+.nav-menu a.active {
+  color: var(--accent-strong);
+  text-shadow:
+    0 0 10px rgba(168,85,247,.8),
+    0 0 30px rgba(168,85,247,.6);
+}
+
 :root {
   --bg: #0b0614;
   --bg-alt: #120a24;
+  --card: rgba(24, 18, 45, 0.75);
   --text: #f2efff;
   --muted: #b7aedf;
   --accent: #a855f7;
   --accent-strong: #c084fc;
-}
+}  
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -24,33 +110,107 @@ body {
   overflow-x: hidden;
 }
 
+/* ================= PARTICLES ================= */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ================= STICKY BRAND ================= */
+.brand-sticky {
+  position: fixed;
+  top: 22px;
+  right: 32px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  color: var(--accent-strong);
+  opacity: 0;
+  transform: translateY(-10px) scale(0.85);
+  transition: all .4s cubic-bezier(.22,1,.36,1);
+  z-index: 1000;
+  cursor: pointer;
+}
+.brand-sticky.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 /* ================= HERO ================= */
 .hero {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding-left: clamp(2.5rem, 8vw, 6rem);
+  overflow: hidden;
+  z-index: 1;
   background:
-    radial-gradient(circle at 30% 40%, rgba(168,85,247,.35), transparent 60%),
-    linear-gradient(180deg, rgba(10,6,20,.4), rgba(10,6,20,.9));
+    radial-gradient(circle at 30% 40%, rgba(168,85,247,0.35), transparent 60%),
+    linear-gradient(180deg, rgba(10,6,20,0.35), rgba(10,6,20,0.9)),
+    url("rox1-illustration.png");
+  background-size: 110%;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 260px;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,6,20,0),
+    rgba(11,6,20,1)
+  );
+}
+
+.hero-overlay {
+  max-width: 520px;
+  position: relative;
+  z-index: 2;
+}
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .hero-name {
   font-size: clamp(4.5rem, 10vw, 7.5rem);
   font-weight: 900;
+  line-height: 1.05;
+  margin: 0;
   color: #e9d5ff;
   text-shadow:
     0 0 40px rgba(168,85,247,.8),
-    0 0 90px rgba(168,85,247,.6);
+    0 0 90px rgba(168,85,247,.65),
+    0 0 180px rgba(168,85,247,.45);
 }
 
+
 .hero-sub {
-  margin-top: .4rem;
+  margin-top: .35rem;
+  font-size: 1.05rem;
   color: var(--muted);
+  letter-spacing: .02em;
+}
+
+  .hero-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* ================= SECTIONS ================= */
 .mods-section {
+  position: relative;
+  z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
   padding: 7rem 3rem;
@@ -63,127 +223,27 @@ body {
   padding-left: 1rem;
 }
 
-/* =========================================================
-   🔥 FEATURED MODS (FROM SCRATCH – CLEAN)
-========================================================= */
-
-.featured-container {
-  position: relative;
-}
-
-.featured-viewport {
-  overflow: hidden;
-}
-
-.featured-track {
-  display: flex;
+/* ================= FEATURED MODS ================= */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 56px;
-  transition: transform .65s cubic-bezier(.22,1,.36,1);
 }
 
-/* EXACTLY 2 VISIBLE */
 .featured-card {
-  flex: 0 0 calc(50% - 28px);
-  min-height: 260px;
-  padding: 40px;
+  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
   border-radius: 26px;
-  position: relative;
-  cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
-
-  /* BASE GLOW (ALWAYS ON) */
+  padding: 40px;
+  min-height: 220px;
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
-    0 0 120px rgba(168,85,247,.35);
-
-  transition:
-    transform .45s cubic-bezier(.22,1,.36,1),
-    box-shadow .45s cubic-bezier(.22,1,.36,1);
+    0 0 90px rgba(168,85,247,.45);
+  transition: all .4s cubic-bezier(.22,1,.36,1);
 }
 
-/* AMBIENT GLOW LAYER */
-.featured-card::before {
-  content: "";
-  position: absolute;
-  inset: -35%;
-  background: radial-gradient(
-    circle at 50% 60%,
-    rgba(168,85,247,.45),
-    transparent 65%
-  );
-  opacity: .55;
-  pointer-events: none;
-}
-
-/* HOVER */
 .featured-card:hover {
-  transform: translateY(-10px);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 200px rgba(168,85,247,.7),
-    0 0 320px rgba(168,85,247,.45);
+  transform: translateY(-6px);
 }
-
-.featured-card h3 {
-  font-size: 1.6rem;
-  margin-top: 10px;
-}
-
-.featured-card p {
-  margin-top: 6px;
-  color: var(--muted);
-}
-
-.tag {
-  display: inline-block;
-  font-size: .7rem;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(168,85,247,.35);
-}
-
-/* ARROWS */
-.featured-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-
-  background: rgba(24,18,45,.75);
-  color: var(--accent-strong);
-  font-size: 1.6rem;
-  font-weight: 700;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.4),
-    0 0 40px rgba(168,85,247,.45);
-
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.featured-arrow:hover {
-  transform: translateY(-50%) scale(1.12);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 80px rgba(168,85,247,.7);
-}
-
-.featured-arrow.left { left: -24px; }
-.featured-arrow.right { right: -24px; }
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -192,7 +252,16 @@ body {
   gap: 56px;
 }
 
+.mods-grid-last {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px;
+  margin-top: 56px;
+}
+
 .mod-card {
+  position: relative;
   background: linear-gradient(
     180deg,
     rgba(70,40,140,.35),
@@ -204,16 +273,187 @@ body {
 
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
-    0 0 80px rgba(168,85,247,.35);
+    0 0 80px rgba(168,85,247,.35),
+    inset 0 0 0 rgba(255,255,255,0);
 
-  transition: transform .4s ease, box-shadow .4s ease;
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s cubic-bezier(.22,1,.36,1);
+}
+
+/* soft inner glow */
+.mod-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 80% at 50% 0%,
+    rgba(255,255,255,.12),
+    transparent 60%
+  );
+  opacity: .35;
+  pointer-events: none;
 }
 
 .mod-card:hover {
   transform: translateY(-10px) scale(1.03);
   box-shadow:
     0 0 0 1px rgba(168,85,247,.7),
-    0 0 180px rgba(168,85,247,.65);
+    0 0 140px rgba(168,85,247,.65),
+    0 0 260px rgba(168,85,247,.45);
+}
+  .mod-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 12px;
+  color: var(--text);
+  letter-spacing: .01em;
+  transition: transform .3s ease, color .3s ease;
+}
+
+/* subtle interaction */
+.mod-card:hover .mod-title {
+  transform: translateY(-2px);
+  color: var(--accent-strong);
+}
+
+.tag {
+  transition: all .3s ease;
+}
+
+.mod-card:hover .tag {
+  background: rgba(168,85,247,.45);
+  box-shadow: 0 0 20px rgba(168,85,247,.6);
+}
+.mod-card {
+  cursor: pointer;
+}
+
+
+.tag {
+  display: inline-block;
+  font-size: .7rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(168,85,247,.3);
+  margin-bottom: 12px;
+}
+
+/* ================= ABOUT ================= */
+.about {
+  margin-top: 24rem;
+  background: linear-gradient(
+    180deg,
+    rgba(18,10,36,.85),
+    rgba(11,6,20,1)
+  );
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+}
+
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.stat {
+  background: rgba(24,18,45,.65);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 0 60px rgba(168,85,247,.25);
+}
+
+.stat h3 {
+  font-size: 2rem;
+  color: var(--accent-strong);
+}
+
+/* ================= GET IN TOUCH ================= */
+.contact {
+  margin-top: 24rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.contact-grid img {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 26px;
+}
+
+.contact-info {
+  background: rgba(24,18,45,.65);
+  border-radius: 20px;
+  padding: 28px 32px;
+
+  width: fit-content;           /* KEY FIX */
+  box-shadow: 0 0 60px rgba(168,85,247,.25);
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+.contact-row:not(:last-child) {
+  margin-bottom: 18px;
+}
+
+.contact-row svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--accent-strong);
+  filter: drop-shadow(0 0 8px rgba(168,85,247,.6));
+  flex-shrink: 0;
+}
+
+.copy-discord {
+  cursor: pointer;
+  position: relative;
+}
+
+.copy-discord:hover {
+  text-decoration: underline;
+}
+
+.copy-discord::after {
+  content: "Copied!";
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(24,18,45,.9);
+  color: var(--accent-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.copy-discord.copied::after {
+  opacity: 1;
 }
 
 /* ================= FOOTER ================= */
@@ -222,99 +462,522 @@ footer {
   padding: 3rem;
   color: var(--muted);
   font-size: .85rem;
+  position: relative;
+  z-index: 1;
 }
+
+@media(max-width: 900px) {
+  .featured-grid,
+  .mods-grid,
+  .mods-grid-last,
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  .hero-name {
+  line-height: 0.88;          /* tighter glyph box */
+  margin-bottom: 14px;        /* controlled spacing */
+}
+
+.hero-sub {
+  margin-top: 0;              /* remove default paragraph offset */
+  line-height: 1.2;
+}
+/* ================= MOD MODAL ================= */
+.mod-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2000;
+}
+
+.mod-modal.active {
+  display: block;
+}
+
+.mod-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 2, 15, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.mod-modal-content {
+  position: relative;
+  max-width: 900px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  background: linear-gradient(180deg, rgba(30,20,60,.95), rgba(10,5,30,.98));
+  border-radius: 26px;
+  padding: 40px;
+  overflow-y: auto;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 120px rgba(168,85,247,.6);
+
+  animation: modalIn .45s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes modalIn {
+  from {
+    transform: translateY(40px) scale(.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.mod-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mod-modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.mod-modal-gallery img {
+  width: 100%;
+  border-radius: 16px;
+}
+
 </style>
 </head>
 
 <body>
 
-<header class="hero">
-  <div>
+  <!-- EXPANDABLE NAV -->
+<div class="nav-wrapper">
+  <button class="nav-toggle" id="navToggle">+</button>
+
+  <nav class="nav-menu" id="navMenu">
+    <a href="#" id="navTop">Top</a>
+    <a href="#mods">Mods</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+
+<canvas id="particles"></canvas>
+
+<div class="brand-sticky" id="brandSticky">ROX</div>
+
+<header class="hero" id="hero">
+  <div id="top"></div>
+
+ <div class="hero-overlay">
+  <div class="hero-text" id="heroText">
     <h1 class="hero-name">ROX</h1>
     <p class="hero-sub">Minecraft Mod Developer</p>
   </div>
+</div>
 </header>
 
 <main>
 
-<!-- 🔥 FEATURED MODS -->
-<section class="mods-section">
+<section class="mods-section" id="mods">
+
   <h2 class="section-title">Featured Mods</h2>
-
-  <div class="featured-container">
-    <button class="featured-arrow left" id="fPrev">‹</button>
-
-    <div class="featured-viewport">
-      <div class="featured-track" id="fTrack">
-
-        <div class="featured-card">
-          <span class="tag">Flagship</span>
-          <h3>Better Dungeons</h3>
-          <p>Procedural dungeons with handcrafted pacing.</p>
-        </div>
-
-        <div class="featured-card">
-          <span class="tag">Core</span>
-          <h3>Core Engine</h3>
-          <p>Optimized systems and shared infrastructure.</p>
-        </div>
-
-        <div class="featured-card">
-          <span class="tag">Systems</span>
-          <h3>World Systems</h3>
-          <p>Deep control over terrain and progression.</p>
-        </div>
-
-      </div>
-    </div>
-
-    <button class="featured-arrow right" id="fNext">›</button>
+  <div class="featured-grid">
+    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
+    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
   </div>
 </section>
 
-<!-- ALL MODS -->
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
-    <div class="mod-card"><span class="tag">Gameplay</span><h3>Ben 10 100 Days</h3></div>
-    <div class="mod-card"><span class="tag">Gameplay</span><h3>Goku 100 Days</h3></div>
-    <div class="mod-card"><span class="tag">Worldgen</span><h3>Attack on Titan 100 Days</h3></div>
+    <div class="mod-card"
+      data-title="Ben 10 100 Days"
+     data-desc="Turn in the different phases of Ben 10."
+     data-images="mod1.png,mod2.png,mod3.png">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Ben 10 100 Days</h3></div>
+    <div class="mod-card"
+      data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression." >
+      <span class="tag">Gameplay</span><h3 class="mod-title">Goku 100 Days</h3></div>
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Attack On Titan 100 days</h3></div>
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Custom Boss Mod</h3></div>
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Camo Block MOD</h3></div>
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Worldgen</span><h3 class="mod-title">Minecraft But Chunks Are Random</h3></div>
+  </div>
+
+  <div class="mods-grid-last">
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Immortal Mod</h3></div>
+    <div class="mod-card"
+       data-title="Goku 100 Days"
+  data-desc="Survive 100 days as Goku with custom abilities and progression.">
+      <span class="tag">Utility</span><h3 class="mod-title">Minecraft but Drops Are Guns Mod</h3></div>
+  </div>
+</section>
+
+<section class="mods-section about" id="about">
+
+  <h2 class="section-title">About Me</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p id="about-typewriter" data-text="I’m Rox, a Minecraft mod developer focused on building systems that players understand instinctively. I turn complex ideas into polished, intuitive mods through thoughtful design, balanced mechanics, and reliable code."></p>
+
+    </div>
+    <div class="about-stats">
+      <div class="stat"><h3 data-count="2">0+</h3><p>Years Experience</p></div>
+      <div class="stat"><h3 data-count="100">0+</h3><p>Published Mods</p></div>
+      <div class="stat"><h3 data-count="50">0+</h3><p>Clients Served</p></div>
+      <div class="stat"><h3 data-count="4.6">0</h3><p>Avg Rating</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="mods-section contact" id="contact">
+
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="contact-grid">
+    <img src="roxcontact1.png" alt="Contact">
+   <div class="contact-info">
+
+  <div class="contact-row">
+    <!-- Gmail icon -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+    </svg>
+    <span>rox@gmail.com</span>
+  </div>
+
+  <div class="contact-row">
+    <!-- Discord official icon -->
+    <svg viewBox="0 0 245 240" aria-hidden="true">
+      <path d="M104.4 104.6c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zm36.2 0c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1 0-6.1-4.5-11.1-10.2-11.1z"/>
+      <path d="M189.5 20h-134C24.5 20 10 34.5 10 52.3v135.4c0 17.8 14.5 32.3 32.3 32.3h113.1l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V52.3C196.5 34.5 182 20 164.2 20zM163 157s-5.2-6.2-9.5-11.7c18.8-5.3 26-17.1 26-17.1-5.9 3.9-11.5 6.6-16.6 8.5-7.2 3-14.1 5-20.9 6.2-13.9 2.6-26.6 1.9-37.5-.1-8.3-1.6-15.5-3.9-21.4-6.2-3.3-1.3-6.9-3-10.5-5.1-.4-.2-.8-.4-1.2-.7-.1-.1-.2-.1-.3-.2-1.3-.7-2-1.2-2-1.2s7 11.5 25.4 16.9c-4.3 5.5-9.6 12-9.6 12-31.7-1-43.7-21.8-43.7-21.8 0-46.2 20.7-83.7 20.7-83.7 20.7-15.5 40.4-15 40.4-15l1.4 1.6c-25.9 7.5-37.8 18.8-37.8 18.8s3.2-1.7 8.5-4c15.4-6.8 27.6-8.6 32.6-9.1.8-.1 1.5-.2 2.3-.2 8.3-1.1 17.7-1.4 27.5-.3 13 1.5 26.9 5.4 41 13.4 0 0-11.3-10.8-35.6-18.3l2-2.3s19.7-.5 40.4 15c0 0 20.7 37.5 20.7 83.7 0 0-12.1 20.8-43.8 21.8z"/>
+    </svg>
+    <span class="copy-discord" data-copy="kratos_897">kratos_897</span>
+
+  </div>
+
+</div>
+
   </div>
 </section>
 
 </main>
 
 <footer>© 2026 Rox · Built for Minecraft modding</footer>
+<!-- ===== MOD MODAL ===== -->
+<div class="mod-modal" id="modModal">
+  <div class="mod-modal-backdrop"></div>
+
+  <div class="mod-modal-content">
+    <button class="mod-modal-close">&times;</button>
+
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
+
+    <div class="mod-modal-gallery" id="modalGallery"></div>
+  </div>
+</div>
 
 <script>
-/* ===== FEATURED SLIDER ===== */
-const track = document.getElementById("fTrack");
-const prev = document.getElementById("fPrev");
-const next = document.getElementById("fNext");
+/* ===== PIXEL PARTICLES ===== */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
 
-let index = 0;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
 
-function update() {
-  const cardWidth = track.children[0].offsetWidth + 56;
-  track.style.transform = `translateX(-${index * cardWidth}px)`;
+const particles = Array.from({ length: 90 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  size: Math.floor(Math.random() * 3) + 2,
+  vx: (Math.random() - 0.5) * 0.12,
+  vy: -Math.random() * 0.35 - 0.1,
+  a: Math.random() * 0.5 + 0.3
+}));
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const p of particles) {
+    ctx.globalAlpha = p.a;
+    ctx.shadowColor = "rgba(168,85,247,0.6)";
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = "#a855f7";
+    ctx.fillRect(p.x, p.y, p.size, p.size);
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.y < -10) {
+      p.y = canvas.height + 10;
+      p.x = Math.random() * canvas.width;
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ===== HERO SCROLL + BRAND ===== */
+const hero = document.getElementById("hero");
+const heroText = document.getElementById("heroText");
+const brand = document.getElementById("brandSticky");
+
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  const raw = Math.min(y / 500, 1);
+  const p = 1 - Math.pow(1 - raw, 3);
+
+  hero.style.transform = `translateY(${p * -120}px)`;
+  hero.style.opacity = 1 - p * 0.6;
+  hero.style.backgroundSize = `${110 + p * 6}%`;
+  hero.style.backgroundPositionY = `${50 - p * 6}%`;
+  heroText.style.transform = `translateY(${p * -40}px)`;
+
+  brand.classList.toggle("active", p > 0.55);
+});
+  /* ===== ABOUT STATS COUNT UP (RESTORED) ===== */
+const stats = document.querySelectorAll(".stat h3");
+
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const target = parseFloat(el.dataset.count);
+    const isDecimal = target % 1 !== 0;
+    const suffix = el.textContent.includes("+") ? "+" : "";
+    const start = performance.now();
+    const duration = 1200;
+
+    function animate(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = target * eased;
+
+      el.textContent = isDecimal
+        ? value.toFixed(1)
+        : Math.floor(value);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        el.textContent = target + suffix;
+      }
+    }
+
+    requestAnimationFrame(animate);
+    statObserver.unobserve(el);
+  });
+}, { threshold: 0.6 });
+
+stats.forEach(stat => statObserver.observe(stat));
+ /* ===== ABOUT TYPEWRITER (LOCKED + MICRO TICK FEEL) ===== */
+const typeTarget = document.getElementById("about-typewriter");
+
+if (typeTarget) {
+  const text = typeTarget.dataset.text;
+  let index = 0;
+  let started = false;
+
+  const typeObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || started) return;
+    started = true;
+
+    function type() {
+      if (index >= text.length) return;
+
+      const char = text.charAt(index);
+      typeTarget.textContent += char;
+
+      // micro visual "tick"
+      typeTarget.style.opacity = "0.92";
+      requestAnimationFrame(() => {
+        typeTarget.style.opacity = "1";
+      });
+
+      index++;
+
+      // subtle human-like pauses
+      let delay = 22;
+      if (char === "," || char === ".") delay = 140;
+      if (char === " ") delay = 18;
+
+      setTimeout(type, delay);
+    }
+
+    type();
+  }, { threshold: 0.6 });
+
+  typeObserver.observe(typeTarget);
+}
+  /* ===== COPY DISCORD ID ===== */
+const discordEl = document.querySelector(".copy-discord");
+
+if (discordEl) {
+  discordEl.addEventListener("click", () => {
+    const text = discordEl.dataset.copy;
+
+    navigator.clipboard.writeText(text).then(() => {
+      discordEl.classList.add("copied");
+
+      setTimeout(() => {
+        discordEl.classList.remove("copied");
+      }, 1200);
+    });
+  });
+}
+/* ===== EXPANDABLE NAV ===== */
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+
+navToggle.addEventListener("click", () => {
+  navToggle.classList.toggle("open");
+  navMenu.classList.toggle("open");
+});
+/* ===== NAV TOP FIX ===== */
+const navTop = document.getElementById("navTop");
+
+if (navTop) {
+  navTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+}
+/* ===== SMOOTH SCROLL FOR NAV LINKS ===== */
+document.querySelectorAll(".nav-menu a").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+
+    const targetId = link.getAttribute("href");
+
+    if (targetId === "#") {
+      // Top button
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      const y = target.getBoundingClientRect().top + window.pageYOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth"
+      });
+    }
+  });
+});
+/* ===== ACTIVE NAV HIGHLIGHT ===== */
+const sections = [
+  { id: "mods", link: "#mods" },
+  { id: "about", link: "#about" },
+  { id: "contact", link: "#contact" }
+];
+
+const navLinks = document.querySelectorAll(".nav-menu a");
+
+function updateActiveNav() {
+  let current = "";
+
+  sections.forEach(section => {
+    const el = document.getElementById(section.id);
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.35) {
+      current = section.link;
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === current
+    );
+  });
 }
 
-next.onclick = () => {
-  if (index < track.children.length - 2) {
-    index++;
-    update();
-  }
-};
+window.addEventListener("scroll", updateActiveNav);
+updateActiveNav();
+/* ===== MOD CARD MODAL ===== */
+const modal = document.getElementById("modModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalGallery = document.getElementById("modalGallery");
+const modalClose = document.querySelector(".mod-modal-close");
+const modalBackdrop = document.querySelector(".mod-modal-backdrop");
 
-prev.onclick = () => {
-  if (index > 0) {
-    index--;
-    update();
-  }
-};
+document.querySelectorAll(".mod-card").forEach(card => {
+  card.addEventListener("click", () => {
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
 
-window.addEventListener("resize", update);
-update();
+    modalGallery.innerHTML = "";
+
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
+
+    if (images.length) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+});
+
+function closeModal() {
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+modalClose.addEventListener("click", closeModal);
+modalBackdrop.addEventListener("click", closeModal);
+
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
+
+
 </script>
 
 </body>

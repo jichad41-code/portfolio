@@ -411,6 +411,42 @@ window.addEventListener("scroll", () => {
 
   brand.classList.toggle("active", p > 0.55);
 });
+  /* ===== ABOUT STATS COUNT UP (RESTORED) ===== */
+const stats = document.querySelectorAll(".stat h3");
+
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const target = parseFloat(el.dataset.count);
+    const isDecimal = target % 1 !== 0;
+    const suffix = el.textContent.includes("+") ? "+" : "";
+    const start = performance.now();
+    const duration = 1200;
+
+    function animate(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = target * eased;
+
+      el.textContent = isDecimal
+        ? value.toFixed(1)
+        : Math.floor(value);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        el.textContent = target + suffix;
+      }
+    }
+
+    requestAnimationFrame(animate);
+    statObserver.unobserve(el);
+  });
+}, { threshold: 0.6 });
+
+stats.forEach(stat => statObserver.observe(stat));
 </script>
 
 </body>

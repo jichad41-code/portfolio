@@ -542,6 +542,64 @@ footer {
   color: var(--muted);
   margin-top: 6px;
 }
+/* === FEATURED SLIDER === */
+.featured-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.featured-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.featured-track {
+  display: flex;
+  gap: 56px;
+  transition: transform .7s cubic-bezier(.22,1,.36,1);
+}
+
+/* 2 cards visible */
+.featured-card {
+  flex: 0 0 calc(50% - 28px);
+}
+
+/* arrows */
+.featured-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--accent-strong);
+
+  background: rgba(24,18,45,.7);
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.35),
+    0 0 40px rgba(168,85,247,.35);
+
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.featured-arrow:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.6),
+    0 0 70px rgba(168,85,247,.6);
+}
+
+@media (max-width: 900px) {
+  .featured-card {
+    flex: 0 0 100%;
+  }
+}
 
   .hero-name {
   line-height: 0.88;          /* tighter glyph box */
@@ -660,35 +718,60 @@ footer {
 <section class="mods-section" id="mods">
 
   <h2 class="section-title">Featured Mods</h2>
-  <div class="featured-grid">
 
-  <div class="featured-card featured-cinematic"
-       data-title="Better Dungeons"
-       data-desc="Advanced dungeon systems with custom rooms, bosses, and progression."
-       data-images="mod1.png,mod2.png">
-    <div class="featured-bg" style="background-image:url('mod1.png')"></div>
-    <div class="featured-content">
-      <span class="tag">Flagship</span>
-      <h3>Better Dungeons</h3>
-      <p>Procedural dungeons with handcrafted pacing.</p>
+  <div class="featured-wrapper">
+    <button class="featured-arrow left" id="featuredPrev">‹</button>
+
+    <div class="featured-viewport">
+      <div class="featured-track" id="featuredTrack">
+
+        <!-- CARD 1 -->
+        <div class="featured-card featured-cinematic"
+             data-title="Better Dungeons"
+             data-desc="Advanced dungeon systems with custom rooms, bosses, and progression."
+             data-images="mod1.png,mod2.png">
+          <div class="featured-bg" style="background-image:url('mod1.png')"></div>
+          <div class="featured-content">
+            <span class="tag">Flagship</span>
+            <h3>Better Dungeons</h3>
+            <p>Procedural dungeons with handcrafted pacing.</p>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="featured-card featured-cinematic"
+             data-title="Core Engine"
+             data-desc="High-performance backend powering multiple large-scale mods."
+             data-images="mod2.png">
+          <div class="featured-bg" style="background-image:url('mod2.png')"></div>
+          <div class="featured-content">
+            <span class="tag">Core</span>
+            <h3>Core Engine</h3>
+            <p>Optimized systems and shared infrastructure.</p>
+          </div>
+        </div>
+
+        <!-- CARD 3 (NEW) -->
+        <div class="featured-card featured-cinematic"
+             data-title="World Systems"
+             data-desc="Custom world mechanics and generation logic."
+             data-images="mod3.png">
+          <div class="featured-bg" style="background-image:url('mod3.png')"></div>
+          <div class="featured-content">
+            <span class="tag">Systems</span>
+            <h3>World Systems</h3>
+            <p>Deep control over terrain and progression.</p>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
 
-  <div class="featured-card featured-cinematic"
-       data-title="Core Engine"
-       data-desc="High-performance backend powering multiple large-scale mods."
-       data-images="mod2.png,mod3.png">
-    <div class="featured-bg" style="background-image:url('mod2.png')"></div>
-    <div class="featured-content">
-      <span class="tag">Core</span>
-      <h3>Core Engine</h3>
-      <p>Optimized systems, shared logic, clean APIs.</p>
-    </div>
+    <button class="featured-arrow right" id="featuredNext">›</button>
   </div>
-
-</div>
 
 </section>
+
 
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
@@ -1091,6 +1174,34 @@ document.querySelectorAll(".mod-card, .featured-card").forEach(card => {
     document.body.style.overflow = "hidden";
   });
 });
+/* ===== FEATURED SLIDER ===== */
+const track = document.getElementById("featuredTrack");
+const prevBtn = document.getElementById("featuredPrev");
+const nextBtn = document.getElementById("featuredNext");
+
+const cards = track.children;
+let index = 0;
+
+function updateSlider() {
+  const cardWidth = cards[0].offsetWidth + 56; // card + gap
+  track.style.transform = `translateX(-${index * cardWidth}px)`;
+}
+
+nextBtn.addEventListener("click", () => {
+  if (index < cards.length - 2) {
+    index++;
+    updateSlider();
+  }
+});
+
+prevBtn.addEventListener("click", () => {
+  if (index > 0) {
+    index--;
+    updateSlider();
+  }
+});
+
+window.addEventListener("resize", updateSlider);
 
 </script>
 

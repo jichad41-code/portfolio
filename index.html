@@ -74,15 +74,9 @@ body {
 .hero::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: auto 0 0 0;
   height: 260px;
-  background: linear-gradient(
-    to bottom,
-    rgba(11,6,20,0),
-    rgba(11,6,20,1)
-  );
+  background: linear-gradient(to bottom, rgba(11,6,20,0), rgba(11,6,20,1));
 }
 
 .hero-overlay {
@@ -124,7 +118,7 @@ body {
   padding-left: 1rem;
 }
 
-/* ================= FEATURED MODS ================= */
+/* ================= FEATURED ================= */
 .featured-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -136,14 +130,7 @@ body {
   border-radius: 26px;
   padding: 40px;
   min-height: 220px;
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 90px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
-}
-
-.featured-card:hover {
-  transform: translateY(-6px);
+  box-shadow: 0 0 0 1px rgba(168,85,247,.45), 0 0 90px rgba(168,85,247,.45);
 }
 
 /* ================= ALL MODS ================= */
@@ -154,11 +141,11 @@ body {
 }
 
 .mods-grid-last {
-  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(360px, 1fr));
   gap: 56px;
   margin-top: 56px;
+  justify-content: center;
 }
 
 .mod-card {
@@ -169,42 +156,28 @@ body {
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
     0 0 80px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
 }
-
 .mod-card:hover {
   transform: translateY(-8px) scale(1.02);
 }
 
 .tag {
-  display: inline-block;
   font-size: .7rem;
   padding: 6px 12px;
   border-radius: 999px;
   background: rgba(168,85,247,.3);
+  display: inline-block;
   margin-bottom: 12px;
 }
 
 /* ================= ABOUT ================= */
-.about {
-  margin-top: 24rem;
-  background: linear-gradient(
-    180deg,
-    rgba(18,10,36,.85),
-    rgba(11,6,20,1)
-  );
-}
+.about { margin-top: 20rem; }
 
 .about-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 64px;
-}
-
-.about-text p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--muted);
 }
 
 .about-stats {
@@ -217,18 +190,10 @@ body {
   background: rgba(24,18,45,.65);
   border-radius: 18px;
   padding: 28px;
-  box-shadow: 0 0 60px rgba(168,85,247,.25);
-}
-
-.stat h3 {
-  font-size: 2rem;
-  color: var(--accent-strong);
 }
 
 /* ================= CONTACT ================= */
-.contact {
-  margin-top: 24rem;
-}
+.contact { margin-top: 20rem; }
 
 .contact-grid {
   display: grid;
@@ -240,12 +205,13 @@ body {
 .contact-image img {
   width: 100%;
   border-radius: 26px;
+  display: block;
 }
 
 .contact-item {
   background: rgba(24,18,45,.65);
   border-radius: 18px;
-  padding: 28px 32px;
+  padding: 28px;
   margin-bottom: 24px;
 }
 
@@ -255,8 +221,6 @@ footer {
   padding: 3rem;
   color: var(--muted);
   font-size: .85rem;
-  position: relative;
-  z-index: 1;
 }
 
 @media(max-width: 900px) {
@@ -274,7 +238,6 @@ footer {
 <body>
 
 <canvas id="particles"></canvas>
-
 <div class="brand-sticky" id="brandSticky">ROX</div>
 
 <header class="hero" id="hero">
@@ -314,13 +277,11 @@ footer {
 <section class="mods-section about">
   <h2 class="section-title">About Me</h2>
   <div class="about-grid">
-    <div class="about-text">
-      <p>
-        I’m Rox, a Minecraft mod developer focused on building systems that players
-        understand instinctively. I turn complex ideas into polished, intuitive mods
-        through thoughtful design, balanced mechanics, and reliable code.
-      </p>
-    </div>
+    <p>
+      I’m Rox, a Minecraft mod developer focused on building systems that players
+      understand instinctively. I turn complex ideas into polished, intuitive mods
+      through thoughtful design, balanced mechanics, and reliable code.
+    </p>
     <div class="about-stats">
       <div class="stat"><h3 data-count="2">0+</h3><p>Years Experience</p></div>
       <div class="stat"><h3 data-count="100">0+</h3><p>Published Mods</p></div>
@@ -333,7 +294,9 @@ footer {
 <section class="mods-section contact">
   <h2 class="section-title">Get In Touch</h2>
   <div class="contact-grid">
-    <img src="roxcontact1.png" alt="Contact">
+    <div class="contact-image">
+      <img src="roxcontact1.png" alt="Contact">
+    </div>
     <div>
       <div class="contact-item"><h3>Gmail</h3><p>rox@gmail.com</p></div>
       <div class="contact-item"><h3>Discord</h3><p>kratos_897</p></div>
@@ -346,101 +309,30 @@ footer {
 <footer>© 2026 Rox · Built for Minecraft modding</footer>
 
 <script>
-/* ===== PIXEL PARTICLES ===== */
+/* PARTICLES */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+window.addEventListener("resize",resize);resize();
+const parts=[...Array(90)].map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,s:2+Math.random()*2,vx:(Math.random()-.5)*.12,vy:-Math.random()*.35,a:.3+Math.random()*.5}));
+(function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(const p of parts){ctx.globalAlpha=p.a;ctx.shadowColor="#a855f7";ctx.shadowBlur=10;ctx.fillStyle="#a855f7";ctx.fillRect(p.x,p.y,p.s,p.s);p.x+=p.vx;p.y+=p.vy;if(p.y<-10){p.y=canvas.height+10;p.x=Math.random()*canvas.width}}requestAnimationFrame(draw)})();
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
+/* HERO SCROLL + BRAND */
+const hero=document.getElementById("hero"),heroText=document.getElementById("heroText"),brand=document.getElementById("brandSticky");
+window.addEventListener("scroll",()=>{const p=Math.min(scrollY/500,1);hero.style.transform=`translateY(${-120*p}px)`;hero.style.opacity=1-p*.6;hero.style.backgroundSize=`${110+6*p}%`;heroText.style.transform=`translateY(${-40*p}px)`;brand.classList.toggle("active",p>.55)});
 
-const particles = Array.from({ length: 90 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  size: Math.floor(Math.random() * 3) + 2,
-  vx: (Math.random() - 0.5) * 0.12,
-  vy: -Math.random() * 0.35 - 0.1,
-  a: Math.random() * 0.5 + 0.3
-}));
-
-function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (const p of particles) {
-    ctx.globalAlpha = p.a;
-    ctx.shadowColor = "rgba(168,85,247,0.6)";
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = "#a855f7";
-    ctx.fillRect(p.x, p.y, p.size, p.size);
-
-    p.x += p.vx;
-    p.y += p.vy;
-
-    if (p.y < -10) {
-      p.y = canvas.height + 10;
-      p.x = Math.random() * canvas.width;
+/* STATS COUNT */
+document.querySelectorAll(".stat h3").forEach(el=>{
+  const t=parseFloat(el.dataset.count);let s=0;
+  const o=new IntersectionObserver(e=>{
+    if(e[0].isIntersecting){
+      const start=performance.now();
+      (function anim(n){const p=Math.min((n-start)/1200,1);const v=t*(1-Math.pow(1-p,3));el.textContent=t%1?v.toFixed(1):Math.floor(v);if(p<1)requestAnimationFrame(anim);else el.textContent=t+(el.textContent.includes("+")?"+":"")})(start);
+      o.disconnect();
     }
-  }
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* ===== HERO SCROLL + BRAND ===== */
-const hero = document.getElementById("hero");
-const heroText = document.getElementById("heroText");
-const brand = document.getElementById("brandSticky");
-
-window.addEventListener("scroll", () => {
-  const y = window.scrollY;
-  const raw = Math.min(y / 500, 1);
-  const p = 1 - Math.pow(1 - raw, 3);
-
-  hero.style.transform = `translateY(${p * -120}px)`;
-  hero.style.opacity = 1 - p * 0.6;
-  hero.style.backgroundSize = `${110 + p * 6}%`;
-  hero.style.backgroundPositionY = `${50 - p * 6}%`;
-  heroText.style.transform = `translateY(${p * -40}px)`;
-
-  brand.classList.toggle("active", p > 0.55);
+  },{threshold:.6});
+  o.observe(el);
 });
-
-/* ===== STATS COUNT UP ===== */
-const stats = document.querySelectorAll(".stat h3");
-const statObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-
-    const el = entry.target;
-    const target = parseFloat(el.dataset.count);
-    const isDecimal = target % 1 !== 0;
-    const suffix = el.textContent.includes("+") ? "+" : "";
-    const start = performance.now();
-    const duration = 1200;
-
-    function animate(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      let value = target * eased;
-
-      el.textContent = isDecimal
-        ? value.toFixed(1)
-        : Math.floor(value);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        el.textContent = target + suffix;
-      }
-    }
-
-    requestAnimationFrame(animate);
-    statObserver.unobserve(el);
-  });
-}, { threshold: 0.6 });
-
-stats.forEach(stat => statObserver.observe(stat));
 </script>
 
 </body>

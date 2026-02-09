@@ -261,19 +261,60 @@ body {
 }
 
 .mod-card {
-  background: linear-gradient(180deg, rgba(60,30,120,.3), rgba(10,5,30,.9));
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(70,40,140,.35),
+    rgba(10,5,30,.95)
+  );
   border-radius: 22px;
   padding: 32px;
   min-height: 260px;
+
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
-    0 0 80px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
+    0 0 80px rgba(168,85,247,.35),
+    inset 0 0 0 rgba(255,255,255,0);
+
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s cubic-bezier(.22,1,.36,1);
+}
+
+/* soft inner glow */
+.mod-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 80% at 50% 0%,
+    rgba(255,255,255,.12),
+    transparent 60%
+  );
+  opacity: .35;
+  pointer-events: none;
 }
 
 .mod-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 140px rgba(168,85,247,.65),
+    0 0 260px rgba(168,85,247,.45);
 }
+.tag {
+  transition: all .3s ease;
+}
+
+.mod-card:hover .tag {
+  background: rgba(168,85,247,.45);
+  box-shadow: 0 0 20px rgba(168,85,247,.6);
+}
+.mod-card {
+  cursor: pointer;
+}
+
 
 .tag {
   display: inline-block;

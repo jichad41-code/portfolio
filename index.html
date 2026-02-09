@@ -522,11 +522,8 @@ footer {
 
 .featured-cinematic:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 180px rgba(168,85,247,.65),
-    0 0 320px rgba(168,85,247,.45);
 }
+
   .featured-card {
   overflow: hidden;
 }
@@ -578,7 +575,7 @@ footer {
 }
 
 .featured-viewport {
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 
   /* remove any visual framing */
@@ -586,6 +583,10 @@ footer {
   border-radius: 0;
   box-shadow: none;
 }
+  .featured-track {
+  overflow: hidden;
+}
+
 
 .featured-track {
   display: flex;
@@ -594,7 +595,7 @@ footer {
 }
 
 /* 2 cards visible */
-.featured-card {
+.featured-cinematic {
   flex: 0 0 calc(50% - 28px);
 }
 .featured-cinematic {

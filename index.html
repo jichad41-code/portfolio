@@ -44,10 +44,11 @@
 .nav-menu {
   margin-top: 14px;
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  flex-direction: row;
+  gap: 22px;
+  align-items: center;
 
-  padding: 18px 22px;
+  padding: 14px 20px;
   border-radius: 18px;
 
   background: rgba(24,18,45,.65);
@@ -431,6 +432,7 @@ footer {
   <button class="nav-toggle" id="navToggle">+</button>
 
   <nav class="nav-menu" id="navMenu">
+    <a href="#top">Top</a>
     <a href="#mods">Mods</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
@@ -442,7 +444,8 @@ footer {
 
 <div class="brand-sticky" id="brandSticky">ROX</div>
 
-<header class="hero" id="hero">
+<header class="hero" id="top">
+
  <div class="hero-overlay">
   <div class="hero-text" id="heroText">
     <h1 class="hero-name">ROX</h1>

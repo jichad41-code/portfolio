@@ -321,11 +321,8 @@ footer {
   <h2 class="section-title">About Me</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>
-        I’m Rox, a Minecraft mod developer focused on building systems that players
-        understand instinctively. I turn complex ideas into polished, intuitive mods
-        through thoughtful design, balanced mechanics, and reliable code.
-      </p>
+      <p id="about-typewriter" data-text="I’m Rox, a Minecraft mod developer focused on building systems that players understand instinctively. I turn complex ideas into polished, intuitive mods through thoughtful design, balanced mechanics, and reliable code."></p>
+
     </div>
     <div class="about-stats">
       <div class="stat"><h3 data-count="2">0+</h3><p>Years Experience</p></div>
@@ -447,6 +444,31 @@ const statObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.6 });
 
 stats.forEach(stat => statObserver.observe(stat));
+  /* ===== ABOUT TYPEWRITER (LOCKED) ===== */
+const typeTarget = document.getElementById("about-typewriter");
+
+if (typeTarget) {
+  const text = typeTarget.dataset.text;
+  let index = 0;
+  let started = false;
+
+  const typeObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || started) return;
+    started = true;
+
+    function type() {
+      if (index < text.length) {
+        typeTarget.textContent += text.charAt(index);
+        index++;
+        setTimeout(type, 22); // typing speed
+      }
+    }
+
+    type();
+  }, { threshold: 0.6 });
+
+  typeObserver.observe(typeTarget);
+}
 </script>
 
 </body>

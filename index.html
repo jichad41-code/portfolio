@@ -475,6 +475,74 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+  /* === FEATURED CINEMATIC CARDS === */
+.featured-cinematic {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  cursor: pointer;
+
+  background: linear-gradient(
+    180deg,
+    rgba(20,12,40,.8),
+    rgba(10,5,30,.95)
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 120px rgba(168,85,247,.45);
+
+  transition:
+    transform .6s cubic-bezier(.22,1,.36,1),
+    box-shadow .6s cubic-bezier(.22,1,.36,1);
+}
+
+.featured-cinematic:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 180px rgba(168,85,247,.65),
+    0 0 320px rgba(168,85,247,.45);
+}
+
+/* background image layer */
+.featured-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(.65) contrast(1.1);
+  transform: scale(1.05);
+  transition: transform .6s ease;
+}
+
+.featured-cinematic:hover .featured-bg {
+  transform: scale(1.12);
+}
+
+/* content overlay */
+.featured-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 42px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.featured-content h3 {
+  font-size: 1.6rem;
+  margin-top: 10px;
+}
+
+.featured-content p {
+  font-size: .95rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
   .hero-name {
   line-height: 0.88;          /* tighter glyph box */
   margin-bottom: 14px;        /* controlled spacing */
@@ -593,9 +661,33 @@ footer {
 
   <h2 class="section-title">Featured Mods</h2>
   <div class="featured-grid">
-    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
-    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
+
+  <div class="featured-card featured-cinematic"
+       data-title="Better Dungeons"
+       data-desc="Advanced dungeon systems with custom rooms, bosses, and progression."
+       data-images="mod1.png,mod2.png">
+    <div class="featured-bg" style="background-image:url('mod1.png')"></div>
+    <div class="featured-content">
+      <span class="tag">Flagship</span>
+      <h3>Better Dungeons</h3>
+      <p>Procedural dungeons with handcrafted pacing.</p>
+    </div>
   </div>
+
+  <div class="featured-card featured-cinematic"
+       data-title="Core Engine"
+       data-desc="High-performance backend powering multiple large-scale mods."
+       data-images="mod2.png,mod3.png">
+    <div class="featured-bg" style="background-image:url('mod2.png')"></div>
+    <div class="featured-content">
+      <span class="tag">Core</span>
+      <h3>Core Engine</h3>
+      <p>Optimized systems, shared logic, clean APIs.</p>
+    </div>
+  </div>
+
+</div>
+
 </section>
 
 <section class="mods-section">
@@ -977,6 +1069,28 @@ window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
 
+document.querySelectorAll(".mod-card, .featured-card").forEach(card => {
+  card.addEventListener("click", () => {
+    modalTitle.textContent = card.dataset.title;
+    modalDesc.textContent = card.dataset.desc;
+
+    modalGallery.innerHTML = "";
+    const images = (card.dataset.images || "").split(",");
+
+    if (images.length && images[0]) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML = "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+});
 
 </script>
 

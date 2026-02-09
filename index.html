@@ -432,7 +432,7 @@ footer {
   <button class="nav-toggle" id="navToggle">+</button>
 
   <nav class="nav-menu" id="navMenu">
-    <a href="#top">Top</a>
+    <a href="#" id="navTop">Top</a>
     <a href="#mods">Mods</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
@@ -693,6 +693,18 @@ navToggle.addEventListener("click", () => {
   navToggle.classList.toggle("open");
   navMenu.classList.toggle("open");
 });
+/* ===== NAV TOP FIX ===== */
+const navTop = document.getElementById("navTop");
+
+if (navTop) {
+  navTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+}
 
 </script>
 

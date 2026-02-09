@@ -231,18 +231,47 @@ body {
 }
 
 .featured-card {
-  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(70,40,140,.35),
+    rgba(10,5,30,.95)
+  );
   border-radius: 26px;
   padding: 40px;
   min-height: 220px;
+
   box-shadow:
     0 0 0 1px rgba(168,85,247,.45),
     0 0 90px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
+
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s cubic-bezier(.22,1,.36,1);
+}
+/* idle ambient spotlight */
+.featured-card::before {
+  content: "";
+  position: absolute;
+  inset: -35%;
+  background: radial-gradient(
+    circle at 50% 60%,
+    rgba(168,85,247,.35),
+    transparent 65%
+  );
+  opacity: .55;
+  pointer-events: none;
+}
+.featured-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 160px rgba(168,85,247,.65),
+    0 0 280px rgba(168,85,247,.45);
 }
 
-.featured-card:hover {
-  transform: translateY(-6px);
+.featured-card:hover::before {
+  opacity: .9;
 }
 
 /* ================= ALL MODS ================= */

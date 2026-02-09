@@ -83,6 +83,13 @@
 .nav-menu a:hover {
   color: var(--accent-strong);
 }
+/* === ACTIVE NAV LINK === */
+.nav-menu a.active {
+  color: var(--accent-strong);
+  text-shadow:
+    0 0 10px rgba(168,85,247,.8),
+    0 0 30px rgba(168,85,247,.6);
+}
 
 :root {
   --bg: #0b0614;
@@ -728,6 +735,38 @@ document.querySelectorAll(".nav-menu a").forEach(link => {
     }
   });
 });
+/* ===== ACTIVE NAV HIGHLIGHT ===== */
+const sections = [
+  { id: "mods", link: "#mods" },
+  { id: "about", link: "#about" },
+  { id: "contact", link: "#contact" }
+];
+
+const navLinks = document.querySelectorAll(".nav-menu a");
+
+function updateActiveNav() {
+  let current = "";
+
+  sections.forEach(section => {
+    const el = document.getElementById(section.id);
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.35) {
+      current = section.link;
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === current
+    );
+  });
+}
+
+window.addEventListener("scroll", updateActiveNav);
+updateActiveNav();
 
 </script>
 

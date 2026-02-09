@@ -284,6 +284,28 @@ body {
   margin-bottom: 18px;
   color: var(--muted);
 }
+  .contact-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 16px 20px;        /* reduced padding */
+  width: fit-content;        /* key: shrink to content */
+  max-width: none;           /* prevent forced width */
+}
+
+.contact-item h3,
+.contact-item p {
+  margin: 0;                 /* remove default spacing */
+}
+  .contact-grid > div {
+  align-self: flex-start;    /* prevents vertical stretching */
+}
+.contact-item {
+  padding: 14px 18px;
+  border-radius: 14px;
+}
+
 
 /* ================= FOOTER ================= */
 footer {

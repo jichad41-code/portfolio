@@ -940,26 +940,25 @@ const modalBackdrop = document.querySelector(".mod-modal-backdrop");
 
 document.querySelectorAll(".mod-card").forEach(card => {
   card.addEventListener("click", () => {
-    modalTitle.textContent = card.dataset.title;
-    modalDesc.textContent = card.dataset.desc;
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
 
     modalGallery.innerHTML = "";
 
-if (images.length) {
-  images.forEach(src => {
-    const img = document.createElement("img");
-    img.src = src.trim();
-    modalGallery.appendChild(img);
-  });
-} else {
-  modalGallery.innerHTML = "<p style='color:var(--muted)'>No images available.</p>";
-}
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
 
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src.trim();
-      modalGallery.appendChild(img);
-    });
+    if (images.length) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
 
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
@@ -977,6 +976,7 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
+
 
 </script>
 

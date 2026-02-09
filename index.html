@@ -220,21 +220,6 @@ body {
   padding-left: 1rem;
 }
 
-/* ================= FEATURED MODS ================= */
-.featured-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 56px;
-}
-
-
-
-
-.featured-viewport {
-  display: flex;
-  justify-content: center;
-}
-.featured-cinematic { overflow: visible; }
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -458,188 +443,15 @@ footer {
 }
 
 @media(max-width: 900px) {
-  .featured-grid,
-  .mods-grid,
-  .mods-grid-last,
-  .about-grid,
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-}
-  /* === FEATURED CINEMATIC CARDS === */
-.featured-cinematic {
-  position: relative;
-  overflow: visible;
-  min-height: 280px;
-  cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgba(20,12,40,.8),
-    rgba(10,5,30,.95)
-  );
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.6);
-
-  transition:
-    transform .6s cubic-bezier(.22,1,.36,1),
-    box-shadow .6s cubic-bezier(.22,1,.36,1);
-}
-  .featured-cinematic {
-  position: relative;
-  overflow: visible;
-  border-radius: 26px;
-}
-
-/* soft ambient glow */
-
-.featured-bg {
-  filter: brightness(.7) contrast(1.05);
-}
-
-
-.featured-cinematic:hover {
-  transform: translateY(-10px) scale(1.02);
-}
+ 
 
 
 
 
-/* background image layer */
-.featured-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(.72) contrast(1.05);
-  transform: scale(1.05);
-  transition: transform .6s ease;
-}
-
-.featured-cinematic:hover .featured-bg {
-  transform: scale(1.12);
-}
-
-/* content overlay */
-.featured-content {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  padding: 42px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.featured-content h3 {
-  font-size: 1.6rem;
-  margin-top: 10px;
-}
-
-.featured-content p {
-  font-size: .95rem;
-  color: var(--muted);
-  margin-top: 6px;
-}
-/* === FEATURED SLIDER === */
-.featured-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.featured-viewport {
-  overflow: visible;
-  width: 100%;
-
-  /* remove any visual framing */
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-}
-  .featured-track {
-  overflow: hidden;
-}
 
 
-.featured-track {
-  display: flex;
-  gap: 56px;
-  transition: transform .7s cubic-bezier(.22,1,.36,1);
-}
 
-/* 2 cards visible */
-.featured-cinematic {
-  flex: 0 0 calc(50% - 28px);
-}
-.featured-cinematic {
-  position: relative;
-  border-radius: 26px;
-  overflow: hidden;
-}
 
-/* ambient idle glow */
-.featured-cinematic::before {
-  content: "";
-  position: absolute;
-  inset: -35%;
-  background: radial-gradient(
-    circle at 50% 60%,
-    rgba(168,85,247,.35),
-    transparent 65%
-  );
-  opacity: .55;
-  transition: opacity .6s ease;
-  pointer-events: none;
-}
-
-/* hover glow */
-.featured-cinematic:hover::before {
-  opacity: .9;
-}
-
-/* arrows */
-.featured-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-
-  border: none;
-  cursor: pointer;
-
-  background: rgba(24,18,45,.75);
-  color: var(--accent-strong);
-  font-size: 1.4rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.4),
-    0 0 30px rgba(168,85,247,.45);
-
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease;
-}
-
-.featured-arrow.left { left: -23px; }
-.featured-arrow.right { right: -23px; }
-
-.featured-arrow:hover {
-  transform: translateY(-50%) scale(1.12);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 60px rgba(168,85,247,.7);
-}
 
 
 
@@ -647,7 +459,89 @@ footer {
 @media (max-width: 900px) {
  
 }
-.featured-arrow {
+
+
+
+
+  .hero-name {
+  line-height: 0.88;          /* tighter glyph box */
+  margin-bottom: 14px;        /* controlled spacing */
+}
+
+.hero-sub {
+  margin-top: 0;              /* remove default paragraph offset */
+  line-height: 1.2;
+}
+
+  /* ===== FEATURED MODS (CLEAN RESET) ===== */
+
+.featured-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.featured-window {
+  overflow: hidden;
+  width: 100%;
+}
+
+.featured-row {
+  display: flex;
+  gap: 56px;
+  transition: transform .6s cubic-bezier(.22,1,.36,1);
+}
+
+/* EXACTLY 2 cards */
+.featured-item {
+  flex: 0 0 calc(50% - 28px);
+  background: linear-gradient(
+    180deg,
+    rgba(70,40,140,.35),
+    rgba(10,5,30,.95)
+  );
+  border-radius: 26px;
+  padding: 40px;
+  min-height: 240px;
+
+  position: relative;
+  cursor: pointer;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 90px rgba(168,85,247,.45);
+
+  transition:
+    transform .4s cubic-bezier(.22,1,.36,1),
+    box-shadow .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* ALWAYS visible glow */
+.featured-item::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(
+    circle at 50% 60%,
+    rgba(168,85,247,.45),
+    transparent 65%
+  );
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* Hover = stronger glow */
+.featured-item:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 160px rgba(168,85,247,.7),
+    0 0 280px rgba(168,85,247,.45);
+}
+
+/* Arrows */
+.featured-btn {
   width: 46px;
   height: 46px;
   border-radius: 14px;
@@ -667,27 +561,16 @@ footer {
     0 0 0 1px rgba(168,85,247,.4),
     0 0 40px rgba(168,85,247,.4);
 
-  transition:
-    transform .3s cubic-bezier(.22,1,.36,1),
-    box-shadow .3s ease;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
-.featured-arrow:hover {
-  transform: translateY(-50%) scale(1.1);
+.featured-btn:hover {
+  transform: scale(1.1);
   box-shadow:
     0 0 0 1px rgba(168,85,247,.7),
     0 0 80px rgba(168,85,247,.7);
 }
 
-  .hero-name {
-  line-height: 0.88;          /* tighter glyph box */
-  margin-bottom: 14px;        /* controlled spacing */
-}
-
-.hero-sub {
-  margin-top: 0;              /* remove default paragraph offset */
-  line-height: 1.2;
-}
 /* ================= MOD MODAL ================= */
 .mod-modal {
   position: fixed;
@@ -794,59 +677,41 @@ footer {
 <main>
 
 <section class="mods-section" id="mods">
-
+<section class="mods-section" id="featured">
   <h2 class="section-title">Featured Mods</h2>
 
-  <div class="featured-wrapper">
-    <button class="featured-arrow left" id="featuredPrev">‹</button>
+  <div class="featured-slider">
+    <button class="featured-btn left" id="fPrev">‹</button>
 
-    <div class="featured-viewport">
-      <div class="featured-track" id="featuredTrack">
+    <div class="featured-window">
+      <div class="featured-row" id="fRow">
 
-        <!-- CARD 1 -->
-        <div class="featured-cinematic"
-             data-title="Better Dungeons"
-             data-desc="Advanced dungeon systems with custom rooms, bosses, and progression."
-             data-images="mod1.png,mod2.png">
-          <div class="featured-bg" style="background-image:url('mod1.png')"></div>
-          <div class="featured-content">
-            <span class="tag">Flagship</span>
-            <h3>Better Dungeons</h3>
-            <p>Procedural dungeons with handcrafted pacing.</p>
-          </div>
+        <div class="featured-item">
+          <span class="tag">Flagship</span>
+          <h3>Better Dungeons</h3>
+          <p>Procedural dungeons with handcrafted pacing.</p>
         </div>
 
-        <!-- CARD 2 -->
-        <div class="featured-cinematic"
-             data-title="Core Engine"
-             data-desc="High-performance backend powering multiple large-scale mods."
-             data-images="mod2.png">
-          <div class="featured-bg" style="background-image:url('mod2.png')"></div>
-          <div class="featured-content">
-            <span class="tag">Core</span>
-            <h3>Core Engine</h3>
-            <p>Optimized systems and shared infrastructure.</p>
-          </div>
+        <div class="featured-item">
+          <span class="tag">Core</span>
+          <h3>Core Engine</h3>
+          <p>Optimized systems and shared infrastructure.</p>
         </div>
 
-        <!-- CARD 3 (NEW) -->
-        <div class="featured-cinematic"
-             data-title="World Systems"
-             data-desc="Custom world mechanics and generation logic."
-             data-images="mod3.png">
-          <div class="featured-bg" style="background-image:url('mod3.png')"></div>
-          <div class="featured-content">
-            <span class="tag">Systems</span>
-            <h3>World Systems</h3>
-            <p>Deep control over terrain and progression.</p>
-          </div>
+        <div class="featured-item">
+          <span class="tag">Systems</span>
+          <h3>World Systems</h3>
+          <p>Deep control over terrain and progression.</p>
         </div>
 
       </div>
     </div>
 
-    <button class="featured-arrow right" id="featuredNext">›</button>
+    <button class="featured-btn right" id="fNext">›</button>
   </div>
+</section>
+
+ 
 
 </section>
 
@@ -1252,35 +1117,35 @@ document.querySelectorAll(".mod-card").forEach(card => {
     document.body.style.overflow = "hidden";
   });
 });
-/* ===== FEATURED SLIDER ===== */
-const track = document.getElementById("featuredTrack");
-const prevBtn = document.getElementById("featuredPrev");
-const nextBtn = document.getElementById("featuredNext");
+  const fRow = document.getElementById("fRow");
+const fPrev = document.getElementById("fPrev");
+const fNext = document.getElementById("fNext");
 
-const cards = track.children;
-let index = 0;
+let fIndex = 0;
 
-function updateSlider() {
-  const cardWidth = cards[0].offsetWidth + 56; // card + gap
-  track.style.transform = `translateX(-${index * cardWidth}px)`;
-  updateSlider();
+function updateFeatured() {
+  const cardWidth = fRow.children[0].offsetWidth + 56;
+  fRow.style.transform = `translateX(-${fIndex * cardWidth}px)`;
 }
 
-nextBtn.addEventListener("click", () => {
-  if (index < cards.length - 2) {
-    index++;
-    updateSlider();
+fNext.addEventListener("click", () => {
+  if (fIndex < fRow.children.length - 2) {
+    fIndex++;
+    updateFeatured();
   }
 });
 
-prevBtn.addEventListener("click", () => {
-  if (index > 0) {
-    index--;
-    updateSlider();
+fPrev.addEventListener("click", () => {
+  if (fIndex > 0) {
+    fIndex--;
+    updateFeatured();
   }
 });
 
-window.addEventListener("resize", updateSlider);
+window.addEventListener("resize", updateFeatured);
+updateFeatured();
+
+
 </script>
 
 </body>

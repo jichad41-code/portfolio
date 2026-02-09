@@ -484,6 +484,75 @@ footer {
   margin-top: 0;              /* remove default paragraph offset */
   line-height: 1.2;
 }
+/* ================= MOD MODAL ================= */
+.mod-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2000;
+}
+
+.mod-modal.active {
+  display: block;
+}
+
+.mod-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 2, 15, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.mod-modal-content {
+  position: relative;
+  max-width: 900px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  background: linear-gradient(180deg, rgba(30,20,60,.95), rgba(10,5,30,.98));
+  border-radius: 26px;
+  padding: 40px;
+  overflow-y: auto;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 120px rgba(168,85,247,.6);
+
+  animation: modalIn .45s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes modalIn {
+  from {
+    transform: translateY(40px) scale(.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.mod-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mod-modal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.mod-modal-gallery img {
+  width: 100%;
+  border-radius: 16px;
+}
 
 </style>
 </head>
@@ -532,17 +601,28 @@ footer {
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Ben 10 100 Days</h3></div>
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Goku 100 Days</h3></div>
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Attack On Titan 100 days</h3></div>
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Custom Boss Mod</h3></div>
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Bionic Camo Block MOD</h3></div>
-    <div class="mod-card"><span class="tag">Worldgen</span><h3 class="mod-title">Minecraft But Chunks Are Random</h3></div>
+    <div class="mod-card"
+      data-title="Ben 10 100 Days"
+     data-desc="Turn in the different phases of Ben 10."
+     data-images="mod1.png,mod2.png,mod3.png">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Ben 10 100 Days</h3></div>
+    <div class="mod-card">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Goku 100 Days</h3></div>
+    <div class="mod-card">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Attack On Titan 100 days</h3></div>
+    <div class="mod-card">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Custom Boss Mod</h3></div>
+    <div class="mod-card">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Camo Block MOD</h3></div>
+    <div class="mod-card">
+      <span class="tag">Worldgen</span><h3 class="mod-title">Minecraft But Chunks Are Random</h3></div>
   </div>
 
   <div class="mods-grid-last">
-    <div class="mod-card"><span class="tag">Gameplay</span><h3 class="mod-title">Bionic Immortal Mod</h3></div>
-    <div class="mod-card"><span class="tag">Utility</span><h3 class="mod-title">Minecraft but Drops Are Guns Mod</h3></div>
+    <div class="mod-card">
+      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Immortal Mod</h3></div>
+    <div class="mod-card">
+      <span class="tag">Utility</span><h3 class="mod-title">Minecraft but Drops Are Guns Mod</h3></div>
   </div>
 </section>
 
@@ -823,8 +903,59 @@ function updateActiveNav() {
 
 window.addEventListener("scroll", updateActiveNav);
 updateActiveNav();
+/* ===== MOD CARD MODAL ===== */
+const modal = document.getElementById("modModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalGallery = document.getElementById("modalGallery");
+const modalClose = document.querySelector(".mod-modal-close");
+const modalBackdrop = document.querySelector(".mod-modal-backdrop");
+
+document.querySelectorAll(".mod-card").forEach(card => {
+  card.addEventListener("click", () => {
+    modalTitle.textContent = card.dataset.title;
+    modalDesc.textContent = card.dataset.desc;
+
+    modalGallery.innerHTML = "";
+    const images = card.dataset.images.split(",");
+
+    images.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src.trim();
+      modalGallery.appendChild(img);
+    });
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+});
+
+function closeModal() {
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+modalClose.addEventListener("click", closeModal);
+modalBackdrop.addEventListener("click", closeModal);
+
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
 
 </script>
+<!-- ===== MOD MODAL ===== -->
+<div class="mod-modal" id="modModal">
+  <div class="mod-modal-backdrop"></div>
+
+  <div class="mod-modal-content">
+    <button class="mod-modal-close">&times;</button>
+
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
+
+    <div class="mod-modal-gallery" id="modalGallery"></div>
+  </div>
+</div>
 
 </body>
 </html>

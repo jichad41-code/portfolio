@@ -676,6 +676,19 @@ footer {
 </main>
 
 <footer>© 2026 Rox · Built for Minecraft modding</footer>
+<!-- ===== MOD MODAL ===== -->
+<div class="mod-modal" id="modModal">
+  <div class="mod-modal-backdrop"></div>
+
+  <div class="mod-modal-content">
+    <button class="mod-modal-close">&times;</button>
+
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
+
+    <div class="mod-modal-gallery" id="modalGallery"></div>
+  </div>
+</div>
 
 <script>
 /* ===== PIXEL PARTICLES ===== */
@@ -917,7 +930,16 @@ document.querySelectorAll(".mod-card").forEach(card => {
     modalDesc.textContent = card.dataset.desc;
 
     modalGallery.innerHTML = "";
-    const images = card.dataset.images.split(",");
+
+if (images.length) {
+  images.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src.trim();
+    modalGallery.appendChild(img);
+  });
+} else {
+  modalGallery.innerHTML = "<p style='color:var(--muted)'>No images available.</p>";
+}
 
     images.forEach(src => {
       const img = document.createElement("img");
@@ -943,19 +965,6 @@ window.addEventListener("keydown", e => {
 });
 
 </script>
-<!-- ===== MOD MODAL ===== -->
-<div class="mod-modal" id="modModal">
-  <div class="mod-modal-backdrop"></div>
-
-  <div class="mod-modal-content">
-    <button class="mod-modal-close">&times;</button>
-
-    <h2 id="modalTitle"></h2>
-    <p id="modalDesc"></p>
-
-    <div class="mod-modal-gallery" id="modalGallery"></div>
-  </div>
-</div>
 
 </body>
 </html>

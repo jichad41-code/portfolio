@@ -705,6 +705,29 @@ if (navTop) {
     });
   });
 }
+/* ===== SMOOTH SCROLL FOR NAV LINKS ===== */
+document.querySelectorAll(".nav-menu a").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+
+    const targetId = link.getAttribute("href");
+
+    if (targetId === "#") {
+      // Top button
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      const y = target.getBoundingClientRect().top + window.pageYOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth"
+      });
+    }
+  });
+});
 
 </script>
 

@@ -553,6 +553,11 @@ footer {
 .featured-viewport {
   overflow: hidden;
   width: 100%;
+
+  /* remove any visual framing */
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .featured-track {
@@ -568,25 +573,21 @@ footer {
 
 /* arrows */
 .featured-arrow {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
-  font-size: 2rem;
-  line-height: 1;
-  color: var(--accent-strong);
-
-  background: rgba(24,18,45,.7);
-  backdrop-filter: blur(14px);
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 40px rgba(168,85,247,.35);
-
-  transition: transform .25s ease, box-shadow .25s ease;
+  z-index: 2;
 }
+
+.featured-arrow.left {
+  left: -24px;
+}
+
+.featured-arrow.right {
+  right: -24px;
+}
+
 
 .featured-arrow:hover {
   transform: scale(1.08);
@@ -594,6 +595,10 @@ footer {
     0 0 0 1px rgba(168,85,247,.6),
     0 0 70px rgba(168,85,247,.6);
 }
+  .featured-card {
+  background-clip: padding-box;
+}
+
 
 @media (max-width: 900px) {
   .featured-card {

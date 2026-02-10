@@ -400,96 +400,6 @@ body {
   background: rgba(168,85,247,.3);
   margin-bottom: 12px;
 }
-/* ================= AI ONGOING PROJECT ================= */
-
-.ai-project {
-  background:
-    linear-gradient(180deg, rgba(8,5,16,.95), rgba(11,6,20,1));
-}
-
-/* Centered single card */
-.ai-card {
-  position: relative;
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 48px 56px;
-  border-radius: 28px;
-  cursor: pointer;
-
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.03),
-      rgba(255,255,255,.03) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    linear-gradient(180deg, rgba(20,20,40,.95), rgba(8,5,18,.98));
-
-  box-shadow:
-    0 0 0 1px rgba(96,220,255,.45),
-    0 0 120px rgba(96,220,255,.25);
-
-  transition:
-    box-shadow .4s cubic-bezier(.22,1,.36,1);
-}
-
-/* hover = system focus */
-.ai-card:hover {
-  box-shadow:
-    0 0 0 1px rgba(96,220,255,.75),
-    0 0 180px rgba(96,220,255,.45);
-}
-
-/* Status label */
-.ai-status {
-  font-family: monospace;
-  font-size: .75rem;
-  letter-spacing: .15em;
-  color: rgba(96,220,255,.9);
-  margin-bottom: 22px;
-}
-
-/* Title */
-.ai-title {
-  font-size: 2.2rem;
-  letter-spacing: .08em;
-  margin-bottom: 6px;
-  color: #e6f7ff;
-}
-
-/* Subtitle */
-.ai-sub {
-  font-family: monospace;
-  font-size: .8rem;
-  color: rgba(180,230,255,.7);
-  margin-bottom: 28px;
-}
-
-/* Description */
-.ai-desc {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: var(--muted);
-  max-width: 620px;
-}
-
-/* Prompt */
-.ai-prompt {
-  margin-top: 26px;
-  font-family: monospace;
-  font-size: .95rem;
-  color: rgba(96,220,255,.9);
-}
-
-/* blinking cursor */
-.cursor {
-  animation: blink 1.1s steps(2) infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
 
 /* ================= ABOUT ================= */
 .about {
@@ -772,31 +682,6 @@ footer {
   </div>
 </div>
 
-
-</section>
-
-  <section class="mods-section ai-project" id="ai-project">
-
-  <h2 class="section-title">Ongoing Project</h2>
-
-  <div class="ai-card" id="aiAssistantCard"
-       data-title="AI Assistant Mod"
-       data-desc="An in-game AI companion that players can talk to naturally. It answers questions, explains mechanics, and can execute commands to help the player in real time."
-       data-images="ai1.png,ai2.png">
-
-    <div class="ai-status">▮ STATUS: ACTIVE</div>
-
-    <h3 class="ai-title">AI ASSISTANT MOD</h3>
-    <p class="ai-sub">INTERACTIVE IN-GAME INTELLIGENCE SYSTEM</p>
-
-    <p class="ai-desc">
-      Talk to the AI directly in-game. Ask anything, get explanations,
-      and let it execute commands to assist you in real time.
-    </p>
-
-    <div class="ai-prompt">&gt; awaiting input<span class="cursor">_</span></div>
-
-  </div>
 
 </section>
 
@@ -1247,43 +1132,6 @@ function resetAutoRotate() {
 // init
 applyPositions();
 resetAutoRotate();
-/* ===== AI ASSISTANT MOD MODAL ===== */
-const aiCard = document.getElementById("aiAssistantCard");
-
-if (aiCard) {
-  aiCard.addEventListener("click", () => {
-    modalTitle.textContent = "AI Assistant Mod";
-
-    modalDesc.innerHTML = `
-      <strong>Overview</strong><br>
-      The AI Assistant Mod introduces an intelligent in-game companion
-      that players can interact with naturally through chat.<br><br>
-
-      <strong>Capabilities</strong>
-      <ul>
-        <li>Natural language conversation</li>
-        <li>Explains game mechanics and systems</li>
-        <li>Executes commands to assist the player</li>
-        <li>Context-aware responses</li>
-      </ul>
-
-      <strong>Development Status</strong><br>
-      Actively in development. Features are expanding continuously.
-    `;
-
-    modalGallery.innerHTML = "";
-
-    const images = aiCard.dataset.images.split(",");
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src.trim();
-      modalGallery.appendChild(img);
-    });
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
-}
 
 
 

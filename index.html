@@ -1,274 +1,237 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rox — Minecraft Mod Developer</title>
-
 <style>
-/* ================= PRE-EXISTING STYLES (Kept for consistency) ================= */
-:root {
-  --bg: #0b0614;
-  --bg-alt: #120a24;
-  --card: rgba(24, 18, 45, 0.75);
-  --text: #f2efff;
-  --muted: #b7aedf;
-  --accent: #a855f7;
-  --accent-strong: #c084fc;
-}  
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: system-ui, sans-serif;
-  color: var(--text);
-  background: linear-gradient(180deg, var(--bg), var(--bg-alt));
-  overflow-x: hidden;
-}
-
-/* ... (Include your Nav, Hero, and Mod Grid styles here) ... */
-/* I will skip re-pasting the exact Nav/Hero CSS for brevity, but it remains the same */
-
-.nav-wrapper { position: fixed; top: 22px; left: 28px; z-index: 1001; }
-.nav-toggle { width: 44px; height: 44px; border-radius: 14px; border: none; cursor: pointer; font-size: 1.6rem; font-weight: 700; color: var(--accent-strong); background: rgba(24,18,45,.65); backdrop-filter: blur(14px); box-shadow: 0 0 0 1px rgba(168,85,247,.35), 0 0 40px rgba(168,85,247,.35); transition: transform .35s; }
-.nav-menu { margin-top: 14px; display: flex; gap: 22px; padding: 14px 20px; border-radius: 18px; background: rgba(24,18,45,.65); backdrop-filter: blur(18px); opacity: 0; transform: translateY(-10px); pointer-events: none; transition: 0.35s; }
-.nav-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.nav-menu a { text-decoration: none; color: var(--text); }
-
-.hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding-left: 6rem; background: radial-gradient(circle at 30% 40%, rgba(168,85,247,0.35), transparent 60%), linear-gradient(180deg, rgba(10,6,20,0.35), rgba(10,6,20,0.9)); }
-.hero-name { font-size: clamp(4.5rem, 10vw, 7.5rem); font-weight: 900; text-shadow: 0 0 40px rgba(168,85,247,.8); }
-
-.mods-section { max-width: 1400px; margin: 0 auto; padding: 7rem 3rem; }
-.section-title { font-size: 2.4rem; margin-bottom: 3rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
-
-/* ================= THE THEATER (ANIMATION SECTION) ================= */
-.dev-showcase {
-    margin: 10rem 0;
-    min-height: 600px;
+/* ================= IN DEVELOPMENT THEATER ================= */
+.dev-theater-section {
+    padding: 10rem 3rem; /* Extra breathing room */
     position: relative;
     overflow: hidden;
 }
 
-.animation-stage {
-    position: relative;
+.stage-container {
     width: 100%;
-    height: 400px;
-    background: rgba(24, 18, 45, 0.3);
+    max-width: 1100px;
+    height: 450px;
+    margin: 0 auto;
+    background: rgba(20, 10, 40, 0.4);
     border-radius: 30px;
-    border: 1px dashed rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
 }
 
-/* The Developer Character */
-.character-dev {
+/* Character Base */
+.char {
     position: absolute;
-    bottom: 50px;
-    left: 40%;
-    width: 80px;
-    height: 120px;
-    background: #444; /* Minecraft-style blocky body */
-    border-radius: 4px;
-    transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+    bottom: 40px;
+    width: 60px;
+    height: 100px;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.character-dev::before { content: "💻"; position: absolute; top: -30px; left: 20px; font-size: 40px; }
+
+/* The Person/Dev */
+.char-dev {
+    left: 45%;
+    background: #555; /* Minecraft body color */
+    border-radius: 4px;
+    z-index: 2;
+}
+.char-dev::before { 
+    content: "💻"; position: absolute; top: -40px; left: 10px; font-size: 30px; 
+    animation: typing-float 1s infinite alternate;
+}
 
 /* The Robot */
-.character-robot {
-    position: absolute;
-    bottom: 50px;
+.char-robot {
     right: -150px; /* Start off-screen */
-    width: 70px;
-    height: 110px;
     background: var(--accent-strong);
     box-shadow: 0 0 20px var(--accent);
-    border-radius: 10px;
+    border-radius: 8px;
+    z-index: 3;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-weight: bold;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
     color: #000;
+}
+
+/* Animation States */
+.robot-approach { right: 38% !important; }
+
+.kick-impact { 
+    transform: translate(-1500px, -300px) rotate(-120deg) !important; 
+    opacity: 0; 
 }
 
 /* Hologram Canvas */
 .hologram-canvas {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    width: 80%;
-    max-width: 700px;
-    height: 250px;
+    width: 85%;
+    max-width: 600px;
     background: rgba(168, 85, 247, 0.1);
+    backdrop-filter: blur(12px);
     border: 2px solid var(--accent);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
     opacity: 0;
-    transition: all 0.5s ease;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    box-shadow: 0 0 50px rgba(168, 85, 247, 0.3);
 }
 
-.hologram-canvas.active {
+.hologram-canvas.show {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.4);
 }
 
-/* Animation Classes */
-.kick-out { transform: translate(-1000px, -200px) rotate(-45deg) !important; opacity: 0; }
-.robot-enter { right: 45% !important; transition: right 1s ease; }
+#ai-typewriter {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: var(--text);
+    min-height: 80px;
+}
 
-/* Click Button */
-.modal-trigger-btn {
+.click-here-btn {
     margin-top: 20px;
-    padding: 12px 30px;
+    padding: 12px 28px;
     background: var(--accent);
     color: white;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    border-radius: 999px;
     font-weight: bold;
-    display: none;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.4s;
 }
 
-/* ================= MODAL & TERMINAL GLITCH ================= */
-.mod-modal { position: fixed; inset: 0; display: none; z-index: 2000; }
-.mod-modal.active { display: block; }
-.mod-modal-backdrop { position: absolute; inset: 0; background: rgba(5, 2, 15, 0.85); backdrop-filter: blur(10px); }
-.mod-modal-content { position: relative; max-width: 800px; margin: 10vh auto; background: #120a24; padding: 40px; border-radius: 20px; border: 1px solid var(--accent); }
-
-.glitch-text { color: var(--accent-strong); font-family: monospace; }
-.glitch-text.ai { animation: glitch-anim 0.2s infinite; }
-
-@keyframes glitch-anim {
-    0% { transform: translate(0); text-shadow: 2px 0 red; }
-    50% { transform: translate(-2px); text-shadow: -2px 0 blue; }
-    100% { transform: translate(0); }
+.click-here-btn.reveal {
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* Terminal Glitch Style inside Modal */
+.terminal-glitch-box {
+    background: #000;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    border: 1px solid #333;
+}
+
+.glitch-line {
+    font-family: monospace;
+    color: var(--accent-strong);
+    position: relative;
+    display: block;
+    animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+@keyframes typing-float { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); text-shadow: 2px 0 red; }
+  20% { transform: skew(3deg); text-shadow: -2px 0 blue; }
+  100% { transform: skew(0deg); }
+}
 </style>
-</head>
 
-<body>
+<section class="mods-section dev-theater-section" id="in-development">
+  <h2 class="section-title">In Development</h2>
+  
+  <div class="stage-container" id="animationStage">
+      <div class="char char-dev" id="devChar"></div>
+      
+      <div class="char char-robot" id="robotChar">ROX-AI</div>
 
-<div class="nav-wrapper">
-  <button class="nav-toggle" id="navToggle">+</button>
-  <nav class="nav-menu" id="navMenu">
-    <a href="#">Top</a>
-    <a href="#mods">Mods</a>
-    <a href="#about">About</a>
-  </nav>
-</div>
-
-<header class="hero">
-  <div class="hero-overlay">
-    <h1 class="hero-name">ROX</h1>
-    <p class="hero-sub">Minecraft Mod Developer</p>
+      <div class="hologram-canvas" id="hologram">
+          <h3 style="color: var(--accent-strong); margin-bottom: 15px;">PROJECT: AI_ASSISTANT_V1</h3>
+          <p id="ai-typewriter"></p>
+          <button class="click-here-btn" id="aiModalBtn">EXPLORE CORE LOGS</button>
+      </div>
   </div>
-</header>
-
-<main>
-  <section class="mods-section" id="mods">
-    <h2 class="section-title">Featured Mods</h2>
-    </section>
-
-  <section class="mods-section dev-showcase">
-    <h2 class="section-title">In Development</h2>
-    
-    <div class="animation-stage" id="stage">
-        <div class="character-dev" id="devChar"></div>
-        <div class="character-robot" id="robotChar">ROX-AI</div>
-        
-        <div class="hologram-canvas" id="canvas">
-            <h3 style="color: var(--accent-strong); margin-bottom: 10px;">> PROJECT: NEURAL_ASSISTANT</h3>
-            <p id="typewriter-text" style="line-height: 1.6;"></p>
-            <button class="modal-trigger-btn" id="openAiModal">VIEW PROJECT LOGS</button>
-        </div>
-    </div>
-  </section>
-
-  <section class="mods-section">
-      <h2 class="section-title">All Mods</h2>
-      </section>
-</main>
-
-<div class="mod-modal" id="aiModal">
-    <div class="mod-modal-backdrop"></div>
-    <div class="mod-modal-content">
-        <h2 style="margin-bottom: 20px;">Rox AI Assistant</h2>
-        <div class="terminal-box" style="background: #000; padding: 20px; border-radius: 10px; font-family: monospace;">
-            <p class="glitch-text">> [SYSTEM]: INITIALIZING...</p>
-            <p class="glitch-text ai">> [ROX-AI]: I have taken control of the development environment. Player efficiency improved by 400%.</p>
-            <p style="margin-top: 15px; color: var(--muted);">This mod uses a local LLM bridge to allow real-time voice and text commands within Minecraft, capable of building, pathfinding, and automated resource management.</p>
-        </div>
-        <button onclick="document.getElementById('aiModal').classList.remove('active')" style="margin-top: 20px; background: none; border: 1px solid white; color: white; padding: 10px 20px; cursor: pointer;">Close</button>
-    </div>
-</div>
+</section>
 
 <script>
-// Toggle Nav
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-navToggle.onclick = () => { navMenu.classList.toggle("open"); navToggle.classList.toggle("open"); };
-
-// ANIMATION LOGIC
+/* ===== THEATER ANIMATION LOGIC ===== */
 const devChar = document.getElementById('devChar');
 const robotChar = document.getElementById('robotChar');
-const stage = document.getElementById('stage');
-const canvas = document.getElementById('canvas');
-const typewriter = document.getElementById('typewriter-text');
-const btn = document.getElementById('openAiModal');
+const hologram = document.getElementById('hologram');
+const typewriter = document.getElementById('ai-typewriter');
+const aiBtn = document.getElementById('aiModalBtn');
+const stage = document.getElementById('animationStage');
 
-let animated = false;
+let hasPlayed = false;
 
-const observer = new IntersectionObserver((entries) => {
-    if(entries[0].isIntersecting && !animated) {
-        animated = true;
-        startSequence();
+const theaterObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !hasPlayed) {
+        hasPlayed = true;
+        runStory();
     }
-}, { threshold: 0.7 });
+}, { threshold: 0.8 });
 
-observer.observe(stage);
+theaterObserver.observe(stage);
 
-function startSequence() {
-    // 1. Robot enters
+function runStory() {
+    // 1. Robot enters the scene
     setTimeout(() => {
-        robotChar.classList.add('robot-enter');
-    }, 500);
+        robotChar.classList.add('robot-approach');
+    }, 800);
 
-    // 2. The Kick
+    // 2. The Kick!
     setTimeout(() => {
-        devChar.classList.add('kick-out');
-        // Robot moves to center
+        devChar.classList.add('kick-impact');
+        // Robot centers itself
         robotChar.style.right = '50%';
         robotChar.style.transform = 'translateX(50%)';
-    }, 2000);
+    }, 2200);
 
-    // 3. Hologram appears
+    // 3. Project Hologram
     setTimeout(() => {
-        canvas.classList.add('active');
-        startTypewriter();
+        hologram.classList.add('show');
+        startAiTypewriter();
     }, 3000);
 }
 
-function startTypewriter() {
-    const text = "A revolutionary AI companion mod. Interprets natural language, executes world-shaping commands, and provides deep-learning tactical analysis. Status: ALPHA V.1";
-    let i = 0;
+function startAiTypewriter() {
+    const infoText = "Integrating advanced Neural Networks into Minecraft. Auto-building, intelligent entity scanning, and real-time player tactical assistance. System optimization complete.";
+    let charIdx = 0;
+    
     function type() {
-        if (i < text.length) {
-            typewriter.textContent += text.charAt(i);
-            i++;
+        if (charIdx < infoText.length) {
+            typewriter.textContent += infoText.charAt(charIdx);
+            charIdx++;
             setTimeout(type, 30);
         } else {
-            btn.style.display = 'block';
+            aiBtn.classList.add('reveal');
         }
     }
     type();
 }
 
-// Modal open
-btn.onclick = () => {
-    document.getElementById('aiModal').classList.add('active');
-};
-</script>
+/* ===== CONNECT TO YOUR MODAL ===== */
+aiBtn.addEventListener('click', () => {
+    // Target your existing modal elements
+    const modal = document.getElementById("modModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalGallery = document.getElementById("modalGallery");
 
-</body>
-</html>
+    modalTitle.textContent = "Neural AI Assistant";
+    modalDesc.innerHTML = `
+        <div class="terminal-glitch-box">
+            <span class="glitch-line">> [CONNECTION ESTABLISHED]</span>
+            <span class="glitch-line">> [CORE]: AI Assistant is running in Alpha...</span>
+            <p style="margin-top:15px; color: #b7aedf;">This mod allows the player to communicate with a local AI model to execute world-commands via natural speech and text.</p>
+        </div>
+    `;
+    modalGallery.innerHTML = "<p style='color:var(--muted)'>Alpha screenshots encrypted.</p>";
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+});
+</script>

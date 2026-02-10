@@ -278,104 +278,160 @@ body {
   }
 }
 
-  /* ===== IN DEVELOPMENT SECTION ===== */
 
-.dev-stage {
-  display: grid;
-  grid-template-columns: 220px 1fr 1.2fr;
+  /* ================= IN DEVELOPMENT CINEMATIC ================= */
+
+.in-dev {
+  min-height: 120vh;
+  text-align: center;
+}
+
+.in-dev-sub {
+  color: var(--muted);
+  margin-bottom: 6rem;
+}
+
+/* Scene layout */
+.scene {
+  position: relative;
+  height: 70vh;
+  display: flex;
   align-items: center;
-  gap: 40px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* PLAYER */
+.player {
+  position: relative;
+  width: 260px;
+  margin-left: 6rem;
+}
+
+.monitor {
+  width: 220px;
+  height: 140px;
+  background: #0c0c14;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,255,180,.3);
+  overflow: hidden;
+}
+
+.code span {
+  display: block;
+  height: 6px;
+  width: 70%;
+  background: #00ffb3;
+  margin: 10px;
+  opacity: 0;
+  animation: codeScroll 1.4s infinite;
+}
+
+.code span:nth-child(2){width:50%;animation-delay:.2s}
+.code span:nth-child(3){width:80%;animation-delay:.4s}
+.code span:nth-child(4){width:40%;animation-delay:.6s}
+.code span:nth-child(5){width:65%;animation-delay:.8s}
+
+@keyframes codeScroll {
+  0%{opacity:0}
+  50%{opacity:1}
+  100%{opacity:0}
+}
+
+.desk {
+  height: 18px;
+  width: 260px;
+  background: #1a132e;
+  margin-top: 10px;
+  border-radius: 6px;
 }
 
 /* ROBOT */
 .robot {
-  position: relative;
-  width: 160px;
-  height: 220px;
-  filter: drop-shadow(0 0 25px rgba(168,85,247,.6));
+  position: absolute;
+  left: 260px;
+  opacity: 0;
+  transform: translateX(-120px);
+  transition: all 1.2s cubic-bezier(.22,1,.36,1);
 }
 
 .robot-head {
-  width: 120px;
-  height: 90px;
-  background: #1b1236;
+  width: 110px;
+  height: 80px;
   border-radius: 18px;
-  margin: 0 auto;
+  background: #2a204a;
   position: relative;
-  box-shadow: inset 0 0 0 2px rgba(168,85,247,.6);
 }
 
 .eye {
   position: absolute;
-  top: 38px;
-  width: 10px;
-  height: 10px;
-  background: var(--accent-strong);
+  top: 28px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(168,85,247,.9);
-  animation: blink 5s infinite;
+  background: #00ffb3;
+  box-shadow: 0 0 14px #00ffb3;
 }
 
-.eye.left { left: 36px; }
-.eye.right { right: 36px; }
+.eye.left { left: 30px; }
+.eye.right { right: 30px; }
 
 .robot-body {
-  width: 140px;
-  height: 90px;
-  background: #120a24;
+  width: 80px;
+  height: 60px;
+  background: #1f1638;
   margin: 10px auto 0;
-  border-radius: 20px;
-  box-shadow: inset 0 0 0 2px rgba(168,85,247,.5);
+  border-radius: 14px;
 }
 
-.robot-arm {
+/* HOLOGRAM */
+.hologram {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 1s ease;
+  margin-right: 6rem;
+  text-align: left;
+  color: #00ffb3;
+}
+
+.hologram h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.hologram ul {
+  list-style: none;
+  padding: 0;
+}
+
+.hologram li {
+  margin-bottom: .6rem;
+  opacity: .85;
+}
+
+/* ACTIVE STATE */
+.scene.active .robot {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scene.active .hologram {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Eye lasers */
+.scene.active .eye::after {
+  content: "";
   position: absolute;
-  right: -20px;
-  top: 120px;
-  width: 40px;
-  height: 10px;
-  background: var(--accent);
-  border-radius: 10px;
-  transform-origin: left center;
+  top: 6px;
+  left: 12px;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(to right, #00ffb3, transparent);
 }
 
-  /* LASER */
-.laser {
-  height: 4px;
-  width: 0;
-  background: linear-gradient(
-    to right,
-    rgba(168,85,247,0),
-    rgba(168,85,247,1),
-    rgba(168,85,247,0)
-  );
-  box-shadow: 0 0 25px rgba(168,85,247,.9);
-  opacity: 0;
-}
 
-  .dev-panel {
-  opacity: 0;
-  transform: translateX(-20px);
-  background: linear-gradient(
-    180deg,
-    rgba(40,25,80,.85),
-    rgba(10,5,30,.95)
-  );
-  border-radius: 24px;
-  padding: 36px;
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.4),
-    0 0 120px rgba(168,85,247,.4);
-}
-
-@keyframes armRaise {
-  to { transform: rotate(-10deg); }
-}
-
-@keyframes blink {
-  0%, 90%, 100% { opacity: 1; }
-  92%, 96% { opacity: 0; }
-}
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -747,35 +803,41 @@ footer {
 </section>
 
 
-  <section class="mods-section dev-section" id="in-development">
-  <h2 class="section-title">In Development</h2>
+  <section class="mods-section in-dev" id="in-dev">
 
-  <div class="dev-stage">
-    
-    <!-- ROBOT -->
-    <div class="robot-wrap">
-      <div class="robot">
-        <div class="robot-head">
-          <span class="eye left"></span>
-          <span class="eye right"></span>
+  <h2 class="section-title">IN DEVELOPMENT</h2>
+  <p class="in-dev-sub">Something intelligent is waking up…</p>
+
+  <div class="scene" id="devScene">
+
+    <!-- PLAYER + PC -->
+    <div class="player">
+      <div class="monitor">
+        <div class="code">
+          <span></span><span></span><span></span><span></span><span></span>
         </div>
-        <div class="robot-body"></div>
-        <div class="robot-arm"></div>
       </div>
+      <div class="desk"></div>
     </div>
 
-    <!-- LASER -->
-    <div class="laser"></div>
+    <!-- ROBOT -->
+    <div class="robot">
+      <div class="robot-head">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+      </div>
+      <div class="robot-body"></div>
+    </div>
 
-    <!-- INFO PANEL -->
-    <div class="dev-panel">
-      <span class="tag">ACTIVE DEVELOPMENT</span>
-      <h3>AI Assistant Mod</h3>
-      <p>
-        An in-game AI companion that players can talk to naturally.
-        It explains mechanics, answers questions, and can execute
-        commands to help in real time.
-      </p>
+    <!-- HOLOGRAM -->
+    <div class="hologram">
+      <h3>AI ASSISTANT MOD</h3>
+      <ul>
+        <li>Natural player interaction</li>
+        <li>Explains mechanics instantly</li>
+        <li>Executes commands in real time</li>
+        <li>Context-aware assistance</li>
+      </ul>
     </div>
 
   </div>
@@ -1192,36 +1254,17 @@ function resetSpotlight() {
 
 spotlightTimer = setInterval(autoRotate, 5200);
 
-  /* ===== IN DEVELOPMENT ANIMATION ===== */
-
-const devSection = document.querySelector(".dev-section");
-const laser = document.querySelector(".laser");
-const panel = document.querySelector(".dev-panel");
-const arm = document.querySelector(".robot-arm");
+/* ===== IN DEVELOPMENT SCENE TRIGGER ===== */
+const devScene = document.getElementById("devScene");
 
 const devObserver = new IntersectionObserver(entries => {
-  if (!entries[0].isIntersecting) return;
-
-  // arm lift
-  arm.style.animation = "armRaise .6s ease forwards";
-
-  // laser
-  setTimeout(() => {
-    laser.style.width = "100%";
-    laser.style.opacity = "1";
-  }, 400);
-
-  // panel reveal
-  setTimeout(() => {
-    panel.style.opacity = "1";
-    panel.style.transform = "translateX(0)";
-  }, 900);
-
-  devObserver.disconnect();
+  if (entries[0].isIntersecting) {
+    devScene.classList.add("active");
+    devObserver.disconnect(); // play once
+  }
 }, { threshold: 0.5 });
 
-devObserver.observe(devSection);
-
+devObserver.observe(devScene);
 
 </script>
 

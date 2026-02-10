@@ -1,237 +1,162 @@
 <style>
-/* ================= IN DEVELOPMENT THEATER ================= */
-.dev-theater-section {
-    padding: 10rem 3rem; /* Extra breathing room */
-    position: relative;
-    overflow: hidden;
+/* ================= IN DEVELOPMENT AREA ================= */
+.dev-theater {
+    padding: 12rem 3rem; /* Massive breathing room */
+    text-align: left;
 }
 
-.stage-container {
+.animation-box {
     width: 100%;
     max-width: 1100px;
-    height: 450px;
+    height: 400px;
     margin: 0 auto;
-    background: rgba(20, 10, 40, 0.4);
-    border-radius: 30px;
+    background: rgba(20, 10, 40, 0.3);
+    border-radius: 40px;
     border: 1px solid rgba(168, 85, 247, 0.2);
     position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
     overflow: hidden;
 }
 
-/* Character Base */
-.char {
+/* Layer 1: The Character (Dev) */
+.actor-dev {
     position: absolute;
     bottom: 40px;
-    width: 60px;
-    height: 100px;
-    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* The Person/Dev */
-.char-dev {
     left: 45%;
-    background: #555; /* Minecraft body color */
+    width: 64px;
+    height: 96px;
+    background: url('your-skin-head.png') no-repeat center top; /* Use your avatar or a blocky shape */
+    background-color: #333; 
     border-radius: 4px;
-    z-index: 2;
-}
-.char-dev::before { 
-    content: "💻"; position: absolute; top: -40px; left: 10px; font-size: 30px; 
-    animation: typing-float 1s infinite alternate;
+    z-index: 10;
+    transition: all 0.7s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-/* The Robot */
-.char-robot {
-    right: -150px; /* Start off-screen */
+.actor-dev::after {
+    content: "⌨️";
+    position: absolute;
+    top: -30px;
+    left: 15px;
+    font-size: 30px;
+}
+
+/* Layer 2: The Robot */
+.actor-robot {
+    position: absolute;
+    bottom: 40px;
+    right: -100px;
+    width: 70px;
+    height: 110px;
     background: var(--accent-strong);
-    box-shadow: 0 0 20px var(--accent);
+    box-shadow: 0 0 30px var(--accent);
     border-radius: 8px;
-    z-index: 3;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
     font-weight: 900;
     color: #000;
 }
 
-/* Animation States */
-.robot-approach { right: 38% !important; }
-
-.kick-impact { 
-    transform: translate(-1500px, -300px) rotate(-120deg) !important; 
-    opacity: 0; 
-}
-
-/* Hologram Canvas */
-.hologram-canvas {
+/* Layer 3: The Hologram */
+.hologram-screen {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 85%;
+    transform: translate(-50%, -50%) scale(0.5);
+    width: 80%;
     max-width: 600px;
-    background: rgba(168, 85, 247, 0.1);
-    backdrop-filter: blur(12px);
-    border: 2px solid var(--accent);
-    border-radius: 20px;
     padding: 30px;
+    background: rgba(168, 85, 247, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
     opacity: 0;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    text-align: center;
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.3);
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.2);
 }
 
-.hologram-canvas.show {
+/* --- ANIMATION TRIGGERS --- */
+.kick-active .actor-robot { right: 45% !important; transition: right 0.8s ease; }
+.kick-active .actor-dev.kicked { transform: translate(-1200px, -400px) rotate(-180deg); opacity: 0; }
+
+.hologram-screen.active {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-}
-
-#ai-typewriter {
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    color: var(--text);
-    min-height: 80px;
-}
-
-.click-here-btn {
-    margin-top: 20px;
-    padding: 12px 28px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 999px;
-    font-weight: bold;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: 0.4s;
-}
-
-.click-here-btn.reveal {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Terminal Glitch Style inside Modal */
-.terminal-glitch-box {
-    background: #000;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
-    border: 1px solid #333;
-}
-
-.glitch-line {
-    font-family: monospace;
-    color: var(--accent-strong);
-    position: relative;
-    display: block;
-    animation: glitch-skew 1s infinite linear alternate-reverse;
-}
-
-@keyframes typing-float { from { transform: translateY(0); } to { transform: translateY(-5px); } }
-@keyframes glitch-skew {
-  0% { transform: skew(0deg); text-shadow: 2px 0 red; }
-  20% { transform: skew(3deg); text-shadow: -2px 0 blue; }
-  100% { transform: skew(0deg); }
+    pointer-events: auto;
 }
 </style>
 
-<section class="mods-section dev-theater-section" id="in-development">
+<section class="mods-section dev-theater">
   <h2 class="section-title">In Development</h2>
   
-  <div class="stage-container" id="animationStage">
-      <div class="char char-dev" id="devChar"></div>
+  <div class="animation-box" id="devStage">
+      <div class="actor-dev" id="devSprite"></div>
+      <div class="actor-robot" id="robotSprite">AI</div>
       
-      <div class="char char-robot" id="robotChar">ROX-AI</div>
-
-      <div class="hologram-canvas" id="hologram">
-          <h3 style="color: var(--accent-strong); margin-bottom: 15px;">PROJECT: AI_ASSISTANT_V1</h3>
-          <p id="ai-typewriter"></p>
-          <button class="click-here-btn" id="aiModalBtn">EXPLORE CORE LOGS</button>
+      <div class="hologram-screen" id="aiHologram">
+          <h3 style="color:var(--accent-strong); margin-bottom:10px;">> NEURAL_ASSISTANT.exe</h3>
+          <p id="ai-text-box" style="font-family:monospace; line-height:1.5;"></p>
+          <button class="click-here-btn" id="openAiModal" style="margin-top:20px; opacity:0; transition:0.5s;">CLICK FOR DETAILS</button>
       </div>
   </div>
 </section>
 
 <script>
-/* ===== THEATER ANIMATION LOGIC ===== */
-const devChar = document.getElementById('devChar');
-const robotChar = document.getElementById('robotChar');
-const hologram = document.getElementById('hologram');
-const typewriter = document.getElementById('ai-typewriter');
-const aiBtn = document.getElementById('aiModalBtn');
-const stage = document.getElementById('animationStage');
+const stage = document.getElementById('devStage');
+const dev = document.getElementById('devSprite');
+const robot = document.getElementById('robotSprite');
+const holo = document.getElementById('aiHologram');
+const textBox = document.getElementById('ai-text-box');
+const aiBtn = document.getElementById('openAiModal');
 
-let hasPlayed = false;
-
-const theaterObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !hasPlayed) {
-        hasPlayed = true;
-        runStory();
+const devObserver = new IntersectionObserver((entries) => {
+    if(entries[0].isIntersecting) {
+        startMovie();
+        devObserver.unobserve(stage);
     }
 }, { threshold: 0.8 });
 
-theaterObserver.observe(stage);
+devObserver.observe(stage);
 
-function runStory() {
-    // 1. Robot enters the scene
-    setTimeout(() => {
-        robotChar.classList.add('robot-approach');
-    }, 800);
+function startMovie() {
+    // 1. Robot slides in
+    setTimeout(() => stage.classList.add('kick-active'), 500);
 
-    // 2. The Kick!
+    // 2. The Kick
     setTimeout(() => {
-        devChar.classList.add('kick-impact');
-        // Robot centers itself
-        robotChar.style.right = '50%';
-        robotChar.style.transform = 'translateX(50%)';
-    }, 2200);
+        dev.classList.add('kicked');
+        robot.style.right = '50%';
+        robot.style.transform = 'translateX(50%)';
+    }, 1800);
 
     // 3. Project Hologram
     setTimeout(() => {
-        hologram.classList.add('show');
-        startAiTypewriter();
-    }, 3000);
+        holo.classList.add('active');
+        typeMessage();
+    }, 2600);
 }
 
-function startAiTypewriter() {
-    const infoText = "Integrating advanced Neural Networks into Minecraft. Auto-building, intelligent entity scanning, and real-time player tactical assistance. System optimization complete.";
-    let charIdx = 0;
-    
-    function type() {
-        if (charIdx < infoText.length) {
-            typewriter.textContent += infoText.charAt(charIdx);
-            charIdx++;
-            setTimeout(type, 30);
+function typeMessage() {
+    const msg = "Automating Minecraft with Neural Networks. This mod creates a live companion that builds, mines, and defends your base using real-time processing.";
+    let i = 0;
+    function t() {
+        if(i < msg.length) {
+            textBox.textContent += msg.charAt(i);
+            i++;
+            setTimeout(t, 25);
         } else {
-            aiBtn.classList.add('reveal');
+            aiBtn.style.opacity = "1";
         }
     }
-    type();
+    t();
 }
 
-/* ===== CONNECT TO YOUR MODAL ===== */
-aiBtn.addEventListener('click', () => {
-    // Target your existing modal elements
+// Modal Link
+aiBtn.onclick = () => {
     const modal = document.getElementById("modModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalDesc = document.getElementById("modalDesc");
-    const modalGallery = document.getElementById("modalGallery");
-
-    modalTitle.textContent = "Neural AI Assistant";
-    modalDesc.innerHTML = `
-        <div class="terminal-glitch-box">
-            <span class="glitch-line">> [CONNECTION ESTABLISHED]</span>
-            <span class="glitch-line">> [CORE]: AI Assistant is running in Alpha...</span>
-            <p style="margin-top:15px; color: #b7aedf;">This mod allows the player to communicate with a local AI model to execute world-commands via natural speech and text.</p>
-        </div>
-    `;
-    modalGallery.innerHTML = "<p style='color:var(--muted)'>Alpha screenshots encrypted.</p>";
-
+    document.getElementById("modalTitle").textContent = "Neural AI Assistant";
+    document.getElementById("modalDesc").innerHTML = "<p>Complete mod overview and code structure...</p>";
     modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-});
+};
 </script>

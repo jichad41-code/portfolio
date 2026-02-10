@@ -222,88 +222,27 @@ body {
   border-left: 4px solid var(--accent);
   padding-left: 1rem;
 }
-/* ================= FEATURED SPOTLIGHT ================= */
 
-.featured-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 64px;
+/* ================= FEATURED MODS ================= */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px;
 }
 
 .featured-card {
-  width: 420px;
-  min-height: 240px;
-  padding: 36px;
+  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
   border-radius: 26px;
-  cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
-
+  padding: 40px;
+  min-height: 220px;
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 70px rgba(168,85,247,.35);
-
-  opacity: .45;
-  transform: scale(.88);
-  transition:
-    transform .6s cubic-bezier(.22,1,.36,1),
-    opacity .4s ease,
-    box-shadow .6s cubic-bezier(.22,1,.36,1);
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 90px rgba(168,85,247,.45);
+  transition: all .4s cubic-bezier(.22,1,.36,1);
 }
 
-
-
-@media (max-width: 900px) {
-  .featured-carousel {
-    gap: 24px;
-    flex-direction: column;
-  }
-
-  .featured-card {
-    width: 100%;
-  }
-}
-
-/* ===== FEATURED POSITION STATES ===== */
-
-.featured-card {
-  position: absolute;
-}
-
-.featured-carousel {
-  position: relative;
-  height: 300px;
-}
-
-/* LEFT */
-.featured-card.pos-left {
-  transform: translateX(-460px) scale(.88);
-  opacity: .45;
-  z-index: 1;
-}
-
-/* CENTER (ONLY spotlight) */
-.featured-card.pos-center {
-  transform: translateX(0) scale(1.08);
-  opacity: 1;
-  z-index: 3;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 160px rgba(168,85,247,.65),
-    0 0 280px rgba(168,85,247,.45);
-}
-
-/* RIGHT */
-.featured-card.pos-right {
-  transform: translateX(460px) scale(.88);
-  opacity: .45;
-  z-index: 1;
+.featured-card:hover {
+  transform: translateY(-6px);
 }
 
 /* ================= ALL MODS ================= */
@@ -615,31 +554,6 @@ footer {
   border-radius: 16px;
 }
 
-  /* ================= AI DEV SCENE ================= */
-
-.ai-dev {
-  margin-top: 24rem;
-}
-
-.scene-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 4rem;
-}
-
-.dev-scene {
-  width: 100%;
-  max-width: 900px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 1s cubic-bezier(.22,1,.36,1);
-}
-
-.dev-scene.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 </style>
 </head>
 
@@ -678,100 +592,9 @@ footer {
 <section class="mods-section" id="mods">
 
   <h2 class="section-title">Featured Mods</h2>
-<div class="featured-carousel">
-  <div class="featured-card"
-    data-title="Better Dungeons"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Flagship</span>
-    <h3>Better Dungeons</h3>
-    <p>Procedural dungeons with handcrafted pacing.</p>
-  </div>
-
-  <div class="featured-card"
-    data-title="Better Dungeons1"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Core</span>
-    <h3>Core Engine</h3>
-    <p>Optimized systems and shared infrastructure.</p>
-  </div>
-
-  <div class="featured-card"
-    data-title="Better Dungeons2"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Systems</span>
-    <h3>World Systems</h3>
-    <p>Deep control over terrain and progression.</p>
-  </div>
-</div>
-
-
-</section>
-
-  <section class="mods-section ai-dev" id="ai-dev">
-  <h2 class="section-title">In Development</h2>
-
-  <div class="scene-wrapper">
-    <svg
-      class="dev-scene"
-      viewBox="0 0 900 400"
-      xmlns="http://www.w3.org/2000/svg"
-      <defs>
-  <clipPath id="monitorClip">
-    <rect x="300" y="140" width="140" height="90" rx="8"/>
-  </clipPath>
-</defs>
-    >
-
-      <!-- FLOOR -->
-      <rect x="0" y="330" width="900" height="6" fill="#a855f7" opacity="0.4"/>
-
-      <!-- TABLE -->
-      <rect x="260" y="240" width="220" height="14" rx="4" fill="#2a1c55"/>
-      <rect x="270" y="254" width="10" height="76" fill="#2a1c55"/>
-      <rect x="450" y="254" width="10" height="76" fill="#2a1c55"/>
-
-      <!-- MONITOR -->
-      <rect x="300" y="140" width="140" height="90" rx="8" fill="#120a24" stroke="#a855f7"/>
-      <rect x="330" y="230" width="80" height="10" rx="4" fill="#2a1c55"/>
-
-      <!-- CODE TEXT -->
-      <text id="codeText" 
-        x="312" 
-        y="165"
-        font-family="monospace"
-        font-size="11"
-        fill="#7dd3fc">
-        clip-path="url(#monitorClip)">
-      </text>
-<g transform="translate(-10, 0) scale(1.25)">
-  <!-- chair + human code goes here -->
-
-     <!-- CHAIR -->
-<rect x="190" y="240" width="70" height="12" rx="4" fill="#2a1c55"/>
-<rect x="190" y="190" width="12" height="60" fill="#2a1c55"/>
-<rect x="190" y="190" width="50" height="12" rx="4" fill="#2a1c55"/>
-
-<!-- HUMAN (SITTING) -->
-<!-- HEAD -->
-<circle cx="215" cy="165" r="14" fill="#c084fc"/>
-
-<!-- HOOD -->
-<path d="M198 168 Q215 140 232 168 Z" fill="#6d28d9"/>
-
-<!-- TORSO -->
-<rect x="200" y="180" width="34" height="48" rx="10" fill="#6d28d9"/>
-
-<!-- ARM (ON TABLE) -->
-<rect x="232" y="190" width="48" height="10" rx="5" fill="#6d28d9"/>
-
-<!-- LEGS (BENT SITTING) -->
-<rect x="205" y="228" width="14" height="32" rx="4" fill="#4c1d95"/>
-<rect x="219" y="244" width="30" height="12" rx="4" fill="#4c1d95"/>
-</g>
-    </svg>
+  <div class="featured-grid">
+    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
+    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
   </div>
 </section>
 
@@ -1153,118 +976,6 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
-/* ===== FEATURED ROTATING SPOTLIGHT (CENTER-BASED) ===== */
-
-const featuredCards = Array.from(document.querySelectorAll(".featured-card"));
-
-let positions = ["pos-left", "pos-center", "pos-right"];
-
-function applyPositions() {
-  featuredCards.forEach((card, i) => {
-    card.classList.remove("pos-left", "pos-center", "pos-right");
-    card.classList.add(positions[i]);
-  });
-}
-
-// rotate cards so next one comes to center
-function rotateCards() {
-  positions.unshift(positions.pop()); // right → center → left
-  applyPositions();
-}
-
-/* ===== FEATURED CARD → MODAL ===== */
-
-featuredCards.forEach((card, index) => {
-  card.addEventListener("click", () => {
-
-    // If NOT center → rotate into center
-    if (!card.classList.contains("pos-center")) {
-      while (!card.classList.contains("pos-center")) {
-        rotateCards();
-      }
-      resetAutoRotate();
-      return;
-    }
-
-    // If CENTER → open modal
-    modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
-    modalGallery.innerHTML = "";
-
-    const images = card.dataset.images
-      ? card.dataset.images.split(",")
-      : [];
-
-    if (images.length && images[0]) {
-      images.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src.trim();
-        modalGallery.appendChild(img);
-      });
-    } else {
-      modalGallery.innerHTML =
-        "<p style='color:var(--muted)'>No images available.</p>";
-    }
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
-});
-
-
-let autoRotateTimer;
-
-function resetAutoRotate() {
-  clearInterval(autoRotateTimer);
-  autoRotateTimer = setInterval(rotateCards, 3100);
-}
-
-// init
-applyPositions();
-resetAutoRotate();
-
-/* ===== AI DEV SCENE (SCENE 1) ===== */
-
-const devScene = document.querySelector(".dev-scene");
-const codeText = document.getElementById("codeText");
-
-const codeLines = [
-  "initAI();",
-  "loadBrain();",
-  "bindPlayer();",
-  "listen(\"chat\");",
-  "execute(cmd);"
-];
-
-
-let line = 0;
-let char = 0;
-
-function typeCode() {
-  if (line >= codeLines.length) return;
-
-  const current = codeLines[line];
-  codeText.textContent += current.charAt(char);
-  char++;
-
-  if (char >= current.length) {
-    codeText.textContent += "\n";
-    line++;
-    char = 0;
-    setTimeout(typeCode, 500);
-  } else {
-    setTimeout(typeCode, 40);
-  }
-}
-
-const devObserver = new IntersectionObserver(entries => {
-  if (!entries[0].isIntersecting) return;
-  devScene.classList.add("visible");
-  setTimeout(typeCode, 600);
-  devObserver.disconnect();
-}, { threshold: 0.4 });
-
-devObserver.observe(devScene);
 
 
 </script>

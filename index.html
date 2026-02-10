@@ -306,6 +306,113 @@ body {
   z-index: 1;
 }
 
+  /* ================= AI SHOWCASE ================= */
+
+.ai-showcase {
+  margin: 30rem auto;
+  max-width: 1200px;
+  position: relative;
+}
+
+.ai-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: 80px;
+}
+
+/* ROBOT */
+.ai-robot img {
+  width: 100%;
+  max-width: 360px;
+  animation: floatBot 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(168,85,247,.6));
+}
+
+@keyframes floatBot {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+
+/* TERMINAL */
+.ai-terminal {
+  cursor: pointer;
+  background: linear-gradient(
+    180deg,
+    rgba(20,10,40,.95),
+    rgba(5,2,15,.98)
+  );
+  border-radius: 18px;
+  padding: 28px 32px;
+  font-family: "JetBrains Mono", monospace;
+  color: #c7f9ff;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.6),
+    0 0 120px rgba(168,85,247,.45);
+  position: relative;
+  overflow: hidden;
+}
+
+/* scanlines */
+.ai-terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.03),
+    rgba(255,255,255,.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
+
+/* header */
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: .9rem;
+  letter-spacing: .1em;
+  color: var(--accent-strong);
+  margin-bottom: 16px;
+}
+
+.ai-status {
+  color: #00ff9c;
+}
+
+/* screen text */
+.ai-screen p {
+  margin: 0 0 8px;
+  font-size: .95rem;
+}
+
+.ai-cursor span {
+  animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+  0%,50% { opacity: 1; }
+  50.01%,100% { opacity: 0; }
+}
+
+/* hover */
+.ai-terminal:hover {
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.9),
+    0 0 180px rgba(168,85,247,.75);
+}
+
+/* mobile */
+@media (max-width: 900px) {
+  .ai-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
 /* ================= ALL MODS ================= */
 .mods-grid {
   display: grid;
@@ -673,6 +780,39 @@ footer {
   </div>
 </div>
 
+
+</section>
+
+  <section class="ai-showcase" id="ai-project">
+
+  <div class="ai-layout">
+
+    <!-- ROBOT -->
+    <div class="ai-robot">
+      <img src="ai-robot.png" alt="AI Robot">
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="ai-terminal"
+         data-title="AI Assistant Mod"
+         data-desc="An in-game AI companion that players can talk to naturally. It answers questions, explains mechanics, and can execute commands in real time."
+         data-images="ai1.png,ai2.png">
+
+      <div class="ai-header">
+        ▮ AI ASSISTANT MOD
+        <span class="ai-status">ACTIVE</span>
+      </div>
+
+      <div class="ai-screen">
+        <p>&gt; Hello player.</p>
+        <p>&gt; I can answer questions.</p>
+        <p>&gt; I can run commands.</p>
+        <p class="ai-cursor">&gt; awaiting input<span>_</span></p>
+      </div>
+
+    </div>
+
+  </div>
 
 </section>
 
@@ -1093,6 +1233,25 @@ function resetAutoRotate() {
 // init
 applyPositions();
 resetAutoRotate();
+
+  const aiTerminal = document.querySelector(".ai-terminal");
+
+if (aiTerminal) {
+  aiTerminal.addEventListener("click", () => {
+    modalTitle.textContent = aiTerminal.dataset.title;
+    modalDesc.textContent = aiTerminal.dataset.desc;
+    modalGallery.innerHTML = "";
+
+    aiTerminal.dataset.images.split(",").forEach(src => {
+      const img = document.createElement("img");
+      img.src = src.trim();
+      modalGallery.appendChild(img);
+    });
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+}
 
 
 

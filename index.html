@@ -222,216 +222,28 @@ body {
   border-left: 4px solid var(--accent);
   padding-left: 1rem;
 }
-/* ================= FEATURED SPOTLIGHT ================= */
 
-.featured-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 64px;
+/* ================= FEATURED MODS ================= */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px;
 }
 
 .featured-card {
-  width: 420px;
-  min-height: 240px;
-  padding: 36px;
+  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
   border-radius: 26px;
-  cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
-
+  padding: 40px;
+  min-height: 220px;
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 70px rgba(168,85,247,.35);
-
-  opacity: .45;
-  transform: scale(.88);
-  transition:
-    transform .6s cubic-bezier(.22,1,.36,1),
-    opacity .4s ease,
-    box-shadow .6s cubic-bezier(.22,1,.36,1);
+    0 0 0 1px rgba(168,85,247,.45),
+    0 0 90px rgba(168,85,247,.45);
+  transition: all .4s cubic-bezier(.22,1,.36,1);
 }
 
-.featured-card.active {
-  opacity: 1;
-  transform: scale(1.08);
-  z-index: 2;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 160px rgba(168,85,247,.65),
-    0 0 280px rgba(168,85,247,.45);
+.featured-card:hover {
+  transform: translateY(-6px);
 }
-
-@media (max-width: 900px) {
-  .featured-carousel {
-    gap: 24px;
-    flex-direction: column;
-  }
-
-  .featured-card {
-    width: 100%;
-  }
-}
-
-
-  /* ================= IN DEVELOPMENT CINEMATIC ================= */
-
-.in-dev {
-  min-height: 120vh;
-  text-align: center;
-}
-
-.in-dev-sub {
-  color: var(--muted);
-  margin-bottom: 6rem;
-}
-
-/* Scene layout */
-.scene {
-  position: relative;
-  height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-}
-
-/* PLAYER */
-.player {
-  position: relative;
-  width: 260px;
-  margin-left: 6rem;
-}
-
-.monitor {
-  width: 220px;
-  height: 140px;
-  background: #0c0c14;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(0,255,180,.3);
-  overflow: hidden;
-}
-
-.code span {
-  display: block;
-  height: 6px;
-  width: 70%;
-  background: #00ffb3;
-  margin: 10px;
-  opacity: 0;
-  animation: codeScroll 1.4s infinite;
-}
-
-.code span:nth-child(2){width:50%;animation-delay:.2s}
-.code span:nth-child(3){width:80%;animation-delay:.4s}
-.code span:nth-child(4){width:40%;animation-delay:.6s}
-.code span:nth-child(5){width:65%;animation-delay:.8s}
-
-@keyframes codeScroll {
-  0%{opacity:0}
-  50%{opacity:1}
-  100%{opacity:0}
-}
-
-.desk {
-  height: 18px;
-  width: 260px;
-  background: #1a132e;
-  margin-top: 10px;
-  border-radius: 6px;
-}
-
-/* ROBOT */
-.robot {
-  position: absolute;
-  left: 260px;
-  opacity: 0;
-  transform: translateX(-120px);
-  transition: all 1.2s cubic-bezier(.22,1,.36,1);
-}
-
-.robot-head {
-  width: 110px;
-  height: 80px;
-  border-radius: 18px;
-  background: #2a204a;
-  position: relative;
-}
-
-.eye {
-  position: absolute;
-  top: 28px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #00ffb3;
-  box-shadow: 0 0 14px #00ffb3;
-}
-
-.eye.left { left: 30px; }
-.eye.right { right: 30px; }
-
-.robot-body {
-  width: 80px;
-  height: 60px;
-  background: #1f1638;
-  margin: 10px auto 0;
-  border-radius: 14px;
-}
-
-/* HOLOGRAM */
-.hologram {
-  opacity: 0;
-  transform: translateX(40px);
-  transition: all 1s ease;
-  margin-right: 6rem;
-  text-align: left;
-  color: #00ffb3;
-}
-
-.hologram h3 {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-}
-
-.hologram ul {
-  list-style: none;
-  padding: 0;
-}
-
-.hologram li {
-  margin-bottom: .6rem;
-  opacity: .85;
-}
-
-/* ACTIVE STATE */
-.scene.active .robot {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.scene.active .hologram {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Eye lasers */
-.scene.active .eye::after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 12px;
-  width: 120px;
-  height: 2px;
-  background: linear-gradient(to right, #00ffb3, transparent);
-}
-
-
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -780,70 +592,12 @@ footer {
 <section class="mods-section" id="mods">
 
   <h2 class="section-title">Featured Mods</h2>
-<div class="featured-carousel" id="featuredCarousel">
-  <div class="featured-card active" data-index="0">
-    <span class="tag">Flagship</span>
-    <h3>Better Dungeons</h3>
-    <p>Procedural dungeons with handcrafted pacing.</p>
-  </div>
-
-  <div class="featured-card" data-index="1">
-    <span class="tag">Core</span>
-    <h3>Core Engine</h3>
-    <p>Optimized systems and shared infrastructure.</p>
-  </div>
-
-  <div class="featured-card" data-index="2">
-    <span class="tag">Systems</span>
-    <h3>World Systems</h3>
-    <p>Deep control over terrain and progression.</p>
-  </div>
-</div>
-
-</section>
-
-
-  <section class="mods-section in-dev" id="in-dev">
-
-  <h2 class="section-title">IN DEVELOPMENT</h2>
-  <p class="in-dev-sub">Something intelligent is waking up…</p>
-
-  <div class="scene" id="devScene">
-
-    <!-- PLAYER + PC -->
-    <div class="player">
-      <div class="monitor">
-        <div class="code">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
-      <div class="desk"></div>
-    </div>
-
-    <!-- ROBOT -->
-    <div class="robot">
-      <div class="robot-head">
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-      </div>
-      <div class="robot-body"></div>
-    </div>
-
-    <!-- HOLOGRAM -->
-    <div class="hologram">
-      <h3>AI ASSISTANT MOD</h3>
-      <ul>
-        <li>Natural player interaction</li>
-        <li>Explains mechanics instantly</li>
-        <li>Executes commands in real time</li>
-        <li>Context-aware assistance</li>
-      </ul>
-    </div>
-
+  <div class="featured-grid">
+    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
+    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
   </div>
 </section>
 
-  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1222,49 +976,7 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
-/* ===== FEATURED MOD SPOTLIGHT ROTATION ===== */
 
-const featuredCards = document.querySelectorAll(".featured-card");
-let activeIndex = 0;
-let spotlightTimer;
-
-function setActive(index) {
-  featuredCards.forEach((card, i) => {
-    card.classList.toggle("active", i === index);
-  });
-  activeIndex = index;
-}
-
-featuredCards.forEach(card => {
-  card.addEventListener("click", () => {
-    setActive(Number(card.dataset.index));
-    resetSpotlight();
-  });
-});
-
-function autoRotate() {
-  activeIndex = (activeIndex + 1) % featuredCards.length;
-  setActive(activeIndex);
-}
-
-function resetSpotlight() {
-  clearInterval(spotlightTimer);
-  spotlightTimer = setInterval(autoRotate, 5200);
-}
-
-spotlightTimer = setInterval(autoRotate, 5200);
-
-/* ===== IN DEVELOPMENT SCENE TRIGGER ===== */
-const devScene = document.getElementById("devScene");
-
-const devObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) {
-    devScene.classList.add("active");
-    devObserver.disconnect(); // play once
-  }
-}, { threshold: 0.5 });
-
-devObserver.observe(devScene);
 
 </script>
 

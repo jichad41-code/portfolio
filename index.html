@@ -481,6 +481,26 @@ body {
   font-size: .95rem;
   color: rgba(96,220,255,.9);
 }
+/* ================= ONGOING AI PROJECT SECTION ================= */
+
+.ai-project {
+  margin-top: 30rem;              /* separates it from other sections */
+  text-align: center;
+  position: relative;
+}
+
+.ai-project::before {
+  content: "";
+  position: absolute;
+  inset: -200px 0 auto 0;
+  height: 400px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(168,85,247,.15),
+    transparent 70%
+  );
+  pointer-events: none;
+}
 
 /* blinking cursor */
 .cursor {
@@ -490,6 +510,39 @@ body {
 @keyframes blink {
   50% { opacity: 0; }
 }
+/* ===== AI TERMINAL ===== */
+
+.ai-terminal {
+  margin-top: 28px;
+  font-family: monospace;
+  font-size: .95rem;
+  color: rgba(96,220,255,.85);
+  line-height: 1.6;
+}
+
+.ai-terminal div {
+  opacity: .85;
+}
+
+/* scanline overlay */
+.ai-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.03),
+      rgba(255,255,255,.03) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  mix-blend-mode: overlay;
+  opacity: .35;
+}
+
+/* cursor blink already exists */
 
 /* ================= ABOUT ================= */
 .about {
@@ -670,6 +723,30 @@ footer {
 
   animation: modalIn .45s cubic-bezier(.22,1,.36,1);
 }
+/* ===== AI MODAL CONSOLE MODE ===== */
+
+.mod-modal-content {
+  font-family: monospace;
+}
+
+.mod-modal-content h2 {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mod-modal-content p {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.mod-modal-content ul {
+  margin: 12px 0 18px;
+  padding-left: 18px;
+}
+
+.mod-modal-content li {
+  margin-bottom: 6px;
+}
 
 @keyframes modalIn {
   from {
@@ -788,7 +865,7 @@ footer {
 
     <h3 class="ai-title">AI ASSISTANT MOD</h3>
     <p class="ai-sub">INTERACTIVE IN-GAME INTELLIGENCE SYSTEM</p>
-
+    
     <p class="ai-desc">
       Talk to the AI directly in-game. Ask anything, get explanations,
       and let it execute commands to assist you in real time.
@@ -1143,7 +1220,24 @@ const modalBackdrop = document.querySelector(".mod-modal-backdrop");
 document.querySelectorAll(".mod-card").forEach(card => {
   card.addEventListener("click", () => {
     modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
+   modalDesc.innerHTML = `
+> boot sequence started
+> ai_core v0.9 loaded
+> language model initialized
+
+--------------------------------
+
+SYSTEM CAPABILITIES:
+- Natural language interaction
+- Explains game mechanics
+- Executes commands safely
+- Context-aware responses
+
+--------------------------------
+
+STATUS: ACTIVE DEVELOPMENT
+`;
+
 
     modalGallery.innerHTML = "";
 
@@ -1285,6 +1379,22 @@ if (aiCard) {
   });
 }
 
+/* ===== AI CARD TERMINAL LOOP ===== */
+
+const aiLines = [
+  "> scanning environment",
+  "> parsing context",
+  "> ready to assist"
+];
+
+const liveLine = document.querySelector(".ai-live");
+let aiIndex = 0;
+
+setInterval(() => {
+  if (!liveLine) return;
+  liveLine.innerHTML = aiLines[aiIndex] + '<span class="cursor">_</span>';
+  aiIndex = (aiIndex + 1) % aiLines.length;
+}, 2800);
 
 
 </script>

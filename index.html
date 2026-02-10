@@ -400,149 +400,6 @@ body {
   background: rgba(168,85,247,.3);
   margin-bottom: 12px;
 }
-/* ================= AI ONGOING PROJECT ================= */
-
-.ai-project {
-  background:
-    linear-gradient(180deg, rgba(8,5,16,.95), rgba(11,6,20,1));
-}
-
-/* Centered single card */
-.ai-card {
-  position: relative;
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 48px 56px;
-  border-radius: 28px;
-  cursor: pointer;
-
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.03),
-      rgba(255,255,255,.03) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    linear-gradient(180deg, rgba(20,20,40,.95), rgba(8,5,18,.98));
-
-  box-shadow:
-    0 0 0 1px rgba(96,220,255,.45),
-    0 0 120px rgba(96,220,255,.25);
-
-  transition:
-    box-shadow .4s cubic-bezier(.22,1,.36,1);
-}
-
-/* hover = system focus */
-.ai-card:hover {
-  box-shadow:
-    0 0 0 1px rgba(96,220,255,.75),
-    0 0 180px rgba(96,220,255,.45);
-}
-
-/* Status label */
-.ai-status {
-  font-family: monospace;
-  font-size: .75rem;
-  letter-spacing: .15em;
-  color: rgba(96,220,255,.9);
-  margin-bottom: 22px;
-}
-
-/* Title */
-.ai-title {
-  font-size: 2.2rem;
-  letter-spacing: .08em;
-  margin-bottom: 6px;
-  color: #e6f7ff;
-}
-
-/* Subtitle */
-.ai-sub {
-  font-family: monospace;
-  font-size: .8rem;
-  color: rgba(180,230,255,.7);
-  margin-bottom: 28px;
-}
-
-/* Description */
-.ai-desc {
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: var(--muted);
-  max-width: 620px;
-}
-
-/* Prompt */
-.ai-prompt {
-  margin-top: 26px;
-  font-family: monospace;
-  font-size: .95rem;
-  color: rgba(96,220,255,.9);
-}
-/* ================= ONGOING AI PROJECT SECTION ================= */
-
-.ai-project {
-  margin-top: 30rem;              /* separates it from other sections */
-  text-align: center;
-  position: relative;
-}
-
-.ai-project::before {
-  content: "";
-  position: absolute;
-  inset: -200px 0 auto 0;
-  height: 400px;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(168,85,247,.15),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
-/* blinking cursor */
-.cursor {
-  animation: blink 1.1s steps(2) infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-/* ===== AI TERMINAL ===== */
-
-.ai-terminal {
-  margin-top: 28px;
-  font-family: monospace;
-  font-size: .95rem;
-  color: rgba(96,220,255,.85);
-  line-height: 1.6;
-}
-
-.ai-terminal div {
-  opacity: .85;
-}
-
-/* scanline overlay */
-.ai-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,.03),
-      rgba(255,255,255,.03) 1px,
-      transparent 2px,
-      transparent 4px
-    );
-  mix-blend-mode: overlay;
-  opacity: .35;
-}
-
-/* cursor blink already exists */
 
 /* ================= ABOUT ================= */
 .about {
@@ -723,30 +580,6 @@ footer {
 
   animation: modalIn .45s cubic-bezier(.22,1,.36,1);
 }
-/* ===== AI MODAL CONSOLE MODE ===== */
-
-.mod-modal-content {
-  font-family: monospace;
-}
-
-.mod-modal-content h2 {
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.mod-modal-content p {
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-.mod-modal-content ul {
-  margin: 12px 0 18px;
-  padding-left: 18px;
-}
-
-.mod-modal-content li {
-  margin-bottom: 6px;
-}
 
 @keyframes modalIn {
   from {
@@ -821,59 +654,25 @@ footer {
 
   <h2 class="section-title">Featured Mods</h2>
 <div class="featured-carousel">
-  <div class="featured-card"
-    data-title="Better Dungeons"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
+  <div class="featured-card">
     <span class="tag">Flagship</span>
     <h3>Better Dungeons</h3>
     <p>Procedural dungeons with handcrafted pacing.</p>
   </div>
 
-  <div class="featured-card"
-    data-title="Better Dungeons1"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
+  <div class="featured-card">
     <span class="tag">Core</span>
     <h3>Core Engine</h3>
     <p>Optimized systems and shared infrastructure.</p>
   </div>
 
-  <div class="featured-card"
-    data-title="Better Dungeons2"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
+  <div class="featured-card">
     <span class="tag">Systems</span>
     <h3>World Systems</h3>
     <p>Deep control over terrain and progression.</p>
   </div>
 </div>
 
-
-</section>
-
-  <section class="mods-section ai-project" id="ai-project">
-
-  <h2 class="section-title">Ongoing Project</h2>
-
-  <div class="ai-card" id="aiAssistantCard"
-       data-title="AI Assistant Mod"
-       data-desc="An in-game AI companion that players can talk to naturally. It answers questions, explains mechanics, and can execute commands to help the player in real time."
-       data-images="ai1.png,ai2.png">
-
-    <div class="ai-status">▮ STATUS: ACTIVE</div>
-
-    <h3 class="ai-title">AI ASSISTANT MOD</h3>
-    <p class="ai-sub">INTERACTIVE IN-GAME INTELLIGENCE SYSTEM</p>
-    
-    <p class="ai-desc">
-      Talk to the AI directly in-game. Ask anything, get explanations,
-      and let it execute commands to assist you in real time.
-    </p>
-
-    <div class="ai-prompt">&gt; awaiting input<span class="cursor">_</span></div>
-
-  </div>
 
 </section>
 
@@ -1220,24 +1019,7 @@ const modalBackdrop = document.querySelector(".mod-modal-backdrop");
 document.querySelectorAll(".mod-card").forEach(card => {
   card.addEventListener("click", () => {
     modalTitle.textContent = card.dataset.title || "";
-   modalDesc.innerHTML = `
-> boot sequence started
-> ai_core v0.9 loaded
-> language model initialized
-
---------------------------------
-
-SYSTEM CAPABILITIES:
-- Natural language interaction
-- Explains game mechanics
-- Executes commands safely
-- Context-aware responses
-
---------------------------------
-
-STATUS: ACTIVE DEVELOPMENT
-`;
-
+    modalDesc.textContent = card.dataset.desc || "";
 
     modalGallery.innerHTML = "";
 
@@ -1291,110 +1073,27 @@ function rotateCards() {
   applyPositions();
 }
 
-/* ===== FEATURED CARD → MODAL ===== */
-
+// click to focus
 featuredCards.forEach((card, index) => {
   card.addEventListener("click", () => {
-
-    // If NOT center → rotate into center
-    if (!card.classList.contains("pos-center")) {
-      while (!card.classList.contains("pos-center")) {
-        rotateCards();
-      }
-      resetAutoRotate();
-      return;
+    while (positions[index] !== "pos-center") {
+      rotateCards();
     }
-
-    // If CENTER → open modal
-    modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
-    modalGallery.innerHTML = "";
-
-    const images = card.dataset.images
-      ? card.dataset.images.split(",")
-      : [];
-
-    if (images.length && images[0]) {
-      images.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src.trim();
-        modalGallery.appendChild(img);
-      });
-    } else {
-      modalGallery.innerHTML =
-        "<p style='color:var(--muted)'>No images available.</p>";
-    }
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
+    resetAutoRotate();
   });
 });
-
 
 let autoRotateTimer;
 
 function resetAutoRotate() {
   clearInterval(autoRotateTimer);
-  autoRotateTimer = setInterval(rotateCards, 3100);
+  autoRotateTimer = setInterval(rotateCards, 3700);
 }
 
 // init
 applyPositions();
 resetAutoRotate();
-/* ===== AI ASSISTANT MOD MODAL ===== */
-const aiCard = document.getElementById("aiAssistantCard");
 
-if (aiCard) {
-  aiCard.addEventListener("click", () => {
-    modalTitle.textContent = "AI Assistant Mod";
-
-    modalDesc.innerHTML = `
-      <strong>Overview</strong><br>
-      The AI Assistant Mod introduces an intelligent in-game companion
-      that players can interact with naturally through chat.<br><br>
-
-      <strong>Capabilities</strong>
-      <ul>
-        <li>Natural language conversation</li>
-        <li>Explains game mechanics and systems</li>
-        <li>Executes commands to assist the player</li>
-        <li>Context-aware responses</li>
-      </ul>
-
-      <strong>Development Status</strong><br>
-      Actively in development. Features are expanding continuously.
-    `;
-
-    modalGallery.innerHTML = "";
-
-    const images = aiCard.dataset.images.split(",");
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src.trim();
-      modalGallery.appendChild(img);
-    });
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
-}
-
-/* ===== AI CARD TERMINAL LOOP ===== */
-
-const aiLines = [
-  "> scanning environment",
-  "> parsing context",
-  "> ready to assist"
-];
-
-const liveLine = document.querySelector(".ai-live");
-let aiIndex = 0;
-
-setInterval(() => {
-  if (!liveLine) return;
-  liveLine.innerHTML = aiLines[aiIndex] + '<span class="cursor">_</span>';
-  aiIndex = (aiIndex + 1) % aiLines.length;
-}, 2800);
 
 
 </script>

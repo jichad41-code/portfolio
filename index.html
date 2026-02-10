@@ -278,6 +278,104 @@ body {
   }
 }
 
+  /* ===== IN DEVELOPMENT SECTION ===== */
+
+.dev-stage {
+  display: grid;
+  grid-template-columns: 220px 1fr 1.2fr;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ROBOT */
+.robot {
+  position: relative;
+  width: 160px;
+  height: 220px;
+  filter: drop-shadow(0 0 25px rgba(168,85,247,.6));
+}
+
+.robot-head {
+  width: 120px;
+  height: 90px;
+  background: #1b1236;
+  border-radius: 18px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: inset 0 0 0 2px rgba(168,85,247,.6);
+}
+
+.eye {
+  position: absolute;
+  top: 38px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent-strong);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(168,85,247,.9);
+  animation: blink 5s infinite;
+}
+
+.eye.left { left: 36px; }
+.eye.right { right: 36px; }
+
+.robot-body {
+  width: 140px;
+  height: 90px;
+  background: #120a24;
+  margin: 10px auto 0;
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px rgba(168,85,247,.5);
+}
+
+.robot-arm {
+  position: absolute;
+  right: -20px;
+  top: 120px;
+  width: 40px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 10px;
+  transform-origin: left center;
+}
+
+  /* LASER */
+.laser {
+  height: 4px;
+  width: 0;
+  background: linear-gradient(
+    to right,
+    rgba(168,85,247,0),
+    rgba(168,85,247,1),
+    rgba(168,85,247,0)
+  );
+  box-shadow: 0 0 25px rgba(168,85,247,.9);
+  opacity: 0;
+}
+
+  .dev-panel {
+  opacity: 0;
+  transform: translateX(-20px);
+  background: linear-gradient(
+    180deg,
+    rgba(40,25,80,.85),
+    rgba(10,5,30,.95)
+  );
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.4),
+    0 0 120px rgba(168,85,247,.4);
+}
+
+@keyframes armRaise {
+  to { transform: rotate(-10deg); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { opacity: 1; }
+  92%, 96% { opacity: 0; }
+}
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -648,6 +746,42 @@ footer {
 
 </section>
 
+
+  <section class="mods-section dev-section" id="in-development">
+  <h2 class="section-title">In Development</h2>
+
+  <div class="dev-stage">
+    
+    <!-- ROBOT -->
+    <div class="robot-wrap">
+      <div class="robot">
+        <div class="robot-head">
+          <span class="eye left"></span>
+          <span class="eye right"></span>
+        </div>
+        <div class="robot-body"></div>
+        <div class="robot-arm"></div>
+      </div>
+    </div>
+
+    <!-- LASER -->
+    <div class="laser"></div>
+
+    <!-- INFO PANEL -->
+    <div class="dev-panel">
+      <span class="tag">ACTIVE DEVELOPMENT</span>
+      <h3>AI Assistant Mod</h3>
+      <p>
+        An in-game AI companion that players can talk to naturally.
+        It explains mechanics, answers questions, and can execute
+        commands to help in real time.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1057,6 +1191,36 @@ function resetSpotlight() {
 }
 
 spotlightTimer = setInterval(autoRotate, 5200);
+
+  /* ===== IN DEVELOPMENT ANIMATION ===== */
+
+const devSection = document.querySelector(".dev-section");
+const laser = document.querySelector(".laser");
+const panel = document.querySelector(".dev-panel");
+const arm = document.querySelector(".robot-arm");
+
+const devObserver = new IntersectionObserver(entries => {
+  if (!entries[0].isIntersecting) return;
+
+  // arm lift
+  arm.style.animation = "armRaise .6s ease forwards";
+
+  // laser
+  setTimeout(() => {
+    laser.style.width = "100%";
+    laser.style.opacity = "1";
+  }, 400);
+
+  // panel reveal
+  setTimeout(() => {
+    panel.style.opacity = "1";
+    panel.style.transform = "translateX(0)";
+  }, 900);
+
+  devObserver.disconnect();
+}, { threshold: 0.5 });
+
+devObserver.observe(devSection);
 
 
 </script>

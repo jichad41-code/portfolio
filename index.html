@@ -223,15 +223,17 @@ body {
   padding-left: 1rem;
 }
 
-/* ================= FEATURED MODS ================= */
-.featured-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 56px;
+/* ===== FEATURED SPOTLIGHT ===== */
+
+.featured-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
+  perspective: 1200px;
 }
 
-..featured-card {
-  position: relative;
+.featured-card {
   width: 420px;
   min-height: 240px;
   padding: 36px;
@@ -239,26 +241,22 @@ body {
 
   background: linear-gradient(
     180deg,
-    rgba(70,40,140,.35),
+    rgba(70,40,140,.25),
     rgba(10,5,30,.95)
   );
 
-  opacity: .35;
-  transform: scale(.9);
+  opacity: 0.45;
+  transform: scale(.88);
   filter: blur(.2px);
 
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.25),
-    0 0 30px rgba(168,85,247,.25);
-
   transition:
-    transform .7s cubic-bezier(.22,1,.36,1),
-    opacity .7s ease,
-    box-shadow .7s cubic-bezier(.22,1,.36,1),
-    filter .7s ease;
+    transform .6s cubic-bezier(.22,1,.36,1),
+    opacity .6s ease,
+    box-shadow .6s cubic-bezier(.22,1,.36,1),
+    filter .6s ease;
 }
 
-/* ONLY the spotlight card */
+/* CENTER CARD */
 .featured-card.active {
   opacity: 1;
   transform: scale(1.06);
@@ -271,22 +269,11 @@ body {
     0 0 260px rgba(168,85,247,.45);
 }
 
-
-
+/* NO HOVER GLOW — INTENTIONAL */
+.featured-card:not(.active):hover {
+  opacity: .65;
+  transform: scale(.92);
 }
-/* ================= FEATURED SPOTLIGHT CAROUSEL ================= */
-
-.featured-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 56px;
-  position: relative;
-}
-
-
-
-
 
 
 /* ================= ALL MODS ================= */
@@ -636,26 +623,27 @@ footer {
 <section class="mods-section" id="featured">
   <h2 class="section-title">Featured Mods</h2>
 
-  <div class="featured-carousel" id="featuredCarousel">
-    <div class="featured-card active" data-index="0">
+  <div class="featured-carousel">
+    <div class="featured-card active">
       <span class="tag">Flagship</span>
       <h3>Better Dungeons</h3>
       <p>Procedural dungeons with handcrafted pacing.</p>
     </div>
 
-    <div class="featured-card" data-index="1">
+    <div class="featured-card">
       <span class="tag">Core</span>
       <h3>Core Engine</h3>
       <p>Optimized systems and shared infrastructure.</p>
     </div>
 
-    <div class="featured-card" data-index="2">
+    <div class="featured-card">
       <span class="tag">Systems</span>
       <h3>World Systems</h3>
       <p>Deep control over terrain and progression.</p>
     </div>
   </div>
 </section>
+
 
 
 <section class="mods-section">
@@ -1036,23 +1024,36 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
-/* ===== FEATURED MODS AUTO SPOTLIGHT ===== */
+/* ===== FEATURED SPOTLIGHT ROTATION ===== */
 
 const featuredCards = document.querySelectorAll(".featured-card");
 let activeIndex = 0;
+let timer;
 
-function rotateFeatured() {
-  featuredCards.forEach(card => card.classList.remove("active"));
-  featuredCards[activeIndex].classList.add("active");
-
-  activeIndex = (activeIndex + 1) % featuredCards.length;
+function setActive(index) {
+  featuredCards.forEach((card, i) =>
+    card.classList.toggle("active", i === index)
+  );
+  activeIndex = index;
 }
 
-/* initial state */
-rotateFeatured();
+function nextCard() {
+  setActive((activeIndex + 1) % featuredCards.length);
+}
 
-/* rotate every 5.5 seconds */
-setInterval(rotateFeatured, 3500);
+featuredCards.forEach((card, index) => {
+  card.addEventListener("click", () => {
+    setActive(index);
+    resetTimer();
+  });
+});
+
+function resetTimer() {
+  clearInterval(timer);
+  timer = setInterval(nextCard, 4200);
+}
+
+resetTimer();
 
 
 </script>

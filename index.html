@@ -654,19 +654,28 @@ footer {
 
   <h2 class="section-title">Featured Mods</h2>
 <div class="featured-carousel">
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Flagship</span>
     <h3>Better Dungeons</h3>
     <p>Procedural dungeons with handcrafted pacing.</p>
   </div>
 
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons1"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Core</span>
     <h3>Core Engine</h3>
     <p>Optimized systems and shared infrastructure.</p>
   </div>
 
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons2"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Systems</span>
     <h3>World Systems</h3>
     <p>Deep control over terrain and progression.</p>
@@ -1073,21 +1082,51 @@ function rotateCards() {
   applyPositions();
 }
 
-// click to focus
+/* ===== FEATURED CARD → MODAL ===== */
+
 featuredCards.forEach((card, index) => {
   card.addEventListener("click", () => {
-    while (positions[index] !== "pos-center") {
-      rotateCards();
+
+    // If NOT center → rotate into center
+    if (!card.classList.contains("pos-center")) {
+      while (!card.classList.contains("pos-center")) {
+        rotateCards();
+      }
+      resetAutoRotate();
+      return;
     }
-    resetAutoRotate();
+
+    // If CENTER → open modal
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
+    modalGallery.innerHTML = "";
+
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
+
+    if (images.length && images[0]) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
   });
 });
+
 
 let autoRotateTimer;
 
 function resetAutoRotate() {
   clearInterval(autoRotateTimer);
-  autoRotateTimer = setInterval(rotateCards, 3700);
+  autoRotateTimer = setInterval(rotateCards, 3100);
 }
 
 // init

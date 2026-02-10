@@ -614,7 +614,62 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
+.ai-showcase {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  padding: 100px 3rem;
+  align-items: center;
+  background: radial-gradient(circle at center, rgba(168,85,247,0.1) 0%, transparent 70%);
+}
 
+.terminal-window {
+  background: rgba(10, 5, 20, 0.85);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(168,85,247,0.2);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.terminal-header {
+  background: rgba(168,85,247,0.2);
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
+.terminal-title { font-size: 0.8rem; color: var(--muted); margin-left: 10px; }
+
+.terminal-body {
+  padding: 20px;
+  height: 250px;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.line { font-size: 0.95rem; line-height: 1.4; opacity: 0; transform: translateX(-10px); transition: all 0.4s ease; }
+.line.visible { opacity: 1; transform: translateX(0); }
+.line.player { color: var(--text); }
+.line.ai { color: var(--accent-strong); text-shadow: 0 0 8px rgba(168,85,247,0.5); }
+
+.ai-info h2 { font-size: 3rem; margin: 15px 0; color: #fff; }
+.waitlist-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent-strong);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+.waitlist-btn:hover { background: var(--accent); color: white; }
 </style>
 </head>
 
@@ -684,7 +739,25 @@ footer {
 
 
 </section>
-
+<section class="ai-showcase">
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+      <span class="terminal-title">ROX_AI_CORE.exe</span>
+    </div>
+    <div class="terminal-body" id="ai-terminal">
+      <div class="line player">> RoxAI, find me a desert temple.</div>
+      <div class="line ai">Analyzing world seed... Done. Coordinates: [X: 450, Z: -1200]. Teleporting player? (Y/N)</div>
+    </div>
+  </div>
+  
+  <div class="ai-info">
+    <span class="tag flagship">New Project</span>
+    <h2>The AI Assistant</h2>
+    <p>A deep-learning integrated Minecraft mod that interprets natural language to execute commands, optimize builds, and provide real-time survival strategies.</p>
+    <button class="waitlist-btn">Join Dev Access</button>
+  </div>
+</section>
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1133,7 +1206,40 @@ function resetAutoRotate() {
 applyPositions();
 resetAutoRotate();
 
+const terminal = document.getElementById('ai-terminal');
+const aiLines = [
+  { type: 'player', text: '> RoxAI, what are the best coordinates for Diamonds?' },
+  { type: 'ai', text: 'Analyzing Y-levels... In 1.20+, search between Y -58 and -64.' },
+  { type: 'player', text: '> Give me a speedrun tip.' },
+  { type: 'ai', text: 'Explosive beds in the End deal massive damage to the Dragon. Accuracy: 98%.' },
+  { type: 'player', text: '> Build a basic stone house at my location.' },
+  { type: 'ai', text: 'Initializing Builder Module... Gathering resources... [||||||----] 60%' }
+];
 
+let lineIndex = 0;
+const aiObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && lineIndex === 0) {
+    typeNextLine();
+  }
+}, { threshold: 0.5 });
+
+aiObserver.observe(terminal);
+
+function typeNextLine() {
+  if (lineIndex >= aiLines.length) return;
+
+  const data = aiLines[lineIndex];
+  const div = document.createElement('div');
+  div.className = `line ${data.type}`;
+  div.textContent = data.text;
+  terminal.appendChild(div);
+
+  // Small delay for the "visible" class to trigger transition
+  setTimeout(() => div.classList.add('visible'), 50);
+
+  lineIndex++;
+  setTimeout(typeNextLine, 2000); // Wait 2 seconds between messages
+}
 
 </script>
 

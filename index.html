@@ -222,28 +222,62 @@ body {
   border-left: 4px solid var(--accent);
   padding-left: 1rem;
 }
+/* ================= FEATURED SPOTLIGHT ================= */
 
-/* ================= FEATURED MODS ================= */
-.featured-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 56px;
+.featured-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
 }
 
 .featured-card {
-  background: linear-gradient(180deg, rgba(60,30,120,.35), rgba(10,5,30,.9));
+  width: 420px;
+  min-height: 240px;
+  padding: 36px;
   border-radius: 26px;
-  padding: 40px;
-  min-height: 220px;
+  cursor: pointer;
+
+  background: linear-gradient(
+    180deg,
+    rgba(70,40,140,.35),
+    rgba(10,5,30,.95)
+  );
+
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 90px rgba(168,85,247,.45);
-  transition: all .4s cubic-bezier(.22,1,.36,1);
+    0 0 0 1px rgba(168,85,247,.35),
+    0 0 70px rgba(168,85,247,.35);
+
+  opacity: .45;
+  transform: scale(.88);
+  transition:
+    transform .6s cubic-bezier(.22,1,.36,1),
+    opacity .4s ease,
+    box-shadow .6s cubic-bezier(.22,1,.36,1);
 }
 
-.featured-card:hover {
-  transform: translateY(-6px);
+.featured-card.active {
+  opacity: 1;
+  transform: scale(1.08);
+  z-index: 2;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 160px rgba(168,85,247,.65),
+    0 0 280px rgba(168,85,247,.45);
 }
+
+@media (max-width: 900px) {
+  .featured-carousel {
+    gap: 24px;
+    flex-direction: column;
+  }
+
+  .featured-card {
+    width: 100%;
+  }
+}
+
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -592,10 +626,26 @@ footer {
 <section class="mods-section" id="mods">
 
   <h2 class="section-title">Featured Mods</h2>
-  <div class="featured-grid">
-    <div class="featured-card"><span class="tag">Flagship</span><h3>Better Dungeons</h3></div>
-    <div class="featured-card"><span class="tag">Core</span><h3>Core Engine</h3></div>
+<div class="featured-carousel" id="featuredCarousel">
+  <div class="featured-card active" data-index="0">
+    <span class="tag">Flagship</span>
+    <h3>Better Dungeons</h3>
+    <p>Procedural dungeons with handcrafted pacing.</p>
   </div>
+
+  <div class="featured-card" data-index="1">
+    <span class="tag">Core</span>
+    <h3>Core Engine</h3>
+    <p>Optimized systems and shared infrastructure.</p>
+  </div>
+
+  <div class="featured-card" data-index="2">
+    <span class="tag">Systems</span>
+    <h3>World Systems</h3>
+    <p>Deep control over terrain and progression.</p>
+  </div>
+</div>
+
 </section>
 
 <section class="mods-section">
@@ -976,6 +1026,37 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
+/* ===== FEATURED MOD SPOTLIGHT ROTATION ===== */
+
+const featuredCards = document.querySelectorAll(".featured-card");
+let activeIndex = 0;
+let spotlightTimer;
+
+function setActive(index) {
+  featuredCards.forEach((card, i) => {
+    card.classList.toggle("active", i === index);
+  });
+  activeIndex = index;
+}
+
+featuredCards.forEach(card => {
+  card.addEventListener("click", () => {
+    setActive(Number(card.dataset.index));
+    resetSpotlight();
+  });
+});
+
+function autoRotate() {
+  activeIndex = (activeIndex + 1) % featuredCards.length;
+  setActive(activeIndex);
+}
+
+function resetSpotlight() {
+  clearInterval(spotlightTimer);
+  spotlightTimer = setInterval(autoRotate, 5200);
+}
+
+spotlightTimer = setInterval(autoRotate, 5200);
 
 
 </script>

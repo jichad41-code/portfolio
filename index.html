@@ -614,150 +614,212 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-/* ===== IN DEVELOPMENT SECTION ===== */
 
-.dev-section {
+  /* ================= IN DEVELOPMENT ================= */
+
+.dev-ai {
   min-height: 90vh;
   position: relative;
   overflow: hidden;
-  text-align: center;
-}
-
-.dev-title {
-  text-align: left;
 }
 
 .dev-sub {
   color: var(--muted);
-  margin-left: 1rem;
-  margin-top: -2rem;
+  margin-bottom: 3rem;
 }
 
-/* STAGE */
-.dev-stage {
-  position: relative;
-  height: 520px;
-  margin-top: 4rem;
-}
-
-/* ===== PLAYER SCENE ===== */
+/* PLAYER SCENE (SIDE VIEW) */
 .player-scene {
   position: absolute;
   left: 50%;
-  bottom: 0;
+  bottom: 120px;
   transform: translateX(-50%);
-  transition: opacity .6s ease;
+  transition: opacity .4s ease;
 }
 
-.player {
-  width: 50px;
-  height: 70px;
-  border-radius: 50% 50% 40% 40%;
-  background: #888;
-  margin: 0 auto;
+.chair {
+  position: absolute;
+  width: 28px;
+  height: 38px;
+  background: #333;
+  left: -18px;
+  bottom: 0;
+}
+
+.human {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+}
+
+.human .head {
+  width: 26px;
+  height: 26px;
+  background: #aaa;
+  border-radius: 50%;
+}
+
+.human .body {
+  width: 14px;
+  height: 40px;
+  background: #777;
+  margin-left: 6px;
 }
 
 .desk {
-  width: 140px;
-  height: 12px;
-  background: #333;
-  margin: 8px auto;
+  position: absolute;
+  width: 160px;
+  height: 10px;
+  background: #222;
+  left: 30px;
+  bottom: 20px;
 }
 
 .monitor {
+  position: absolute;
+  left: 80px;
+  bottom: 30px;
   width: 140px;
   height: 90px;
   background: #0b0614;
   border: 2px solid var(--accent);
-  margin: 0 auto;
-  padding: 8px;
-  box-shadow: 0 0 25px rgba(168,85,247,.5);
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(168,85,247,.5);
 }
 
 .code-line {
   height: 6px;
-  width: 0%;
-  background: var(--accent);
-  margin-bottom: 6px;
-  animation: typing 1.4s infinite alternate;
+  width: 0;
+  background: #7dd3fc;
+  margin-bottom: 8px;
+  animation: code 1.6s infinite;
 }
 
-.code-line:nth-child(2){animation-delay:.3s}
-.code-line:nth-child(3){animation-delay:.6s}
+.code-line:nth-child(2) { animation-delay: .2s }
+.code-line:nth-child(3) { animation-delay: .4s }
 
-@keyframes typing {
-  to { width: 100%; }
+@keyframes code {
+  from { width: 0 }
+  to { width: 100% }
 }
 
-/* ===== ROBOT ===== */
+/* OVERLOAD */
+.player-scene.overload .monitor {
+  animation: flicker .12s infinite;
+  box-shadow: 0 0 60px rgba(168,85,247,1);
+}
+
+@keyframes flicker {
+  0% { opacity: 1 }
+  50% { opacity: .5 }
+  100% { opacity: 1 }
+}
+
+/* FLASH */
+body.flash::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: white;
+  animation: flash .4s ease forwards;
+  pointer-events: none;
+  z-index: 5000;
+}
+
+@keyframes flash {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+
+/* ROBOT */
 .robot {
   position: absolute;
-  left: 20%;
-  bottom: 80px;
+  left: 35%;
+  bottom: 120px;
   opacity: 0;
-  transform: scale(.3);
+  transform: scale(.6);
+}
+
+.robot.active {
+  opacity: 1;
+  transform: scale(1) translateX(-120px);
+  transition: all .8s cubic-bezier(.22,1,.36,1);
 }
 
 .robot-head {
-  width: 70px;
-  height: 50px;
-  background: #1b1435;
+  width: 60px;
+  height: 60px;
+  background: #1e293b;
   border-radius: 12px;
   position: relative;
 }
 
 .eye {
-  position: absolute;
-  top: 18px;
-  width: 10px;
-  height: 10px;
-  background: #00ffcc;
+  width: 8px;
+  height: 8px;
+  background: #22d3ee;
   border-radius: 50%;
-  box-shadow: 0 0 12px #00ffcc;
+  position: absolute;
+  top: 22px;
 }
 
-.eye.left { left: 18px; }
-.eye.right { right: 18px; }
+.eye.left { left: 16px }
+.eye.right { right: 16px }
 
 .robot-body {
-  width: 60px;
-  height: 50px;
-  background: #2a1f55;
-  margin: 6px auto 0;
-  border-radius: 8px;
+  width: 70px;
+  height: 60px;
+  background: #334155;
+  margin: 8px auto 0;
+  border-radius: 10px;
 }
 
-/* ===== BEAM ===== */
+/* BEAM */
 .beam {
   position: absolute;
-  left: 26%;
-  top: 150px;
+  left: calc(35% - 60px);
+  bottom: 180px;
   width: 0;
   height: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(34,211,238,.8),
+    rgba(34,211,238,.1)
+  );
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
   opacity: 0;
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
-  background: linear-gradient(90deg, rgba(0,255,200,.6), transparent);
 }
 
-/* ===== HOLO SCREEN ===== */
+.beam.active {
+  width: 460px;
+  height: 200px;
+  opacity: 1;
+  transition: all .6s ease;
+}
+
+/* HOLOGRAM */
 .holo-screen {
   position: absolute;
-  right: 8%;
-  top: 110px;
-  width: 360px;
-  height: 220px;
-  background: rgba(0,255,200,.08);
-  border: 1px solid rgba(0,255,200,.5);
-  box-shadow: 0 0 40px rgba(0,255,200,.3);
+  right: 10%;
+  bottom: 140px;
+  width: 420px;
+  height: 260px;
+  background: rgba(15,23,42,.8);
+  border: 1px solid #22d3ee;
+  box-shadow: 0 0 40px rgba(34,211,238,.6);
   opacity: 0;
-  padding: 18px;
+  padding: 20px;
+}
+
+.holo-screen.active {
+  opacity: 1;
+  transition: opacity .6s ease;
 }
 
 .holo-screen pre {
-  color: #00ffcc;
+  color: #67e8f9;
   font-family: monospace;
-  font-size: .95rem;
-  text-align: left;
+  font-size: .9rem;
   white-space: pre-wrap;
 }
 
@@ -831,43 +893,43 @@ footer {
 
 </section>
 
-  <!-- ================= IN DEVELOPMENT : AI MOD ================= -->
-<section class="mods-section dev-section" id="dev-ai">
-
-  <h2 class="section-title dev-title">IN DEVELOPMENT</h2>
+  <section class="mods-section dev-ai" id="dev-ai">
+  <h2 class="section-title">In Development</h2>
   <p class="dev-sub">Something intelligent is waking up…</p>
 
-  <div class="dev-stage">
+  <!-- PHASE 1: PLAYER -->
+  <div class="player-scene" id="playerScene">
+    <div class="chair"></div>
 
-    <!-- PHASE 1: PLAYER + MONITOR -->
-    <div class="player-scene" id="playerScene">
-      <div class="player"></div>
-      <div class="desk"></div>
-
-      <div class="monitor">
-        <div class="code-line"></div>
-        <div class="code-line"></div>
-        <div class="code-line"></div>
-      </div>
+    <div class="human">
+      <div class="head"></div>
+      <div class="body"></div>
     </div>
 
-    <!-- PHASE 3: ROBOT -->
-    <div class="robot" id="robot">
-      <div class="robot-head">
-        <span class="eye left"></span>
-        <span class="eye right"></span>
-      </div>
-      <div class="robot-body"></div>
+    <div class="desk"></div>
+
+    <div class="monitor">
+      <div class="code-line"></div>
+      <div class="code-line"></div>
+      <div class="code-line"></div>
     </div>
+  </div>
 
-    <!-- HOLOGRAPHIC BEAM -->
-    <div class="beam" id="beam"></div>
-
-    <!-- PHASE 4: PROJECTED SCREEN -->
-    <div class="holo-screen" id="holoScreen">
-      <pre id="holoText"></pre>
+  <!-- PHASE 2: ROBOT -->
+  <div class="robot" id="robot">
+    <div class="robot-head">
+      <div class="eye left"></div>
+      <div class="eye right"></div>
     </div>
+    <div class="robot-body"></div>
+  </div>
 
+  <!-- BEAM -->
+  <div class="beam" id="beam"></div>
+
+  <!-- HOLOGRAM SCREEN -->
+  <div class="holo-screen" id="holoScreen">
+    <pre id="holoText"></pre>
   </div>
 </section>
 
@@ -1319,63 +1381,57 @@ function resetAutoRotate() {
 applyPositions();
 resetAutoRotate();
 
-  <script>
-/* ===== IN DEVELOPMENT CINEMATIC ===== */
-
-const section = document.getElementById("dev-ai");
+const devSection = document.getElementById("dev-ai");
 const player = document.getElementById("playerScene");
 const robot = document.getElementById("robot");
 const beam = document.getElementById("beam");
 const screen = document.getElementById("holoScreen");
 const textEl = document.getElementById("holoText");
 
-const text =
+let triggered = false;
+
+const devObserver = new IntersectionObserver(entries => {
+  if (!entries[0].isIntersecting || triggered) return;
+  triggered = true;
+
+  // overload
+  setTimeout(() => player.classList.add("overload"), 1600);
+
+  // flash
+  setTimeout(() => document.body.classList.add("flash"), 2300);
+
+  // swap scene
+  setTimeout(() => {
+    player.remove();
+    robot.classList.add("active");
+  }, 2600);
+
+  // beam + text
+  setTimeout(() => {
+    beam.classList.add("active");
+    screen.classList.add("active");
+    typeText();
+  }, 3400);
+}, { threshold: .6 });
+
+devObserver.observe(devSection);
+
+function typeText() {
+  const text =
 `AI ASSISTANT MOD
-──────────────────
+────────────────────
 • Natural player interaction
 • Explains mechanics instantly
 • Executes commands in real time
 • Context-aware assistance`;
 
-let started = false;
-
-const observer = new IntersectionObserver(entries => {
-  if (!entries[0].isIntersecting || started) return;
-  started = true;
-
-  /* PHASE 2: EXPLOSION */
-  setTimeout(() => {
-    player.style.opacity = "0";
-  }, 1800);
-
-  /* PHASE 3: ROBOT EMERGES */
-  setTimeout(() => {
-    robot.style.opacity = "1";
-    robot.style.transform = "scale(1)";
-  }, 2600);
-
-  /* PHASE 4: BEAM + SCREEN */
-  setTimeout(() => {
-    beam.style.opacity = "1";
-    beam.style.width = "420px";
-    beam.style.height = "180px";
-    screen.style.opacity = "1";
-    typeText();
-  }, 3400);
-});
-
-observer.observe(section);
-
-function typeText() {
   let i = 0;
   const interval = setInterval(() => {
     textEl.textContent += text[i];
     i++;
     if (i >= text.length) clearInterval(interval);
-  }, 35);
+  }, 32);
 }
-</script>
-
 
 
 </script>

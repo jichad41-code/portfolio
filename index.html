@@ -718,6 +718,11 @@ footer {
       class="dev-scene"
       viewBox="0 0 900 400"
       xmlns="http://www.w3.org/2000/svg"
+      <defs>
+  <clipPath id="monitorClip">
+    <rect x="300" y="140" width="140" height="90" rx="8"/>
+  </clipPath>
+</defs>
     >
 
       <!-- FLOOR -->
@@ -733,33 +738,39 @@ footer {
       <rect x="330" y="230" width="80" height="10" rx="4" fill="#2a1c55"/>
 
       <!-- CODE TEXT -->
-      <text id="codeText" x="312" y="165"
-            font-family="monospace"
-            font-size="11"
-            fill="#7dd3fc">
+      <text id="codeText" 
+        x="312" 
+        y="165"
+        font-family="monospace"
+        font-size="11"
+        fill="#7dd3fc">
+        clip-path="url(#monitorClip)">
       </text>
+<g transform="translate(-10, 0) scale(1.25)">
+  <!-- chair + human code goes here -->
 
-      <!-- CHAIR -->
-      <rect x="200" y="230" width="60" height="12" rx="4" fill="#2a1c55"/>
-      <rect x="210" y="170" width="14" height="70" fill="#2a1c55"/>
-      <rect x="200" y="170" width="50" height="12" rx="4" fill="#2a1c55"/>
+     <!-- CHAIR -->
+<rect x="190" y="240" width="70" height="12" rx="4" fill="#2a1c55"/>
+<rect x="190" y="190" width="12" height="60" fill="#2a1c55"/>
+<rect x="190" y="190" width="50" height="12" rx="4" fill="#2a1c55"/>
 
-      <!-- HUMAN (HOODIE DEV) -->
-      <!-- HEAD -->
-      <circle cx="215" cy="145" r="14" fill="#c084fc"/>
-      <!-- HOOD -->
-      <path d="M198 145 Q215 120 232 145 Z" fill="#6d28d9"/>
+<!-- HUMAN (SITTING) -->
+<!-- HEAD -->
+<circle cx="215" cy="165" r="14" fill="#c084fc"/>
 
-      <!-- BODY -->
-      <rect x="198" y="160" width="34" height="52" rx="8" fill="#6d28d9"/>
+<!-- HOOD -->
+<path d="M198 168 Q215 140 232 168 Z" fill="#6d28d9"/>
 
-      <!-- ARM -->
-      <rect x="232" y="168" width="38" height="10" rx="5" fill="#6d28d9"/>
+<!-- TORSO -->
+<rect x="200" y="180" width="34" height="48" rx="10" fill="#6d28d9"/>
 
-      <!-- LEG -->
-      <rect x="205" y="212" width="12" height="42" fill="#4c1d95"/>
-      <rect x="220" y="212" width="12" height="42" fill="#4c1d95"/>
+<!-- ARM (ON TABLE) -->
+<rect x="232" y="190" width="48" height="10" rx="5" fill="#6d28d9"/>
 
+<!-- LEGS (BENT SITTING) -->
+<rect x="205" y="228" width="14" height="32" rx="4" fill="#4c1d95"/>
+<rect x="219" y="244" width="30" height="12" rx="4" fill="#4c1d95"/>
+</g>
     </svg>
   </div>
 </section>
@@ -1222,8 +1233,9 @@ const codeLines = [
   "loadBrain();",
   "bindPlayer();",
   "listen(\"chat\");",
-  "execute(command);"
+  "execute(cmd);"
 ];
+
 
 let line = 0;
 let char = 0;

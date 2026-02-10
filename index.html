@@ -230,48 +230,49 @@ body {
   gap: 56px;
 }
 
-.featured-card {
+..featured-card {
   position: relative;
+  width: 420px;
+  min-height: 240px;
+  padding: 36px;
+  border-radius: 26px;
+
   background: linear-gradient(
     180deg,
     rgba(70,40,140,.35),
     rgba(10,5,30,.95)
   );
-  border-radius: 26px;
-  padding: 40px;
-  min-height: 220px;
+
+  opacity: .35;
+  transform: scale(.9);
+  filter: blur(.2px);
 
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 90px rgba(168,85,247,.45);
+    0 0 0 1px rgba(168,85,247,.25),
+    0 0 30px rgba(168,85,247,.25);
 
   transition:
-    transform .45s cubic-bezier(.22,1,.36,1),
-    box-shadow .45s cubic-bezier(.22,1,.36,1);
-}
-/* idle ambient spotlight */
-.featured-card::before {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(168,85,247,.35),
-    transparent 65%
-  );
-  opacity: .55;
-  pointer-events: none;
-}
-.featured-card:hover {
-  transform: translateY(-10px);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 160px rgba(168,85,247,.65),
-    0 0 280px rgba(168,85,247,.45);
+    transform .7s cubic-bezier(.22,1,.36,1),
+    opacity .7s ease,
+    box-shadow .7s cubic-bezier(.22,1,.36,1),
+    filter .7s ease;
 }
 
-.featured-card:hover::before {
-  opacity: .9;
+/* ONLY the spotlight card */
+.featured-card.active {
+  opacity: 1;
+  transform: scale(1.06);
+  filter: none;
+  z-index: 2;
+
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.7),
+    0 0 140px rgba(168,85,247,.65),
+    0 0 260px rgba(168,85,247,.45);
+}
+
+
+
 }
 /* ================= FEATURED SPOTLIGHT CAROUSEL ================= */
 
@@ -283,75 +284,10 @@ body {
   position: relative;
 }
 
-.featured-card {
-  position: relative;
-  width: 420px;
-  min-height: 240px;
-  padding: 36px;
-  border-radius: 26px;
-  cursor: pointer;
 
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
 
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 70px rgba(168,85,247,.35);
 
-  transform: scale(.92);
-  opacity: .55;
 
-  transition:
-    transform .6s cubic-bezier(.22,1,.36,1),
-    opacity .45s ease,
-    box-shadow .6s cubic-bezier(.22,1,.36,1);
-}
-
-/* soft glow layer */
-.featured-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    120% 80% at 50% 0%,
-    rgba(255,255,255,.12),
-    transparent 60%
-  );
-  opacity: .35;
-  pointer-events: none;
-}
-
-/* CENTER CARD */
-.featured-card.active {
-  transform: scale(1.06);
-  opacity: 1;
-  z-index: 2;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 140px rgba(168,85,247,.65),
-    0 0 260px rgba(168,85,247,.45);
-}
-
-/* subtle lift on hover */
-.featured-card:hover {
-  transform: scale(1.02);
-}
-
-/* MOBILE */
-@media (max-width: 900px) {
-  .featured-carousel {
-    gap: 24px;
-  }
-
-  .featured-card {
-    width: 90%;
-  }
-}
 
 /* ================= ALL MODS ================= */
 .mods-grid {
@@ -1100,37 +1036,23 @@ modalBackdrop.addEventListener("click", closeModal);
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") closeModal();
 });
-/* ===== FEATURED MODS SPOTLIGHT CAROUSEL ===== */
+/* ===== FEATURED MODS AUTO SPOTLIGHT ===== */
 
 const featuredCards = document.querySelectorAll(".featured-card");
 let activeIndex = 0;
-let autoSlideTimer;
 
-function updateFeatured(index) {
-  featuredCards.forEach((card, i) => {
-    card.classList.toggle("active", i === index);
-  });
-  activeIndex = index;
-}
+function rotateFeatured() {
+  featuredCards.forEach(card => card.classList.remove("active"));
+  featuredCards[activeIndex].classList.add("active");
 
-featuredCards.forEach(card => {
-  card.addEventListener("click", () => {
-    updateFeatured(Number(card.dataset.index));
-    resetAutoSlide();
-  });
-});
-
-function autoSlide() {
   activeIndex = (activeIndex + 1) % featuredCards.length;
-  updateFeatured(activeIndex);
 }
 
-function resetAutoSlide() {
-  clearInterval(autoSlideTimer);
-  autoSlideTimer = setInterval(autoSlide, 5200);
-}
+/* initial state */
+rotateFeatured();
 
-autoSlideTimer = setInterval(autoSlide, 5200);
+/* rotate every 5.5 seconds */
+setInterval(rotateFeatured, 3500);
 
 
 </script>

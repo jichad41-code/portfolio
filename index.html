@@ -306,113 +306,6 @@ body {
   z-index: 1;
 }
 
-  /* ================= AI SHOWCASE ================= */
-
-.ai-showcase {
-  margin: 30rem auto;
-  max-width: 1200px;
-  position: relative;
-}
-
-.ai-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  align-items: center;
-  gap: 80px;
-}
-
-/* ROBOT */
-.ai-robot img {
-  width: 100%;
-  max-width: 360px;
-  animation: floatBot 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 40px rgba(168,85,247,.6));
-}
-
-@keyframes floatBot {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-18px); }
-}
-
-/* TERMINAL */
-.ai-terminal {
-  cursor: pointer;
-  background: linear-gradient(
-    180deg,
-    rgba(20,10,40,.95),
-    rgba(5,2,15,.98)
-  );
-  border-radius: 18px;
-  padding: 28px 32px;
-  font-family: "JetBrains Mono", monospace;
-  color: #c7f9ff;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.6),
-    0 0 120px rgba(168,85,247,.45);
-  position: relative;
-  overflow: hidden;
-}
-
-/* scanlines */
-.ai-terminal::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,.03),
-    rgba(255,255,255,.03) 1px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events: none;
-}
-
-/* header */
-.ai-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: .9rem;
-  letter-spacing: .1em;
-  color: var(--accent-strong);
-  margin-bottom: 16px;
-}
-
-.ai-status {
-  color: #00ff9c;
-}
-
-/* screen text */
-.ai-screen p {
-  margin: 0 0 8px;
-  font-size: .95rem;
-}
-
-.ai-cursor span {
-  animation: blink 1s steps(2) infinite;
-}
-
-@keyframes blink {
-  0%,50% { opacity: 1; }
-  50.01%,100% { opacity: 0; }
-}
-
-/* hover */
-.ai-terminal:hover {
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.9),
-    0 0 180px rgba(168,85,247,.75);
-}
-
-/* mobile */
-@media (max-width: 900px) {
-  .ai-layout {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-}
-
 /* ================= ALL MODS ================= */
 .mods-grid {
   display: grid;
@@ -507,6 +400,149 @@ body {
   background: rgba(168,85,247,.3);
   margin-bottom: 12px;
 }
+/* ================= AI ONGOING PROJECT ================= */
+
+.ai-project {
+  background:
+    linear-gradient(180deg, rgba(8,5,16,.95), rgba(11,6,20,1));
+}
+
+/* Centered single card */
+.ai-card {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 56px;
+  border-radius: 28px;
+  cursor: pointer;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.03),
+      rgba(255,255,255,.03) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(180deg, rgba(20,20,40,.95), rgba(8,5,18,.98));
+
+  box-shadow:
+    0 0 0 1px rgba(96,220,255,.45),
+    0 0 120px rgba(96,220,255,.25);
+
+  transition:
+    box-shadow .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* hover = system focus */
+.ai-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(96,220,255,.75),
+    0 0 180px rgba(96,220,255,.45);
+}
+
+/* Status label */
+.ai-status {
+  font-family: monospace;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  color: rgba(96,220,255,.9);
+  margin-bottom: 22px;
+}
+
+/* Title */
+.ai-title {
+  font-size: 2.2rem;
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+  color: #e6f7ff;
+}
+
+/* Subtitle */
+.ai-sub {
+  font-family: monospace;
+  font-size: .8rem;
+  color: rgba(180,230,255,.7);
+  margin-bottom: 28px;
+}
+
+/* Description */
+.ai-desc {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 620px;
+}
+
+/* Prompt */
+.ai-prompt {
+  margin-top: 26px;
+  font-family: monospace;
+  font-size: .95rem;
+  color: rgba(96,220,255,.9);
+}
+/* ================= ONGOING AI PROJECT SECTION ================= */
+
+.ai-project {
+  margin-top: 30rem;              /* separates it from other sections */
+  text-align: center;
+  position: relative;
+}
+
+.ai-project::before {
+  content: "";
+  position: absolute;
+  inset: -200px 0 auto 0;
+  height: 400px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(168,85,247,.15),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* blinking cursor */
+.cursor {
+  animation: blink 1.1s steps(2) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+/* ===== AI TERMINAL ===== */
+
+.ai-terminal {
+  margin-top: 28px;
+  font-family: monospace;
+  font-size: .95rem;
+  color: rgba(96,220,255,.85);
+  line-height: 1.6;
+}
+
+.ai-terminal div {
+  opacity: .85;
+}
+
+/* scanline overlay */
+.ai-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.03),
+      rgba(255,255,255,.03) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  mix-blend-mode: overlay;
+  opacity: .35;
+}
+
+/* cursor blink already exists */
 
 /* ================= ABOUT ================= */
 .about {
@@ -687,6 +723,30 @@ footer {
 
   animation: modalIn .45s cubic-bezier(.22,1,.36,1);
 }
+/* ===== AI MODAL CONSOLE MODE ===== */
+
+.mod-modal-content {
+  font-family: monospace;
+}
+
+.mod-modal-content h2 {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mod-modal-content p {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.mod-modal-content ul {
+  margin: 12px 0 18px;
+  padding-left: 18px;
+}
+
+.mod-modal-content li {
+  margin-bottom: 6px;
+}
 
 @keyframes modalIn {
   from {
@@ -761,19 +821,28 @@ footer {
 
   <h2 class="section-title">Featured Mods</h2>
 <div class="featured-carousel">
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Flagship</span>
     <h3>Better Dungeons</h3>
     <p>Procedural dungeons with handcrafted pacing.</p>
   </div>
 
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons1"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Core</span>
     <h3>Core Engine</h3>
     <p>Optimized systems and shared infrastructure.</p>
   </div>
 
-  <div class="featured-card">
+  <div class="featured-card"
+    data-title="Better Dungeons2"
+     data-desc="Procedural dungeons with handcrafted pacing."
+     data-images="fd1.png,fd2.png">
     <span class="tag">Systems</span>
     <h3>World Systems</h3>
     <p>Deep control over terrain and progression.</p>
@@ -783,34 +852,26 @@ footer {
 
 </section>
 
-  <section class="ai-showcase" id="ai-project">
+  <section class="mods-section ai-project" id="ai-project">
 
-  <div class="ai-layout">
+  <h2 class="section-title">Ongoing Project</h2>
 
-    <!-- ROBOT -->
-    <div class="ai-robot">
-      <img src="ai-robot.png" alt="AI Robot">
-    </div>
+  <div class="ai-card" id="aiAssistantCard"
+       data-title="AI Assistant Mod"
+       data-desc="An in-game AI companion that players can talk to naturally. It answers questions, explains mechanics, and can execute commands to help the player in real time."
+       data-images="ai1.png,ai2.png">
 
-    <!-- TERMINAL -->
-    <div class="ai-terminal"
-         data-title="AI Assistant Mod"
-         data-desc="An in-game AI companion that players can talk to naturally. It answers questions, explains mechanics, and can execute commands in real time."
-         data-images="ai1.png,ai2.png">
+    <div class="ai-status">▮ STATUS: ACTIVE</div>
 
-      <div class="ai-header">
-        ▮ AI ASSISTANT MOD
-        <span class="ai-status">ACTIVE</span>
-      </div>
+    <h3 class="ai-title">AI ASSISTANT MOD</h3>
+    <p class="ai-sub">INTERACTIVE IN-GAME INTELLIGENCE SYSTEM</p>
+    
+    <p class="ai-desc">
+      Talk to the AI directly in-game. Ask anything, get explanations,
+      and let it execute commands to assist you in real time.
+    </p>
 
-      <div class="ai-screen">
-        <p>&gt; Hello player.</p>
-        <p>&gt; I can answer questions.</p>
-        <p>&gt; I can run commands.</p>
-        <p class="ai-cursor">&gt; awaiting input<span>_</span></p>
-      </div>
-
-    </div>
+    <div class="ai-prompt">&gt; awaiting input<span class="cursor">_</span></div>
 
   </div>
 
@@ -1159,7 +1220,24 @@ const modalBackdrop = document.querySelector(".mod-modal-backdrop");
 document.querySelectorAll(".mod-card").forEach(card => {
   card.addEventListener("click", () => {
     modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
+   modalDesc.innerHTML = `
+> boot sequence started
+> ai_core v0.9 loaded
+> language model initialized
+
+--------------------------------
+
+SYSTEM CAPABILITIES:
+- Natural language interaction
+- Explains game mechanics
+- Executes commands safely
+- Context-aware responses
+
+--------------------------------
+
+STATUS: ACTIVE DEVELOPMENT
+`;
+
 
     modalGallery.innerHTML = "";
 
@@ -1213,36 +1291,84 @@ function rotateCards() {
   applyPositions();
 }
 
-// click to focus
+/* ===== FEATURED CARD → MODAL ===== */
+
 featuredCards.forEach((card, index) => {
   card.addEventListener("click", () => {
-    while (positions[index] !== "pos-center") {
-      rotateCards();
+
+    // If NOT center → rotate into center
+    if (!card.classList.contains("pos-center")) {
+      while (!card.classList.contains("pos-center")) {
+        rotateCards();
+      }
+      resetAutoRotate();
+      return;
     }
-    resetAutoRotate();
+
+    // If CENTER → open modal
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
+    modalGallery.innerHTML = "";
+
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
+
+    if (images.length && images[0]) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
   });
 });
+
 
 let autoRotateTimer;
 
 function resetAutoRotate() {
   clearInterval(autoRotateTimer);
-  autoRotateTimer = setInterval(rotateCards, 3700);
+  autoRotateTimer = setInterval(rotateCards, 3100);
 }
 
 // init
 applyPositions();
 resetAutoRotate();
+/* ===== AI ASSISTANT MOD MODAL ===== */
+const aiCard = document.getElementById("aiAssistantCard");
 
-  const aiTerminal = document.querySelector(".ai-terminal");
+if (aiCard) {
+  aiCard.addEventListener("click", () => {
+    modalTitle.textContent = "AI Assistant Mod";
 
-if (aiTerminal) {
-  aiTerminal.addEventListener("click", () => {
-    modalTitle.textContent = aiTerminal.dataset.title;
-    modalDesc.textContent = aiTerminal.dataset.desc;
+    modalDesc.innerHTML = `
+      <strong>Overview</strong><br>
+      The AI Assistant Mod introduces an intelligent in-game companion
+      that players can interact with naturally through chat.<br><br>
+
+      <strong>Capabilities</strong>
+      <ul>
+        <li>Natural language conversation</li>
+        <li>Explains game mechanics and systems</li>
+        <li>Executes commands to assist the player</li>
+        <li>Context-aware responses</li>
+      </ul>
+
+      <strong>Development Status</strong><br>
+      Actively in development. Features are expanding continuously.
+    `;
+
     modalGallery.innerHTML = "";
 
-    aiTerminal.dataset.images.split(",").forEach(src => {
+    const images = aiCard.dataset.images.split(",");
+    images.forEach(src => {
       const img = document.createElement("img");
       img.src = src.trim();
       modalGallery.appendChild(img);
@@ -1253,6 +1379,22 @@ if (aiTerminal) {
   });
 }
 
+/* ===== AI CARD TERMINAL LOOP ===== */
+
+const aiLines = [
+  "> scanning environment",
+  "> parsing context",
+  "> ready to assist"
+];
+
+const liveLine = document.querySelector(".ai-live");
+let aiIndex = 0;
+
+setInterval(() => {
+  if (!liveLine) return;
+  liveLine.innerHTML = aiLines[aiIndex] + '<span class="cursor">_</span>';
+  aiIndex = (aiIndex + 1) % aiLines.length;
+}, 2800);
 
 
 </script>

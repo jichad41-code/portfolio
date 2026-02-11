@@ -918,6 +918,30 @@ footer {
     0%, 100% { box-shadow: 0 0 5px #00ffcc; filter: brightness(1); }
     50% { box-shadow: 0 0 15px #00ffcc; filter: brightness(1.3); }
 }
+
+  /* The initial glitch entrance */
+.glitch-appear {
+    animation: terminal_glitch 0.3s steps(2) forwards;
+}
+
+@keyframes terminal_glitch {
+    0% { transform: translate(2px, -2px); filter: hue-rotate(90deg) brightness(2); opacity: 0; }
+    20% { transform: translate(-2px, 2px); filter: hue-rotate(180deg); opacity: 1; }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); filter: hue-rotate(0deg); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); opacity: 1; }
+}
+
+/* Pulse for the portal room to keep it feeling "Live" */
+.px.portal {
+    animation: portal_glow 1.5s infinite ease-in-out;
+}
+
+@keyframes portal_glow {
+    0%, 100% { box-shadow: 0 0 5px #00ffcc; filter: brightness(1); }
+    50% { box-shadow: 0 0 15px #00ffcc; filter: brightness(1.4); }
+}
 </style>
 </head>
 
@@ -1646,11 +1670,19 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
         1,1,1,1,1,1,1,1
     ];
 
-    blueprint.forEach(cell => {
-        const pixel = document.createElement('div');
-        pixel.className = "px " + (cell === 1 ? 'stone' : cell === 2 ? 'portal' : cell === 3 ? 'lava' : 'empty');
-        mapDiv.appendChild(pixel);
-    });
+   blueprint.forEach((cell, index) => {
+    const pixel = document.createElement('div');
+    pixel.className = "px " + (cell === 1 ? 'stone' : cell === 2 ? 'portal' : cell === 3 ? 'lava' : 'empty');
+    
+    // Start invisible
+    pixel.style.opacity = "0";
+    mapDiv.appendChild(pixel);
+
+    // Staggered glitch entrance
+    setTimeout(() => {
+        pixel.classList.add('glitch-appear');
+    }, index * 15); // 15ms delay per pixel for a "drawing" effect
+});
 
     // 2. The Coordinates
     const coordDiv = document.createElement('div');

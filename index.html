@@ -776,7 +776,66 @@ footer {
 }
 .log-entry h4 { color: var(--accent-strong); margin-bottom: 5px; }
 .status-tag { float: right; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
-  
+
+  /* --- ENHANCED AI MODAL STYLES --- */
+.ai-modal-body {
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+    padding: 10px 0;
+}
+
+.data-header {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(168, 85, 247, 0.1);
+    padding: 12px 18px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 0.8rem;
+    color: var(--accent-strong);
+    letter-spacing: 1px;
+}
+
+.log-entry {
+    background: rgba(24, 18, 45, 0.5);
+    border-left: 3px solid var(--accent);
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 0 12px 12px 0;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.log-entry:hover {
+    transform: translateX(5px);
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.log-entry h4 {
+    color: var(--accent-strong);
+    margin-bottom: 8px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.log-entry p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.status-tag {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+    float: right;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
 </style>
 </head>
 
@@ -1422,42 +1481,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
-    if (expandBtn) {
-        expandBtn.onclick = () => {
-            if(!modal) return;
+  /* ===== AI SYSTEM DATA MODAL ===== */
+if (expandBtn) {
+    expandBtn.onclick = () => {
+        const modal = document.getElementById("modModal");
+        if (!modal) return;
 
-            // Inject technical AI content into the modal
-            document.getElementById("modalTitle").textContent = "PROJECT: NEURAL_BRIDGE // DIAGNOSTICS";
-            const modalDesc = document.getElementById("modalDesc");
-            modalDesc.innerHTML = `
-                <div class="ai-modal-body">
-                    <div class="data-header">
-                        <span>ENCRYPTION: AES-256</span>
-                        <span>STATUS: STABLE_ALPHA</span>
-                    </div>
-                    <div class="log-entry">
-                        <span class="status-tag">ACTIVE</span>
-                        <h4>Neural Pathfinding v4.2</h4>
-                        <p>Interprets complex terrain data to generate optimal construction paths while avoiding environmental hazards.</p>
-                    </div>
-                    <div class="log-entry">
-                        <span class="status-tag">STABLE</span>
-                        <h4>LLM Integration Bridge</h4>
-                        <p>Synchronizes Minecraft world-states with Large Language Models for natural language command processing.</p>
-                    </div>
+        // Set Technical Title
+        document.getElementById("modalTitle").textContent = "NEURAL_INTERFACE_LOGS // ALPHA_BUILD";
+        
+        // Inject Attractive Technical Content
+        const modalDesc = document.getElementById("modalDesc");
+        modalDesc.innerHTML = `
+            <div class="ai-modal-body">
+                <div class="data-header">
+                    <span>ENCRYPTION: AES-256</span>
+                    <span>BRIDGE_STATUS: STABLE</span>
                 </div>
-            `;
-            
-            // Clear standard gallery for technical view
-            const modalGallery = document.getElementById("modalGallery");
-            modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
 
-            // Show the modal
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        };
-    }
-});
+                <div class="log-entry">
+                    <span class="status-tag">CORE</span>
+                    <h4>Neural Pathfinding v4.2</h4>
+                    <p>Unlike standard AI, Rox-AI interprets the raw voxel data of the Minecraft world to "ghost-build" structures. It calculates path costs to avoid hazards like lava or gravel automatically.</p>
+                </div>
+
+                <div class="log-entry">
+                    <span class="status-tag">LINK</span>
+                    <h4>LLM World-State Bridge</h4>
+                    <p>The mod creates a local bridge between your world and Large Language Models. This allows the assistant to 'know' the contents of nearby chests and suggest crafting recipes based on your current inventory.</p>
+                </div>
+
+                <div class="log-entry" style="border-color: #ffbd2e;">
+                    <span class="status-tag" style="background:#ffbd2e;">BETA</span>
+                    <h4>Autonomous Task Delegation</h4>
+                    <p>Assign complex commands like "Clear a 20x20 area of trees" or "Build a stone wall around the village." The AI handles resource gathering and placement with pixel-perfect accuracy.</p>
+                </div>
+            </div>
+        `;
+
+        // Clear and update gallery for a technical look
+        const modalGallery = document.getElementById("modalGallery");
+        modalGallery.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 30px; border: 1px dashed var(--accent); border-radius: 12px; background: rgba(168, 85, 247, 0.05);">
+                <p style="color: var(--accent-strong); font-size: 0.85rem; font-family: monospace; letter-spacing: 1px;">
+                    [VISUAL_STREAM_ENCRYPTED: ACCESS_LEVEL_4_REQUIRED]
+                </p>
+            </div>
+        `;
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    };
+}
 </script>
 
 </body>

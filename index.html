@@ -1646,6 +1646,14 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
     wrapper.appendChild(coordDiv);
     typewriterEl.appendChild(wrapper);
 }
+          else if(cmd.includes('obsidian')) {
+                aiReply.textContent = "> [ROX-AI]: Material request approved. Delivering 64x Obsidian blocks.";
+                typewriterEl.appendChild(aiReply); // This was likely missing
+            } 
+            else if(cmd.includes('voice')) {
+                aiReply.textContent = "> [ROX-AI]: Neural bridge synced. Monitoring voice frequency now.";
+                typewriterEl.appendChild(aiReply); // This was likely missing
+            }
             // Keeps the newest text visible
             const terminalBody = document.querySelector('.terminal-body');
             terminalBody.scrollTo({

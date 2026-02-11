@@ -750,6 +750,47 @@ footer {
 
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
+
+  /* --- AI MODAL SPECIAL STYLES --- */
+.ai-modal-body {
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.data-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    color: var(--accent-strong);
+}
+
+.log-entry {
+    background: rgba(168, 85, 247, 0.05);
+    border-left: 2px solid var(--accent);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 8px 8px 0;
+}
+
+.log-entry h4 {
+    color: var(--accent-strong);
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.status-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: white;
+    float: right;
+}
   
 </style>
 </head>
@@ -1414,7 +1455,50 @@ document.addEventListener('DOMContentLoaded', () => {
         typeLine();
     }
 });
+expandBtn.onclick = () => {
+    const modal = document.getElementById("modModal");
+    if(!modal) return;
 
+    // Change Modal Title
+    document.getElementById("modalTitle").textContent = "Neural Assistant — Project Logs";
+    
+    // Inject AI-Specific Technical Content
+    const modalDesc = document.getElementById("modalDesc");
+    modalDesc.innerHTML = `
+        <div class="ai-modal-body">
+            <div class="data-header">
+                <span>ENCRYPTION: AES-256</span>
+                <span>ORIGIN: LOCAL_HOST_BRIDGE</span>
+            </div>
+
+            <div class="log-entry">
+                <span class="status-tag">ACTIVE</span>
+                <h4>Neural Pathfinding v4.2</h4>
+                <p>The AI can now interpret complex terrain and "ghost-build" structures based on natural language prompts. It calculates resource costs in real-time before initiating construction.</p>
+            </div>
+
+            <div class="log-entry">
+                <span class="status-tag">STABLE</span>
+                <h4>LLM Integration Bridge</h4>
+                <p>Utilizing a local bridge to connect Minecraft world-state data to Large Language Models. This allows the assistant to 'know' what is in your chests and nearby threats.</p>
+            </div>
+
+            <div class="log-entry" style="border-color: #ffbd2e;">
+                <span class="status-tag" style="background:#ffbd2e;">PENDING</span>
+                <h4>Voice Command Alpha</h4>
+                <p>Currently testing real-time voice-to-action processing. Beta testers will be able to speak building commands directly without opening the chat window.</p>
+            </div>
+        </div>
+    `;
+
+    // Clear the gallery for this specific modal (unless you have AI screenshots)
+    const modalGallery = document.getElementById("modalGallery");
+    modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
+
+    // Show the modal
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+};
 </script>
 
 </body>

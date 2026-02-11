@@ -837,19 +837,9 @@ footer {
 .control { width: 12px; height: 12px; border-radius: 50%; }
 .red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
 
-.terminal-body {
-    padding: 35px;
-    background: rgba(0, 0, 0, 0.2); /* Darker inner contrast */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-  .console-rows {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0; /* Let the margins in JS handle spacing */
+.terminal-body { 
+    padding: 40px; 
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
 }
 
 .expand-data-btn {
@@ -869,20 +859,19 @@ footer {
 .expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
 
 /* --- AI THINKING LOADER --- */
-/* --- THE LOADER (Inside the box) --- */
 .ai-thinking-loader {
-    display: inline-flex; /* Keeps it from stretching the full width */
+    display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 5px;
-    padding-left: 5px;
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
     color: var(--accent-strong);
 }
 
 .spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(168, 85, 247, 0.2);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(192, 132, 252, 0.2);
     border-top-color: var(--accent-strong);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
@@ -890,25 +879,24 @@ footer {
 
 /* Flickering effect for the text */
 .flicker-text {
-    font-family: monospace;
-    font-size: 0.85rem;
-    animation: textFlicker 1.5s infinite;
-}
-
-@keyframes textFlicker {
-    0%, 100% { opacity: 1; filter: brightness(1); }
-    50% { opacity: 0.4; filter: brightness(1.5); }
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    animation: textFlicker 2s infinite;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-/* Ensure the button doesn't push the loader out */
-.expand-data-btn {
-    align-self: flex-start;
-    margin-top: 25px;
+@keyframes textFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+    52% { opacity: 0.8; }
+    54% { opacity: 0.4; }
 }
+
+.hidden { display: none !important; }
+  
 </style>
 </head>
 
@@ -997,18 +985,18 @@ footer {
     </div>
 
     <div id="reveal-box" class="reveal-box hidden">
-       <div class="terminal-body">
-    <div class="console-rows">
-        <div id="typewriter-content" class="typewriter-text"></div>
-        
-        <div id="ai-loader" class="ai-thinking-loader hidden">
-            <div class="spinner"></div>
-            <span class="flicker-text">AI is thinking...</span>
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="control red"></span>
+                <span class="control amber"></span>
+                <span class="control green"></span>
+            </div>
+            <div class="terminal-title">ROX_NEURAL_LOGS.sh</div>
         </div>
-    </div>
-
-    <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
-</div>
+        <div class="terminal-body">
+            <div id="typewriter-content" class="typewriter-text"></div>
+            <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+        </div>
     </div>
 </div>
             <div class="terminal-body">

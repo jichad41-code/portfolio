@@ -739,6 +739,67 @@ footer {
     font-size: 1rem;
     line-height: 1.4;
 }
+  /* Container for 3D depth */
+.hype-stage-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    perspective: 1000px;
+}
+
+/* The Terminal Box Upgrade */
+.reveal-box {
+    width: 100%;
+    background: rgba(24, 18, 45, 0.65); /* Semi-transparent background */
+    backdrop-filter: blur(15px);      /* The Glass Blur effect */
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.2);
+    overflow: hidden;
+    animation: boxEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes boxEntrance {
+    0% { opacity: 0; transform: translateY(30px) rotateX(-5deg); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+
+/* Header with Mac-style controls */
+.terminal-header {
+    background: rgba(168, 85, 247, 0.15);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.terminal-controls { display: flex; gap: 8px; margin-right: 15px; }
+.control { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
+
+/* Body with Scanline Texture */
+.terminal-body { 
+    padding: 40px; 
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
+}
+
+/* Neon Button Upgrade */
+.expand-data-btn {
+    margin-top: 30px;
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0; /* JS reveals this */
+}
+
+.expand-data-btn.visible { opacity: 1; }
+.expand-data-btn:hover { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent); }
 </style>
 </head>
 
@@ -815,6 +876,8 @@ footer {
     <h2 class="section-title">In Development</h2>
     
     <div class="hype-stage-wrapper">
+        <div class="terminal-scanline"></div>
+
         <div id="loading-stage" class="loading-state">
             <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
             <div class="progress-bar-wrapper">
@@ -828,16 +891,19 @@ footer {
 
         <div id="reveal-box" class="reveal-box hidden">
             <div class="terminal-header">
-                <div class="terminal-dots">
-                    <span class="dot red"></span>
-                    <span class="dot amber"></span>
-                    <span class="dot green"></span>
+                <div class="terminal-controls">
+                    <span class="control red"></span>
+                    <span class="control amber"></span>
+                    <span class="control green"></span>
                 </div>
-                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
+                <div class="terminal-title">ROX_NEURAL_LOGS.sh</div>
             </div>
             <div class="terminal-body">
-                <p id="typewriter-content" class="typewriter-text"></p>
-                <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+                <div id="typewriter-content" class="typewriter-text"></div>
+                
+                <button id="expand-btn" class="expand-data-btn">
+                    EXPAND SYSTEM DATA
+                </button>
             </div>
         </div>
     </div>
@@ -1341,47 +1407,47 @@ function startReveal() {
     loadingStage.classList.add('hidden');
     revealBox.classList.remove('hidden');
     
-    // The conversation data
-    const conversation = [
+    // Conversation data
+    const chat = [
         { role: "player", text: "> /rox_ai build simple wheat farm" },
         { role: "ai",     text: "> [ROX-AI]: Command received. Analyzing local resources..." },
         { role: "player", text: "> Where are you building?" },
         { role: "ai",     text: "> [ROX-AI]: 15 blocks SE of current position. ETA: 45 seconds." },
-        { role: "player", text: "> Thanks." },
-        { role: "ai",     text: "> [ROX-AI]: Affirmative. Standing by for further instructions." }
+        { role: "ai",     text: "> [ROX-AI]: Affirmative. Standing by for instructions." }
     ];
 
-    playConversation(conversation);
+    playChat(chat);
 }
 
-function playConversation(chatArray) {
+function playChat(chatArray) {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
-    let lineIndex = 0;
+    let lineIdx = 0;
 
     function typeLine() {
-        if (lineIndex < chatArray.length) {
-            const lineData = chatArray[lineIndex];
-            const lineElement = document.createElement('div');
+        if (lineIdx < chatArray.length) {
+            const lineData = chatArray[lineIdx];
+            const lineDiv = document.createElement('div');
             
-            // Apply different colors based on who is speaking
-            lineElement.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
-            lineElement.style.marginBottom = '8px';
-            lineElement.style.textShadow = lineData.role === 'ai' ? '0 0 8px var(--accent)' : 'none';
+            // AI text glows purple, player text stays white
+            lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
+            if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
+            lineDiv.style.marginBottom = '12px';
+            lineDiv.style.fontFamily = 'monospace';
             
-            typewriterEl.appendChild(lineElement);
+            typewriterEl.appendChild(lineDiv);
             
-            let charIndex = 0;
+            let charIdx = 0;
             const text = lineData.text;
 
             function typeChar() {
-                if (charIndex < text.length) {
-                    lineElement.textContent += text.charAt(charIndex);
-                    charIndex++;
+                if (charIdx < text.length) {
+                    lineDiv.textContent += text.charAt(charIdx);
+                    charIdx++;
                     setTimeout(typeChar, 30);
                 } else {
-                    lineIndex++;
-                    setTimeout(typeLine, 600); // Pause before next person speaks
+                    lineIdx++;
+                    setTimeout(typeLine, 600); // Wait before next person speaks
                 }
             }
             typeChar();

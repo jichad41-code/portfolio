@@ -796,7 +796,49 @@ footer {
     color: var(--muted);
     margin-top: 5px;
 }
-  
+
+  .command-dashboard {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Added via JS when typing ends */
+.command-dashboard.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.cmd-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    color: var(--accent-strong);
+    border-radius: 6px;
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+    cursor: pointer; /* Makes it look clickable */
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.cmd-tag:hover {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: var(--accent-strong);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    transform: translateY(-2px);
+}
+
+.cmd-tag:active {
+    transform: scale(0.95);
+}
 </style>
 </head>
 
@@ -906,7 +948,11 @@ footer {
                         <span class="flicker-text">AI is thinking...</span>
                     </div>
                 </div>
-
+<div id="cmd-dashboard" class="command-dashboard">
+    <span class="cmd-tag" data-command="/locate_stronghold">/locate_stronghold</span>
+    <span class="cmd-tag" data-command="/supply_obsidian">/supply_obsidian</span>
+    <span class="cmd-tag" data-command="/sync_voice">/sync_voice</span>
+</div>
                 <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
             </div>
         </div>

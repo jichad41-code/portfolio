@@ -1664,40 +1664,7 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
     });
 });
 
-  // Inside the tag.addEventListener('click', () => { ... })
-if(cmd.includes('stronghold')) {
-    response = "> [ROX-AI]: Stronghold signature detected. Displaying layout:";
-    
-    // Create the map element
-    const mapDiv = document.createElement('div');
-    mapDiv.className = "stronghold-map";
-    
-    // Simple 8x8 layout grid (0=empty, 1=stone, 2=portal, 3=lava)
-    const layout = [
-        1,1,1,1,1,1,1,1,
-        1,0,0,0,0,0,0,1,
-        1,0,1,3,3,1,0,1,
-        1,0,3,2,2,3,0,1,
-        1,0,3,2,2,3,0,1,
-        1,0,1,3,3,1,0,1,
-        1,0,0,0,0,0,0,1,
-        1,1,1,1,1,1,1,1
-    ];
-
-    layout.forEach(cell => {
-        const pixel = document.createElement('div');
-        pixel.className = "px";
-        if(cell === 1) pixel.classList.add('stone');
-        if(cell === 2) pixel.classList.add('portal');
-        if(cell === 3) pixel.classList.add('lava');
-        mapDiv.appendChild(pixel);
-    });
-
-    // Add the response text and then the map
-    aiReply.textContent = response;
-    typewriterEl.appendChild(aiReply);
-    typewriterEl.appendChild(mapDiv);
-}
+ 
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
     if (expandBtn) {

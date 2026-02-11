@@ -614,68 +614,82 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-.ai-terminal-reveal {
+.hype-container {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    min-height: 380px !important;
-    padding: 0 !important; /* Header needs to touch the top */
-    overflow: hidden;
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    display: flex;
-    flex-direction: column;
+    min-height: 400px;
+    position: relative;
 }
 
-.terminal-header {
-    background: rgba(168, 85, 247, 0.15);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
-}
-
-.terminal-dots { display: flex; gap: 8px; margin-right: 20px; }
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
-.terminal-title { font-family: monospace; font-size: 0.9rem; color: var(--muted); }
-
-.terminal-content {
-    padding: 40px;
-    flex-grow: 1;
-    font-family: 'Consolas', 'Monaco', monospace;
-}
-
-.glitch-line {
-    font-size: 1.15rem;
-    margin-bottom: 12px;
-    letter-spacing: 0.5px;
-}
-
-.glitch-line.player { color: var(--text); }
-.glitch-line.ai { 
-    color: var(--accent-strong); 
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-    font-weight: bold;
-}
-
-.terminal-footer {
-    padding: 20px;
+/* --- LOADING STYLES --- */
+.loading-state {
     text-align: center;
-    font-size: 0.75rem;
-    letter-spacing: 3px;
-    color: var(--accent);
-    background: rgba(0,0,0,0.2);
+    transition: opacity 0.4s ease;
 }
 
-/* SUBTLE GLITCH ANIMATION ON HOVER */
-.ai-terminal-reveal:hover .glitch-line.ai {
-    animation: simple-glitch 0.3s infinite alternate;
+.pulsing-text {
+    font-family: monospace;
+    letter-spacing: 5px;
+    color: var(--accent-strong);
+    text-shadow: 0 0 15px var(--accent);
+    animation: textPulse 1.5s infinite alternate;
+    margin-bottom: 25px;
 }
 
-@keyframes simple-glitch {
-    from { transform: skew(0deg); }
-    to { transform: skew(2deg); text-shadow: 2px 0 red, -2px 0 blue; }
+.progress-bar-wrapper {
+    width: 300px; height: 4px;
+    background: rgba(168, 85, 247, 0.1);
+    margin: 0 auto 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    overflow: hidden;
 }
+
+.progress-bar-fill {
+    width: 0%; height: 100%;
+    background: var(--accent-strong);
+    box-shadow: 0 0 15px var(--accent);
+}
+
+/* --- REVEAL CARD --- */
+#aiTerminal {
+    display: none; /* Changed to flex via JS */
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+#aiTerminal.show {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* THE FLICKER EFFECT */
+.flicker-overlay {
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.animate-flicker {
+    animation: flicker-screen 0.4s ease-out;
+}
+
+@keyframes flicker-screen {
+    0% { opacity: 0; }
+    10% { opacity: 0.8; background: var(--accent); }
+    20% { opacity: 0; }
+    40% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+
+@keyframes textPulse { from { opacity: 0.3; } to { opacity: 1; } }
 </style>
 </head>
 
@@ -745,42 +759,45 @@ footer {
 
 
 </section>
-<div style="height: 18rem;"></div>
 
-<section class="mods-section in-dev-highlight" id="ai-project">
+  <div style="height: 18rem;"></div>
+
+<section class="mods-section" id="ai-hype-section">
     <h2 class="section-title">In Development</h2>
     
-    <div class="ai-terminal-reveal mod-card" 
-         data-title="Neural AI Assistant" 
-         data-desc="An intelligent in-game companion that uses neural networks to execute commands, build blueprints, and assist with survival strategy.">
-        
-        <div class="terminal-header">
-            <div class="terminal-dots">
-                <span class="dot red"></span>
-                <span class="dot amber"></span>
-                <span class="dot green"></span>
-            </div>
-            <span class="terminal-title">ROX_AI_CORE.sh</span>
-        </div>
-
-        <div class="terminal-content">
-            <div class="ai-glitch-wrapper">
-                <p class="glitch-line player">> Initializing System...</p>
-                <p class="glitch-line ai">> [SYSTEM]: ROX_AI_v1.0 ONLINE</p>
-                <p class="glitch-line ai">> [ROX-AI]: I have assumed control of this repository.</p>
-                <p class="glitch-line player">> Executing: "Build Defensive Perimeter"</p>
-                <p class="glitch-line ai">> Constructing... [||||||----] 60%</p>
+    <div class="hype-container" id="hypeContainer">
+        <div class="loading-state" id="loadingState">
+            <div class="loading-content">
+                <h3 class="pulsing-text">SOMETHING BIG IS LOADING UP...</h3>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <p class="status-code">NEURAL_DECRYPTION: <span id="percent">0%</span></p>
             </div>
         </div>
 
-        <div class="terminal-footer">
-            <span>CLICK TO VIEW PROJECT LOGS</span>
+        <div class="ai-terminal-reveal mod-card" id="aiTerminal" 
+             data-title="Neural AI Assistant" 
+             data-desc="An intelligent in-game companion that uses neural networks to execute commands and assist with survival strategy.">
+            
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+                </div>
+                <span class="terminal-title">ROX_AI_CORE.sh</span>
+            </div>
+
+            <div class="terminal-content">
+                <div class="ai-glitch-wrapper" id="terminalText">
+                    </div>
+            </div>
+
+            <div class="terminal-footer">SYSTEM_OVERRIDE: SUCCESSFUL</div>
         </div>
     </div>
 </section>
 
 <div style="height: 18rem;"></div>
-  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1229,7 +1246,75 @@ function resetAutoRotate() {
 applyPositions();
 resetAutoRotate();
 
+// Add a flicker element to body if it doesn't exist
+if (!document.querySelector('.flicker-overlay')) {
+    const flicker = document.createElement('div');
+    flicker.className = 'flicker-overlay';
+    document.body.appendChild(flicker);
+}
 
+const hypeStage = document.getElementById('hypeContainer');
+const loadingBar = document.getElementById('progressBar');
+const percentDisplay = document.getElementById('percent');
+const terminalUI = document.getElementById('aiTerminal');
+const terminalBody = document.getElementById('terminalText');
+const flickerEl = document.querySelector('.flicker-overlay');
+
+let isBooted = false;
+
+const hypeObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !isBooted) {
+        isBooted = true;
+        bootSystem();
+    }
+}, { threshold: 0.6 });
+
+hypeObserver.observe(hypeStage);
+
+function bootSystem() {
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 2.5;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            triggerReveal();
+        }
+        loadingBar.style.width = progress + '%';
+        percentDisplay.textContent = Math.floor(progress) + '%';
+    }, 60);
+}
+
+function triggerReveal() {
+    // 1. Flicker the screen
+    flickerEl.classList.add('animate-flicker');
+
+    // 2. Swap Content
+    setTimeout(() => {
+        document.getElementById('loadingState').style.display = 'none';
+        terminalUI.classList.add('show');
+        
+        // 3. Type Terminal Content
+        const lines = [
+            { type: 'ai', text: "> [STATUS]: CORE_DECRYPTED" },
+            { type: 'player', text: "> ROX-AI, initialize neural bridge." },
+            { type: 'ai', text: "> Initializing... System is now under my protection." }
+        ];
+
+        let lineIdx = 0;
+        function type() {
+            if (lineIdx < lines.length) {
+                const p = document.createElement('p');
+                p.className = `glitch-line ${lines[lineIdx].type}`;
+                p.textContent = lines[lineIdx].text;
+                terminalBody.appendChild(p);
+                lineIdx++;
+                setTimeout(type, 1000);
+            }
+        }
+        type();
+    }, 200);
+}
 
 </script>
 

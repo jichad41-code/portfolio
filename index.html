@@ -1564,17 +1564,36 @@ document.addEventListener('click', () => {
     }
 }, { once: true }); // Only runs once on the first click
     // 2. Loading Bar Logic
-    let progress = 0;
-    const loadingInterval = setInterval(() => {
-        progress += Math.random() * 5.0;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadingInterval);
-            setTimeout(startReveal, 250); 
-        }
-        if (progressBar) progressBar.style.width = progress + '%';
-        if (percentText) percentText.textContent = Math.floor(progress) + '%';
-    }, 30);
+   // --- 2. Intersection-Triggered Loading Logic ---
+let progress = 0;
+let loadingStarted = false;
+
+const hypeSection = document.getElementById('ai-hype-section');
+
+const hypeObserver = new IntersectionObserver((entries) => {
+    // Only start if it's intersecting AND hasn't started yet
+    if (entries[0].isIntersecting && !loadingStarted) {
+        loadingStarted = true;
+        
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 5.0; // Faster speed
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadingInterval);
+                setTimeout(startReveal, 200); 
+            }
+            
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (percentText) percentText.textContent = Math.floor(progress) + '%';
+        }, 30);
+        
+        // Stop observing once it has started
+        hypeObserver.unobserve(hypeSection);
+    }
+}, { threshold: 0.4 }); // Trigger when 40% of the section is visible
+
+if (hypeSection) hypeObserver.observe(hypeSection);
 
     // 3. Transition to Terminal
     function startReveal() {

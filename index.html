@@ -802,7 +802,9 @@ footer {
 
 <body>
 
-  <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3" preload="auto"></audio>
+  <audio id="type-sound" preload="auto">
+    <source src="https://www.soundjay.com/communication/typewriter-key-1.mp3" type="audio/mpeg">
+</audio>
   <!-- EXPANDABLE NAV -->
 <div class="nav-wrapper">
   <button class="nav-toggle" id="navToggle">+</button>
@@ -1372,6 +1374,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiLoader = document.getElementById('ai-loader');
     const modal = document.getElementById("modModal");
 
+  // Add this at the start of your DOMContentLoaded block
+document.addEventListener('click', () => {
+    const typeSound = document.getElementById('type-sound');
+    if (typeSound) {
+        // Play and immediately pause to "unlock" the audio context
+        typeSound.play().then(() => {
+            typeSound.pause();
+            typeSound.currentTime = 0;
+        }).catch(() => {});
+    }
+}, { once: true }); // Only runs once on the first click
     // 2. Loading Bar Logic
     let progress = 0;
     const loadingInterval = setInterval(() => {

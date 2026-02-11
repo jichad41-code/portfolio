@@ -839,6 +839,25 @@ footer {
 .cmd-tag:active {
     transform: scale(0.95);
 }
+
+  /* Pixel Map Container */
+.stronghold-map {
+    display: inline-grid;
+    grid-template-columns: repeat(8, 12px);
+    grid-template-rows: repeat(8, 12px);
+    gap: 1px;
+    margin: 15px 0;
+    padding: 8px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+}
+
+/* Individual Pixels */
+.px { width: 12px; height: 12px; }
+.px.stone { background: #5a5a5a; } /* Stronghold Walls */
+.px.portal { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; } /* Portal Room */
+.px.lava { background: #ff4500; } /* Lava */
 </style>
 </head>
 
@@ -1561,6 +1580,41 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
         }, 1200); // 1.2 second "thinking" delay
     });
 });
+
+  // Inside the tag.addEventListener('click', () => { ... })
+if(cmd.includes('stronghold')) {
+    response = "> [ROX-AI]: Stronghold signature detected. Displaying layout:";
+    
+    // Create the map element
+    const mapDiv = document.createElement('div');
+    mapDiv.className = "stronghold-map";
+    
+    // Simple 8x8 layout grid (0=empty, 1=stone, 2=portal, 3=lava)
+    const layout = [
+        1,1,1,1,1,1,1,1,
+        1,0,0,0,0,0,0,1,
+        1,0,1,3,3,1,0,1,
+        1,0,3,2,2,3,0,1,
+        1,0,3,2,2,3,0,1,
+        1,0,1,3,3,1,0,1,
+        1,0,0,0,0,0,0,1,
+        1,1,1,1,1,1,1,1
+    ];
+
+    layout.forEach(cell => {
+        const pixel = document.createElement('div');
+        pixel.className = "px";
+        if(cell === 1) pixel.classList.add('stone');
+        if(cell === 2) pixel.classList.add('portal');
+        if(cell === 3) pixel.classList.add('lava');
+        mapDiv.appendChild(pixel);
+    });
+
+    // Add the response text and then the map
+    aiReply.textContent = response;
+    typewriterEl.appendChild(aiReply);
+    typewriterEl.appendChild(mapDiv);
+}
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
     if (expandBtn) {

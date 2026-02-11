@@ -858,32 +858,43 @@ footer {
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
 
-  /* --- AI THINKING LOADER --- */
+/* --- AI THINKING LOADER --- */
 .ai-thinking-loader {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 10px;
-    font-family: monospace;
-    font-size: 0.9rem;
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
     color: var(--accent-strong);
-    opacity: 0.8;
 }
 
 .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(168, 85, 247, 0.3);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(192, 132, 252, 0.2);
     border-top-color: var(--accent-strong);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+}
+
+/* Flickering effect for the text */
+.flicker-text {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    animation: textFlicker 2s infinite;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-/* Ensure the hidden class works */
+@keyframes textFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+    52% { opacity: 0.8; }
+    54% { opacity: 0.4; }
+}
+
 .hidden { display: none !important; }
   
 </style>
@@ -996,12 +1007,14 @@ footer {
                 </button>
             </div>
         </div>
-  <div class="terminal-body">
+<div class="terminal-body">
     <div id="typewriter-content" class="typewriter-text"></div>
+    
     <div id="ai-loader" class="ai-thinking-loader hidden">
         <div class="spinner"></div>
-        <span>AI is thinking...</span>
+        <span class="flicker-text">AI is thinking...</span>
     </div>
+
     <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
 </div>
     </div>
@@ -1520,11 +1533,11 @@ function startReveal() {
 function playChat(chatArray) {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
-    const aiLoader = document.getElementById('ai-loader'); // Select the loader
+    const aiLoader = document.getElementById('ai-loader');
     let lineIdx = 0;
 
     function typeLine() {
-        // Ensure loader is hidden when we start typing
+        // Hide loader whenever a new line starts typing
         aiLoader.classList.add('hidden');
 
         if (lineIdx < chatArray.length) {
@@ -1549,17 +1562,18 @@ function playChat(chatArray) {
                 } else {
                     lineIdx++;
                     
-                    // IF THE NEXT LINE IS AI, SHOW THE LOADER
+                    // Show loader ONLY if the next line belongs to the AI
                     if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
                         aiLoader.classList.remove('hidden');
-                        setTimeout(typeLine, 1200); // Wait 1.2s for "thinking"
+                        setTimeout(typeLine, 1500); // 1.5s "thinking" time
                     } else {
-                        setTimeout(typeLine, 600); // Standard pause for player
+                        setTimeout(typeLine, 600); // Standard pause for player lines
                     }
                 }
             }
             typeChar();
         } else {
+            // End of conversation
             expandBtn.classList.add('visible');
         }
     }

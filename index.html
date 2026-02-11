@@ -800,6 +800,65 @@ footer {
 
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent); }
+
+  .hype-stage-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    perspective: 1000px; /* Essential for the 3D pop-in effect */
+}
+
+/* THE BOX UPGRADE */
+.reveal-box {
+    width: 100%;
+    background: rgba(24, 18, 45, 0.65); /* Semi-transparent purple */
+    backdrop-filter: blur(15px);      /* The "Glass" effect */
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.2);
+    overflow: hidden;
+    animation: terminalIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes terminalIn {
+    0% { opacity: 0; transform: translateY(30px) rotateX(-10deg); }
+    100% { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+
+.terminal-header {
+    background: rgba(168, 85, 247, 0.15);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.terminal-controls { display: flex; gap: 8px; margin-right: 15px; }
+.control { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
+
+.terminal-body { 
+    padding: 40px; 
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
+}
+
+.expand-data-btn {
+    margin-top: 30px;
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0; /* Revealed by JS */
+}
+
+.expand-data-btn.visible { opacity: 1; }
+.expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
+
+  
 </style>
 </head>
 
@@ -873,31 +932,35 @@ footer {
   <div style="height: 18rem;"></div>
 
 <section class="mods-section" id="ai-hype-section">
-    <h2 class="section-title">In Development</h2>
-    
-    <div class="hype-stage-wrapper">
-        <div class="terminal-scanline"></div>
+   <h2 class="section-title">In Development</h2>
 
-        <div id="loading-stage" class="loading-state">
-            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
-            <div class="progress-bar-wrapper">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-            <div class="loading-meta">
-                <p>DECRYPTING: <span id="percent">0%</span></p>
-                <p>CORE: STABLE</p>
-            </div>
+<div class="hype-stage-wrapper">
+    <div id="loading-stage" class="loading-state">
+        <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
+        <div class="progress-bar-wrapper">
+            <div id="progressBar" class="progress-bar-fill"></div>
         </div>
+        <div class="loading-meta">
+            <p>DECRYPTING: <span id="percent">0%</span></p>
+            <p>CORE: STABLE</p>
+        </div>
+    </div>
 
-        <div id="reveal-box" class="reveal-box hidden">
-            <div class="terminal-header">
-                <div class="terminal-controls">
-                    <span class="control red"></span>
-                    <span class="control amber"></span>
-                    <span class="control green"></span>
-                </div>
-                <div class="terminal-title">ROX_NEURAL_LOGS.sh</div>
+    <div id="reveal-box" class="reveal-box hidden">
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="control red"></span>
+                <span class="control amber"></span>
+                <span class="control green"></span>
             </div>
+            <div class="terminal-title">ROX_NEURAL_LOGS.sh</div>
+        </div>
+        <div class="terminal-body">
+            <div id="typewriter-content" class="typewriter-text"></div>
+            <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+        </div>
+    </div>
+</div>
             <div class="terminal-body">
                 <div id="typewriter-content" class="typewriter-text"></div>
                 
@@ -1408,15 +1471,15 @@ function startReveal() {
     revealBox.classList.remove('hidden');
     
     // Conversation data
-    const chat = [
-        { role: "player", text: "> /rox_ai build simple wheat farm" },
-        { role: "ai",     text: "> [ROX-AI]: Command received. Analyzing local resources..." },
-        { role: "player", text: "> Where are you building?" },
-        { role: "ai",     text: "> [ROX-AI]: 15 blocks SE of current position. ETA: 45 seconds." },
-        { role: "ai",     text: "> [ROX-AI]: Affirmative. Standing by for instructions." }
+    const conversation = [
+        { role: "player", text: "> /rox_ai build defensive perimeter" },
+        { role: "ai",     text: "> [ROX-AI]: Analyzing terrain... Perimeter coordinates set." },
+        { role: "player", text: "> What materials are needed?" },
+        { role: "ai",     text: "> [ROX-AI]: 64x Obsidian, 12x End Crystal. Initiating build..." },
+        { role: "ai",     text: "> [ROX-AI]: System standing by. Encryption secure." }
     ];
 
-    playChat(chat);
+    playChat(conversation);
 }
 
 function playChat(chatArray) {
@@ -1429,7 +1492,7 @@ function playChat(chatArray) {
             const lineData = chatArray[lineIdx];
             const lineDiv = document.createElement('div');
             
-            // AI text glows purple, player text stays white
+            // Player text is white, AI text glows purple
             lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
             if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
             lineDiv.style.marginBottom = '12px';
@@ -1447,7 +1510,7 @@ function playChat(chatArray) {
                     setTimeout(typeChar, 30);
                 } else {
                     lineIdx++;
-                    setTimeout(typeLine, 600); // Wait before next person speaks
+                    setTimeout(typeLine, 700); // Pause before the next person speaks
                 }
             }
             typeChar();

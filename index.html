@@ -1618,7 +1618,45 @@ footer {
     color: white;
     box-shadow: 0 0 15px var(--accent);
 }
-  
+  /* Fixed CRT Effect */
+.reveal-box {
+    position: relative; /* Essential for the lines to anchor */
+}
+
+.reveal-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* This creates the horizontal "scanline" texture */
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.15) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10; /* Ensure it stays above the text */
+    pointer-events: none;
+}
+
+/* The moving light bar */
+.reveal-box::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 100%;
+    background: linear-gradient(
+        transparent,
+        rgba(168, 85, 247, 0.05),
+        transparent
+    );
+    z-index: 11;
+    pointer-events: none;
+    animation: scanline_move 8s linear infinite;
+}
+
+@keyframes scanline_move {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
 </style>
 </head>
 

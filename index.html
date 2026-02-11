@@ -1566,15 +1566,15 @@ document.addEventListener('click', () => {
     // 2. Loading Bar Logic
     let progress = 0;
     const loadingInterval = setInterval(() => {
-        progress += Math.random() * 1.8;
+        progress += Math.random() * 5.0;
         if (progress >= 100) {
             progress = 100;
             clearInterval(loadingInterval);
-            setTimeout(startReveal, 600); 
+            setTimeout(startReveal, 250); 
         }
         if (progressBar) progressBar.style.width = progress + '%';
         if (percentText) percentText.textContent = Math.floor(progress) + '%';
-    }, 60);
+    }, 30);
 
     // 3. Transition to Terminal
     function startReveal() {
@@ -1742,7 +1742,7 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
                 top: terminalBody.scrollHeight,
                 behavior: 'smooth'
             });
-        }, 1200); // 1.2 second "thinking" delay
+        }, 800); // 1.2 second "thinking" delay
     });
 });
 

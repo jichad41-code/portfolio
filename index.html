@@ -614,207 +614,62 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-/* ================= CYBERPUNK AI DEV ================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.getElementById('progressBar');
+    const percentText = document.getElementById('percent');
+    const loadingStage = document.getElementById('loading-stage');
+    const revealBox = document.getElementById('reveal-box');
+    const typewriterElement = document.getElementById('typewriter-content');
+    const expandBtn = document.getElementById('expand-btn');
 
-.ai-dev {
-  margin-top: 24rem;
-  background:
-    linear-gradient(180deg, #0a0618, #05030d);
-  position: relative;
-  overflow: hidden;
-}
+    let progress = 0;
+    const loadInterval = setInterval(() => {
+        progress += Math.random() * 2;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadInterval);
+            startTransition();
+        }
+        progressBar.style.width = progress + '%';
+        percentText.textContent = Math.floor(progress) + '%';
+    }, 50);
 
-/* subtle grid background */
-.ai-dev::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(168,85,247,.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168,85,247,.08) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: .15;
-  pointer-events: none;
-}
+    function startTransition() {
+        // Hide loading, show box
+        loadingStage.classList.add('hidden');
+        revealBox.classList.remove('hidden');
+        
+        // Start typewriter
+        const textToType = "Deep neural interface established. Initializing world-state scanning. This mod utilizes advanced LLM bridging to automate complex Minecraft tasks. Project Status: ALPHA.";
+        typeWriter(textToType, 0);
+    }
 
-/* GLITCH HEADING */
-.glitch {
-  position: relative;
-  color: #fff;
-  letter-spacing: 3px;
-}
+    function typeWriter(text, i) {
+        if (i < text.length) {
+            typewriterElement.textContent += text.charAt(i);
+            // Add a small randomized delay for a "hacking" feel
+            setTimeout(() => typeWriter(text, i + 1), Math.random() * 40 + 20);
+        } else {
+            // Show expand button after text is done
+            expandBtn.classList.add('show');
+        }
+    }
 
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-}
-
-.glitch::before {
-  color: #00f7ff;
-  animation: glitchTop 2s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-  color: #ff00c8;
-  animation: glitchBottom 1.8s infinite linear alternate-reverse;
-}
-
-@keyframes glitchTop {
-  0% { clip-path: inset(0 0 85% 0); transform: translate(-2px,-2px); }
-  100% { clip-path: inset(0 0 60% 0); transform: translate(2px,2px); }
-}
-
-@keyframes glitchBottom {
-  0% { clip-path: inset(60% 0 0 0); transform: translate(2px,0); }
-  100% { clip-path: inset(40% 0 0 0); transform: translate(-2px,0); }
-}
-
-/* TERMINAL */
-.ai-terminal {
-  margin: 4rem auto 0;
-  max-width: 900px;
-  border-radius: 18px;
-  overflow: hidden;
-
-  background: rgba(10,5,25,.95);
-  border: 1px solid rgba(168,85,247,.5);
-
-  box-shadow:
-    0 0 30px rgba(168,85,247,.5),
-    0 0 100px rgba(0,255,255,.15);
-}
-
-/* header */
-.ai-terminal-header {
-  display: flex;
-  align-items: center;
-  padding: 14px 20px;
-  background: rgba(20,10,45,.9);
-  border-bottom: 1px solid rgba(168,85,247,.4);
-  gap: 10px;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.red { background: #ff3b3b; }
-.yellow { background: #ffcc00; }
-.green { background: #00ff88; }
-
-.terminal-title {
-  margin-left: auto;
-  font-size: .85rem;
-  color: #00f7ff;
-  letter-spacing: 1px;
-}
-
-/* body */
-.ai-terminal-body {
-  padding: 30px;
-  font-family: "Courier New", monospace;
-  font-size: 1rem;
-  color: #00ffcc;
-  min-height: 260px;
-  position: relative;
-}
-
-/* scanning line */
-.ai-terminal-body::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(0,255,255,.4);
-  animation: scan 4s linear infinite;
-}
-
-@keyframes scan {
-  0% { top: 0; }
-  100% { top: 100%; }
-}
-/* ================= AI LOADING SCREEN ================= */
-
-#aiLoader {
-  position: fixed;
-  inset: 0;
-  background: #05020d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  color: #00ffcc;
-  font-family: "Courier New", monospace;
-  transition: opacity .8s ease;
-}
-
-.loader-terminal {
-  width: 600px;
-  max-width: 90%;
-}
-
-.loader-title {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #00f7ff;
-  letter-spacing: 2px;
-}
-
-#loaderText {
-  min-height: 140px;
-  font-size: .95rem;
-  line-height: 1.5;
-}
-
-.loader-progress {
-  margin-top: 20px;
-  height: 8px;
-  background: rgba(168,85,247,.2);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.loader-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00f7ff, #a855f7);
-  box-shadow: 0 0 20px rgba(0,255,255,.7);
-  transition: width .2s ease;
-}
-
-.loader-status {
-  margin-top: 12px;
-  font-size: .9rem;
-  letter-spacing: 1px;
-  color: #00ffcc;
-}
-
+    // Modal Trigger (using your existing modal logic)
+    expandBtn.onclick = () => {
+        const modal = document.getElementById("modModal");
+        if(modal) {
+            document.getElementById("modalTitle").textContent = "Project: Neural Assistant Details";
+            document.getElementById("modalDesc").innerHTML = "Full technical breakdown and Alpha usage logs...";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+    };
+});
 </style>
 </head>
 
 <body>
-<div id="aiLoader">
-  <div class="loader-terminal">
-
-    <div class="loader-title">AI_ASSISTANT.sys</div>
-
-    <pre id="loaderText"></pre>
-
-    <div class="loader-progress">
-      <div class="loader-bar" id="loaderBar"></div>
-    </div>
-
-    <div class="loader-status" id="loaderStatus">INITIALIZING...</div>
-
-  </div>
-</div>
 
   <!-- EXPANDABLE NAV -->
 <div class="nav-wrapper">
@@ -881,29 +736,42 @@ footer {
 
 </section>
 
-  <section class="mods-section ai-dev" id="ai-dev">
+ <div style="height: 18rem;"></div>
 
-  <h2 class="section-title glitch" data-text="IN DEVELOPMENT">
-    IN DEVELOPMENT
-  </h2>
+<section class="mods-section" id="ai-hype-section">
+    <h2 class="section-title">In Development</h2>
+    
+    <div class="hype-stage-wrapper">
+        <div id="loading-stage" class="loading-stage">
+            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
+            <div class="progress-bar-wrapper">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div class="loading-meta">
+                <p>DECRYPTING: <span id="percent">0%</span></p>
+                <p>CORE_LINK: ESTABLISHING...</p>
+            </div>
+        </div>
 
-  <div class="ai-terminal">
-
-    <div class="ai-terminal-header">
-      <span class="dot red"></span>
-      <span class="dot yellow"></span>
-      <span class="dot green"></span>
-      <span class="terminal-title">AI_ASSISTANT.sys</span>
+        <div id="reveal-box" class="reveal-box hidden">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+                </div>
+                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
+            </div>
+            <div class="terminal-body">
+                <p id="typewriter-content" class="typewriter-text"></p>
+                
+                <button id="expand-btn" class="expand-data-btn">
+                    EXPAND SYSTEM DATA
+                </button>
+            </div>
+        </div>
     </div>
-
-    <div class="ai-terminal-body">
-      <pre id="aiTypewriter"></pre>
-    </div>
-
-  </div>
-
 </section>
 
+<div style="height: 18rem;"></div> 
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1352,111 +1220,101 @@ function resetAutoRotate() {
 applyPositions();
 resetAutoRotate();
 
-/* ===== AI TERMINAL TYPEWRITER ===== */
+document.addEventListener('DOMContentLoaded', () => {
+    // Selectors
+    const progressBar = document.getElementById('progressBar');
+    const percentDisplay = document.getElementById('percent');
+    const decodeText = document.getElementById('decode-text');
+    const loadingStage = document.getElementById('loading-stage');
+    const revealBox = document.getElementById('reveal-box');
+    const typewriterEl = document.getElementById('typewriter-content');
+    const expandBtn = document.getElementById('expand-btn');
 
-const aiOutput = `
-> Booting AI_ASSISTANT.sys ...
-> Neural Interface: ONLINE
-> Command Engine: ACTIVE
-> Language Processing: READY
+    let hasStarted = false;
 
-AI Assistant Mod
+    // Start everything when the user scrolls to the section
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !hasStarted) {
+            hasStarted = true;
+            runLoadingSequence();
+        }
+    }, { threshold: 0.5 });
 
-• Natural in-game interaction
-• Answers any question instantly
-• Explains mechanics clearly
-• Executes commands for the player
-• Context-aware assistance system
+    observer.observe(loadingStage);
 
-STATUS: IN DEVELOPMENT
-`;
-
-const aiEl = document.getElementById("aiTypewriter");
-
-if (aiEl) {
-  let i = 0;
-
-  function typeAI() {
-    if (i < aiOutput.length) {
-      aiEl.textContent += aiOutput.charAt(i);
-      i++;
-      setTimeout(typeAI, 18);
-    }
-  }
-
-  const aiObserver = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      typeAI();
-      aiObserver.disconnect();
-    }
-  }, { threshold: 0.6 });
-
-  aiObserver.observe(aiEl);
-}
-/* ===== AI BOOT LOADING SCREEN ===== */
-
-const loaderLines = [
-  "> Boot sequence initiated...",
-  "> Loading neural core...",
-  "> Calibrating command engine...",
-  "> Connecting language model...",
-  "> Injecting system intelligence...",
-  "> Finalizing protocols..."
-];
-
-const loaderText = document.getElementById("loaderText");
-const loaderBar = document.getElementById("loaderBar");
-const loaderStatus = document.getElementById("loaderStatus");
-const aiLoader = document.getElementById("aiLoader");
-
-let lineIndex = 0;
-let charIndex = 0;
-let progress = 0;
-
-function typeLoaderLine() {
-  if (lineIndex >= loaderLines.length) return;
-
-  const currentLine = loaderLines[lineIndex];
-
-  if (charIndex < currentLine.length) {
-    loaderText.textContent += currentLine.charAt(charIndex);
-    charIndex++;
-    setTimeout(typeLoaderLine, 20);
-  } else {
-    loaderText.textContent += "\n";
-    lineIndex++;
-    charIndex = 0;
-    setTimeout(typeLoaderLine, 200);
-  }
-}
-
-function simulateProgress() {
-  const interval = setInterval(() => {
-    progress += Math.random() * 8;
-
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(interval);
-      loaderStatus.textContent = "SYSTEM ONLINE";
-      finishLoading();
+    // 1. Matrix/Hacker Decryption Flicker
+    function decryptText(element, finalValue) {
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+        let iteration = 0;
+        const interval = setInterval(() => {
+            element.innerText = finalValue.split("")
+                .map((char, index) => {
+                    if(index < iteration) return finalValue[index];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                }).join("");
+            if(iteration >= finalValue.length) clearInterval(interval);
+            iteration += 1 / 3;
+        }, 30);
     }
 
-    loaderBar.style.width = progress + "%";
-  }, 180);
-}
+    // 2. Loading Bar Logic
+    function runLoadingSequence() {
+        let progress = 0;
+        const loadSpeed = setInterval(() => {
+            progress += Math.random() * 2;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadSpeed);
+                setTimeout(transitionToBox, 500);
+            }
+            progressBar.style.width = progress + '%';
+            percentDisplay.textContent = Math.floor(progress) + '%';
+            
+            // Randomly flicker the title during load
+            if (Math.random() > 0.97 && progress < 100) {
+                decryptText(decodeText, "SOMETHING BIG IS LOADING UP...");
+            }
+        }, 60);
+    }
 
-function finishLoading() {
-  setTimeout(() => {
-    aiLoader.style.opacity = "0";
-    setTimeout(() => {
-      aiLoader.style.display = "none";
-    }, 800);
-  }, 800);
-}
+    // 3. Transition Logic
+    function transitionToBox() {
+        loadingStage.classList.add('hidden');
+        revealBox.classList.remove('hidden');
+        
+        const contentMessage = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Initializing real-time LLM bridge for player automation. Project Status: ALPHA_01.";
+        startTypewriter(contentMessage, 0);
+    }
 
-typeLoaderLine();
-simulateProgress();
+    // 4. Typewriter Logic
+    function startTypewriter(text, i) {
+        if (i < text.length) {
+            typewriterEl.textContent += text.charAt(i);
+            // Dynamic typing speed for realism
+            const speed = text.charAt(i) === '.' ? 400 : 35;
+            setTimeout(() => startTypewriter(text, i + 1), speed);
+        } else {
+            // Reveal Button
+            expandBtn.classList.add('visible');
+        }
+    }
 
+    // 5. Modal Link (Connects to your existing modal)
+    expandBtn.onclick = () => {
+        const modal = document.getElementById("modModal"); // Uses your existing ID
+        if(modal) {
+            document.getElementById("modalTitle").textContent = "Project: Neural Assistant Details";
+            document.getElementById("modalDesc").innerHTML = `
+                <div style="background:#000; padding:15px; border-radius:10px; border:1px solid var(--accent); font-family:monospace; font-size:0.9rem;">
+                    <p style="color:var(--accent-strong);">[ACCESS GRANTED]</p>
+                    <p style="margin-top:10px; color:var(--muted);">This project explores the bridge between Local Large Language Models and Minecraft's internal API to allow for voice-controlled automation, dynamic building, and intelligent entity scanning.</p>
+                </div>
+            `;
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+    };
+});
 
 </script>
 

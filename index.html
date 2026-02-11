@@ -627,7 +627,7 @@ footer {
 
 .hidden { display: none !important; }
 
-/* --- LOADING STYLES (Your Code) --- */
+/* --- LOADING STYLES (From your code) --- */
 .glitch-hype-text {
     font-family: monospace;
     font-size: 1.4rem;
@@ -636,7 +636,7 @@ footer {
     margin-bottom: 20px;
 }
 
-/* --- THE REVEAL BOX (The Fix) --- */
+/* --- THE REVEAL BOX STYLES --- */
 .reveal-box {
     width: 100%;
     background: rgba(24, 18, 45, 0.6);
@@ -645,7 +645,7 @@ footer {
     border-radius: 18px;
     box-shadow: 0 0 40px rgba(168, 85, 247, 0.2);
     overflow: hidden;
-    animation: boxGlitchIn 0.4s ease-out; /* Adds the glitch appearance */
+    animation: boxGlitchIn 0.4s ease-out;
 }
 
 @keyframes boxGlitchIn {
@@ -684,7 +684,7 @@ footer {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    opacity: 0;
+    opacity: 0; /* Hidden until typewriter finishes */
     transition: 0.3s;
 }
 
@@ -766,14 +766,16 @@ footer {
     <h2 class="section-title">In Development</h2>
     
     <div class="hype-stage-wrapper">
-        <div id="loading-stage" class="loading-stage">
-            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
-            <div class="progress-bar-wrapper">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-            <div class="loading-meta">
-                <p>DECRYPTING: <span id="percent">0%</span></p>
-                <p>CORE_LINK: ESTABLISHING...</p>
+        <div class="loading-stage" id="hypeContainer">
+            <div class="loading-content" id="loadingState">
+                <h3 class="glitch-hype-text" id="decode-text">SOMETHING BIG IS LOADING...</h3>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="loading-meta">
+                    <p>DECRYPTING: <span id="percent">0%</span></p>
+                    <p>CORE: STABLE</p>
+                </div>
             </div>
         </div>
 
@@ -782,7 +784,7 @@ footer {
                 <div class="terminal-dots">
                     <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
                 </div>
-                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
+                <span class="terminal-title">ROX_AI_LOGS.sh</span>
             </div>
             <div class="terminal-body">
                 <p id="typewriter-content" class="typewriter-text"></p>
@@ -1245,12 +1247,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
     const decodeText = document.getElementById('decode-text');
-    const loadingStage = document.getElementById('loading-stage');
+    const loadingStage = document.getElementById('loadingState');
     const revealBox = document.getElementById('reveal-box');
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
 
-    // Matrix effect from your code
+    // Matrix/Hacker Decryption Effect from your code
     function decryptEffect(element, finalValue) {
         const chars = '!<>-_\\/[]{}—=+*^?#________';
         let iteration = 0;
@@ -1264,27 +1266,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
 
-    // Progress Bar logic from your code
+    // Progress Bar Logic from your code
     let progress = 0;
     const interval = setInterval(() => {
         progress += Math.random() * 1.8;
+        
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
-            setTimeout(startReveal, 500); // Transition once finished
+            decodeText.innerText = "DECRYPTION COMPLETE";
+            decodeText.style.color = "#27c93f";
+            setTimeout(startReveal, 800); // Transition to the cool box
         }
+
         progressBar.style.width = progress + '%';
         percentText.textContent = Math.floor(progress) + '%';
+        
         if(Math.random() > 0.96 && progress < 100) {
             decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
         }
     }, 60);
 
+    // Handover to Phase 2
     function startReveal() {
         loadingStage.classList.add('hidden');
         revealBox.classList.remove('hidden');
         
-        const message = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Initializing real-time LLM bridge. Status: ALPHA_READY.";
+        // Hint text about the AI Mod
+        const message = "> [SYSTEM]: ACCESS_GRANTED... \n> [DATA]: Project Rox-AI integrates real-time Neural Networks into Minecraft. Auto-building, intelligent threat detection, and natural language commands. Current Status: ALPHA_01.";
         typeWriter(message, 0);
     }
 
@@ -1293,17 +1302,19 @@ document.addEventListener('DOMContentLoaded', () => {
             typewriterEl.textContent += text.charAt(i);
             setTimeout(() => typeWriter(text, i + 1), 35);
         } else {
-            expandBtn.classList.add('visible');
+            expandBtn.classList.add('visible'); // Show button when text is done
         }
     }
 
-    // Modal Trigger
+    // Modal Connection
     expandBtn.onclick = () => {
         const modal = document.getElementById("modModal");
-        document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
-        document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files... <br> Connection: STABLE.";
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        if(modal) {
+            document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
+            document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files... <br> Connection: STABLE.";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
     };
 });
 

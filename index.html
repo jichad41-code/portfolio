@@ -843,7 +843,22 @@ footer {
     float: right;
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
 }
-  
+  /* Scoped only to the modal inner content */
+.ai-modal-body { font-family: monospace; color: var(--text); padding: 5px; }
+.data-header { 
+    display: flex; justify-content: space-between; 
+    background: rgba(168, 85, 247, 0.1); padding: 10px; 
+    border-radius: 8px; margin-bottom: 20px; 
+    color: var(--accent-strong); font-size: 0.8rem; 
+}
+.status-live { color: #27c93f; text-shadow: 0 0 8px #27c93f; }
+.log-entry { 
+    background: rgba(24, 18, 45, 0.4); border-left: 3px solid var(--accent); 
+    padding: 15px; margin-bottom: 15px; border-radius: 0 8px 8px 0; 
+}
+.log-entry h4 { color: var(--accent-strong); margin: 0 0 5px 0; }
+.log-entry p { font-size: 0.9rem; color: var(--muted); margin: 0; }
+.status-tag { float: right; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
 </style>
 </head>
 
@@ -864,7 +879,7 @@ footer {
 
 <canvas id="particles"></canvas>
 
-<div class="brand-sticky" id="brandSticky">ROX</div>
+<div class="brand-sticky" id="brandStickyyu">ROX</div>
 
 <header class="hero" id="hero">
   <div id="top"></div>
@@ -1500,31 +1515,31 @@ if (expandBtn) {
         
         const modalDesc = document.getElementById("modalDesc");
         modalDesc.innerHTML = `
-            <div class="ai-modal-body">
-                <div class="data-header">
-                    <span>TYPE: NEURAL_BRIDGE_V4</span>
-                    <span>VOICE_SYNC: <span class="status-live">ONLINE</span></span>
-                </div>
-
-                <div class="log-entry">
-                    <span class="status-tag">COMMUNICATION</span>
-                    <h4>Natural Language Interaction</h4>
-                    <p>The assistant processes real-time voice input and replies via text. It behaves like a secondary player, offering companionship and technical support during survival or creative sessions.</p>
-                </div>
-
-                <div class="log-entry">
-                    <span class="status-tag">UTILITY</span>
-                    <h4>System Command Execution</h4>
-                    <p>No need for manual typing. Ask the AI to "Set time to day" or "Locate the nearest Stronghold," and it will execute the appropriate server commands and provide precise coordinates immediately.</p>
-                </div>
-
-                <div class="log-entry">
-                    <span class="status-tag">LOGISTICS</span>
-                    <h4>Material & Resource Logic</h4>
-                    <p>The AI can be tasked with supplying specific blocks. Request an item, and the assistant will calculate the logistics to provide it or guide you to the exact chunk where resources are plentiful.</p>
-                </div>
+           <div class="ai-modal-body">
+            <div class="data-header">
+                <span>SYSTEM: NEURAL_LOGIC_V4</span>
+                <span>VOICE_BRIDGE: <span class="status-live">ONLINE</span></span>
             </div>
-        `;
+
+            <div class="log-entry">
+                <span class="status-tag">INTEL</span>
+                <h4>Voice & Text Interaction</h4>
+                <p>The assistant processes your voice in real-time and replies via text. It functions as a true companion, capable of chatting, planning builds, or warning you about nearby mob threats.</p>
+            </div>
+
+            <div class="log-entry">
+                <span class="status-tag">EXECUTION</span>
+                <h4>Automated Command Logic</h4>
+                <p>Simply ask the assistant to "Teleport me to home" or "Give me the coordinates of the jungle temple." It handles all backend commands instantly, acting as a hands-free admin tool.</p>
+            </div>
+
+            <div class="log-entry" style="border-color: #ffbd2e;">
+                <span class="status-tag" style="background:#ffbd2e;">SUPPORT</span>
+                <h4>Resource Supply Protocols</h4>
+                <p>Need specific blocks? Task the AI with locating or providing resources. It manages the logistics of your inventory so you can focus entirely on your build.</p>
+            </div>
+        </div>
+    `;
 
         // Update Gallery Placeholder
         const modalGallery = document.getElementById("modalGallery");

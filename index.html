@@ -942,6 +942,35 @@ footer {
     0%, 100% { box-shadow: 0 0 5px #00ffcc; filter: brightness(1); }
     50% { box-shadow: 0 0 15px #00ffcc; filter: brightness(1.4); }
 }
+  /* Container must be relative for the scanline to stay inside it */
+.stronghold-map {
+    position: relative;
+    overflow: hidden;
+}
+
+/* The moving scanline */
+.stronghold-map::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 255, 204, 0.4),
+        transparent
+    );
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    pointer-events: none;
+    animation: map_scanline 3s linear infinite;
+}
+
+@keyframes map_scanline {
+    0% { top: -10%; }
+    100% { top: 110%; }
+}
 </style>
 </head>
 

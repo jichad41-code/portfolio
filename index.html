@@ -1512,7 +1512,55 @@ document.addEventListener('click', () => {
     }
     typeLine();
 }
+// --- COMMAND TAG INTERACTION ---
+document.querySelectorAll('.cmd-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+        const cmd = tag.getAttribute('data-command');
+        
+        // 1. Show thinking loader to simulate processing
+        if (aiLoader) aiLoader.classList.remove('hidden');
 
+        // 2. Create the player "input" line visually
+        const playerLine = document.createElement('div');
+        playerLine.style.color = 'var(--text)';
+        playerLine.style.marginBottom = '12px';
+        playerLine.style.fontFamily = 'monospace';
+        playerLine.textContent = `> ${cmd}`;
+        typewriterEl.appendChild(playerLine);
+
+        // 3. AI processes and then replies
+        setTimeout(() => {
+            if (aiLoader) aiLoader.classList.add('hidden');
+            
+            const aiReply = document.createElement('div');
+            aiReply.style.color = 'var(--accent-strong)';
+            aiReply.style.textShadow = '0 0 10px var(--accent)';
+            aiReply.style.marginBottom = '12px';
+            aiReply.style.fontFamily = 'monospace';
+            
+            // Logic to determine the AI's specific answer
+            let response = "> [ROX-AI]: Accessing database... command acknowledged.";
+            
+            if(cmd.includes('stronghold')) {
+                response = "> [ROX-AI]: Triangulating... Stronghold located at X: -1240, Z: 450.";
+            } else if(cmd.includes('obsidian')) {
+                response = "> [ROX-AI]: Material request approved. Delivering 64x Obsidian blocks.";
+            } else if(cmd.includes('voice')) {
+                response = "> [ROX-AI]: Neural bridge synced. Monitoring voice frequency now.";
+            }
+
+            aiReply.textContent = response;
+            typewriterEl.appendChild(aiReply);
+            
+            // Keeps the newest text visible
+            const terminalBody = document.querySelector('.terminal-body');
+            terminalBody.scrollTo({
+                top: terminalBody.scrollHeight,
+                behavior: 'smooth'
+            });
+        }, 1200); // 1.2 second "thinking" delay
+    });
+});
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
     if (expandBtn) {

@@ -7,7 +7,7 @@
 
 <style>
 
-  /* ================= EXPANDABLE 1NAV ================= */
+  /* ================= EXPANDABLE NAV ================= */
 
 .nav-wrapper {
   position: fixed;
@@ -614,19 +614,17 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-/* --- HOLOGRAPHIC CONTAINER --- */
+/* --- CONTAINER & FLOATING --- */
 .hype-container {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    min-height: 450px;
+    min-height: 480px;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 30px;
     z-index: 10;
-    /* Floating 3D Animation */
     animation: floatHud 4s ease-in-out infinite;
 }
 
@@ -635,7 +633,6 @@ footer {
     50% { transform: translateY(-20px); }
 }
 
-/* --- 3D FLOATING SHADOW --- */
 .float-shadow {
     position: absolute;
     bottom: -50px;
@@ -655,21 +652,6 @@ footer {
     50% { transform: translateX(-50%) scale(0.8); opacity: 0.1; }
 }
 
-/* --- SCANLINE TEXTURE --- */
-.scanline {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        transparent 50%,
-        rgba(168, 85, 247, 0.05) 50%
-    );
-    background-size: 100% 4px;
-    z-index: 20;
-    pointer-events: none;
-    border-radius: 30px;
-}
-
 /* --- LOADING STYLES --- */
 .glitch-hype-text {
     font-family: monospace;
@@ -681,33 +663,42 @@ footer {
 }
 
 .progress-bar-wrapper {
-    width: 320px; 
+    width: 320px;
     height: 4px;
     background: rgba(168, 85, 247, 0.1);
     margin: 0 auto 15px;
-    border: 1px solid rgba(168, 85, 247, 0.2);
     border-radius: 10px;
     overflow: hidden;
+    border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .progress-bar-fill {
-    width: 0%; 
+    width: 0%;
     height: 100%;
     background: var(--accent-strong);
     box-shadow: 0 0 20px var(--accent);
 }
 
+.loading-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
 /* --- HOLOGRAPHIC CARD --- */
 .holographic-card {
-    display: none; /* Controlled by JS */
+    display: none;
     width: 100%;
     background: rgba(24, 18, 45, 0.4);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(168, 85, 247, 0.4);
     border-radius: 20px;
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
     flex-direction: column;
     overflow: hidden;
+    box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
 }
 
 .holographic-card.active {
@@ -720,31 +711,58 @@ footer {
     to { opacity: 1; transform: scale(1); }
 }
 
-.terminal-header {
-    background: rgba(168, 85, 247, 0.1);
-    padding: 15px 25px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+.system-specs {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(168, 85, 247, 0.2);
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 
-.terminal-dots { display: flex; gap: 8px; margin-right: 20px; }
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.red { background: #ff5f56; } 
-.amber { background: #ffbd2e; } 
-.green { background: #27c93f; }
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    color: var(--muted);
+}
 
-.terminal-content { padding: 40px; min-height: 200px; font-family: monospace; }
-.glitch-line { margin-bottom: 10px; font-size: 1.1rem; }
-.glitch-line.ai { color: var(--accent-strong); text-shadow: 0 0 10px var(--accent); }
+.mod-summary {
+    margin: 15px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+}
 
-.terminal-footer {
-    padding: 15px;
-    text-align: center;
-    background: rgba(0,0,0,0.3);
-    font-size: 0.7rem;
+.modal-trigger-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    font-weight: 800;
     letter-spacing: 2px;
-    color: var(--accent);
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 8px;
+}
+
+.modal-trigger-btn:hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 25px var(--accent);
+}
+
+.scanline {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(168, 85, 247, 0.05) 50%);
+    background-size: 100% 4px;
+    z-index: 20;
+    pointer-events: none;
+    border-radius: 30px;
 }
 </style>
 </head>
@@ -815,7 +833,8 @@ footer {
 
 
 </section>
-<div style="height: 18rem;"></div>
+
+  <div style="height: 18rem;"></div>
 
 <section class="mods-section" id="ai-hype-section">
     <h2 class="section-title">In Development</h2>
@@ -824,17 +843,17 @@ footer {
         <div class="scanline"></div>
 
         <div class="loading-state" id="loadingState">
-            <h3 class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
+            <h3 class="glitch-hype-text" id="decode-text">SOMETHING BIG IS LOADING...</h3>
             <div class="progress-bar-wrapper">
                 <div class="progress-bar-fill" id="progressBar"></div>
             </div>
-            <p class="status-code">NEURAL_DECRYPTION: <span id="percent">0%</span></p>
+            <div class="loading-meta">
+                <p>DECRYPTING: <span id="percent">0%</span></p>
+                <p>CORE: STABLE</p>
+            </div>
         </div>
 
-        <div class="holographic-card" id="aiTerminal" 
-             data-title="Neural AI Assistant" 
-             data-desc="An intelligent in-game companion utilizing neural networks to execute commands and assist with survival strategy.">
-            
+        <div class="holographic-card" id="aiTerminal">
             <div class="terminal-header">
                 <div class="terminal-dots">
                     <span class="dot red"></span>
@@ -845,11 +864,23 @@ footer {
             </div>
 
             <div class="terminal-content">
-                <div class="ai-glitch-wrapper" id="terminalText">
-                    </div>
-            </div>
+                <div id="terminalText"></div>
+                
+                <div class="system-specs" id="systemSpecs">
+                    <div class="spec-row"><span>MODULE:</span> <span>Neural_Pathfinding_v4</span></div>
+                    <div class="spec-row"><span>ENGINE:</span> <span>Minecraft_Bridge_LLM</span></div>
+                    <div class="spec-row"><span>ACCESS:</span> <span style="color: #fca5a5;">ENCRYPTED_ALPHA</span></div>
+                    
+                    <p class="mod-summary">
+                        Integrating real-time voice processing and automated blueprint generation. Turning Minecraft into a collaborative environment between player and machine.
+                    </p>
 
-            <div class="terminal-footer">STATUS: SYSTEM_OVERRIDE_ACTIVE</div>
+                    <button class="modal-trigger-btn" id="openModalBtn">
+                        ACCESS FULL PROJECT LOGS
+                    </button>
+                </div>
+            </div>
+            <div class="terminal-footer">ENCRYPTION KEY: ROX_99_ALPHA</div>
         </div>
         
         <div class="float-shadow"></div>
@@ -857,7 +888,6 @@ footer {
 </section>
 
 <div style="height: 18rem;"></div>
-  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1307,63 +1337,101 @@ applyPositions();
 resetAutoRotate();
 
 document.addEventListener('DOMContentLoaded', () => {
-    const hypeContainer = document.getElementById('hypeContainer');
+    const hypeStage = document.getElementById('hypeContainer');
+    const decodeText = document.getElementById('decode-text');
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
-    const loadingState = document.getElementById('loadingState');
-    const aiTerminal = document.getElementById('aiTerminal');
+    const terminal = document.getElementById('aiTerminal');
     const terminalText = document.getElementById('terminalText');
+    const specs = document.getElementById('systemSpecs');
+    const modalBtn = document.getElementById('openModalBtn');
 
-    let hasLaunched = false;
+    let hasStarted = false;
 
-    // Trigger animation when the section is 60% visible
-    const devObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !hasLaunched) {
-            hasLaunched = true;
+    // Trigger animation when the section is scrolled into view
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !hasStarted) {
+            hasStarted = true;
             startBoot();
         }
     }, { threshold: 0.6 });
 
-    devObserver.observe(hypeContainer);
+    observer.observe(hypeStage);
+
+    // Matrix Decryption Effect for text
+    function decryptEffect(element, finalValue) {
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+        let iteration = 0;
+        const interval = setInterval(() => {
+            element.innerText = finalValue.split("").map((char, index) => {
+                if(index < iteration) return finalValue[index];
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join("");
+            if(iteration >= finalValue.length) clearInterval(interval);
+            iteration += 1 / 3;
+        }, 30);
+    }
 
     function startBoot() {
         let progress = 0;
         const interval = setInterval(() => {
-            // Increments progress randomly for a realistic 'loading' feel
-            progress += Math.random() * 2; 
+            progress += Math.random() * 1.5;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
-                setTimeout(revealAI, 500);
+                setTimeout(revealProject, 500);
             }
             progressBar.style.width = progress + '%';
             percentText.textContent = Math.floor(progress) + '%';
+            
+            // Randomly flicker the text decryption
+            if(Math.random() > 0.95) decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
         }, 50);
     }
 
-    function revealAI() {
-        loadingState.style.display = 'none';
-        aiTerminal.classList.add('active');
+    function revealProject() {
+        document.getElementById('loadingState').style.display = 'none';
+        terminal.classList.add('active');
         
         const lines = [
-            { type: 'ai', text: "> [SYSTEM]: NEURAL_BRIDGE_ESTABLISHED" },
-            { type: 'player', text: "> Confirming developer identity..." },
-            { type: 'ai', text: "> Welcome back, Rox. AI assistant is now operational." }
+            { type: 'ai', text: "> [SYSTEM]: BOOT_COMPLETE" },
+            { type: 'ai', text: "> NEURAL_ASSISTANT_V4 ONLINE" }
         ];
 
         let lineIdx = 0;
         function type() {
             if (lineIdx < lines.length) {
                 const p = document.createElement('p');
-                p.className = `glitch-line ${lines[lineIdx].type}`;
+                p.className = `glitch-line`;
+                p.style.color = 'var(--accent-strong)';
+                p.style.fontFamily = 'monospace';
+                p.style.marginBottom = '10px';
                 p.textContent = lines[lineIdx].text;
                 terminalText.appendChild(p);
                 lineIdx++;
-                setTimeout(type, 1200); // 1.2s delay between lines
+                setTimeout(type, 800);
+            } else {
+                specs.style.opacity = '1';
             }
         }
         type();
     }
+
+    // Modal link - uses your existing modal structure
+    modalBtn.onclick = () => {
+        const modal = document.getElementById("modModal");
+        if(modal) {
+            document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
+            document.getElementById("modalDesc").innerHTML = `
+                <div style="background:#000; padding:20px; border-radius:12px; border:1px solid var(--accent); font-family:monospace;">
+                    <p style="color:var(--accent-strong); margin-bottom:10px;">> Accessing Alpha encrypted development files...</p>
+                    <p style="color:var(--muted); font-size:0.9rem;">The Neural Assistant bridges real-time LLM logic with Minecraft world-state data. It enables automated construction via natural language and advanced entity threat assessment.</p>
+                </div>
+            `;
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+    };
 });
 
 </script>

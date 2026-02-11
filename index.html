@@ -751,6 +751,31 @@ footer {
 
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
+
+  .ai-modal-body {
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+}
+.data-header {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(168, 85, 247, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+.log-entry {
+    background: rgba(24, 18, 45, 0.4);
+    border-left: 3px solid var(--accent);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 8px 8px 0;
+}
+.log-entry h4 { color: var(--accent-strong); margin-bottom: 5px; }
+.status-tag { float: right; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
   
 </style>
 </head>
@@ -1315,6 +1340,7 @@ applyPositions();
 resetAutoRotate();
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Element Selection
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
     const decodeText = document.getElementById('decode-text');
@@ -1323,43 +1349,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
     const aiLoader = document.getElementById('ai-loader');
+    const modal = document.getElementById("modModal");
 
-    // 1. Decryption Text Effect
-    function decryptEffect(element, finalValue) {
-        const chars = '!<>-_\\/[]{}—=+*^?#________';
-        let iteration = 0;
-        const interval = setInterval(() => {
-            element.innerText = finalValue.split("").map((char, index) => {
-                if(index < iteration) return finalValue[index];
-                return chars[Math.floor(Math.random() * chars.length)];
-            }).join("");
-            if(iteration >= finalValue.length) clearInterval(interval);
-            iteration += 1 / 3;
-        }, 30);
-    }
-
-    // 2. Loading Bar Sequence
+    // 2. Loading Bar Logic
     let progress = 0;
-    const interval = setInterval(() => {
+    const loadingInterval = setInterval(() => {
         progress += Math.random() * 1.8;
         if (progress >= 100) {
             progress = 100;
-            clearInterval(interval);
+            clearInterval(loadingInterval);
             setTimeout(startReveal, 600); 
         }
-        progressBar.style.width = progress + '%';
-        percentText.textContent = Math.floor(progress) + '%';
-        
-        // Randomly flicker the text during load
-        if(Math.random() > 0.97 && progress < 100) {
-            decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
-        }
+        if (progressBar) progressBar.style.width = progress + '%';
+        if (percentText) percentText.textContent = Math.floor(progress) + '%';
     }, 60);
 
-    // 3. Reveal and Start Conversation
+    // 3. Transition to Terminal
     function startReveal() {
-        loadingStage.classList.add('hidden');
-        revealBox.classList.remove('hidden');
+        if (loadingStage) loadingStage.classList.add('hidden');
+        if (revealBox) revealBox.classList.remove('hidden');
         
         const chat = [
             { role: "player", text: "> /rox_ai build defensive perimeter" },
@@ -1368,23 +1376,22 @@ document.addEventListener('DOMContentLoaded', () => {
             { role: "ai",     text: "> [ROX-AI]: 64x Obsidian, 12x End Crystal. Initiating build..." },
             { role: "ai",     text: "> [ROX-AI]: System standing by. Encryption secure." }
         ];
-
         playChat(chat);
     }
 
+    // 4. Conversation Typing Logic
     function playChat(chatArray) {
         let lineIdx = 0;
-
         function typeLine() {
-            aiLoader.classList.add('hidden');
+            if (aiLoader) aiLoader.classList.add('hidden');
 
             if (lineIdx < chatArray.length) {
                 const lineData = chatArray[lineIdx];
                 const lineDiv = document.createElement('div');
-                
                 lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
                 if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
                 lineDiv.style.marginBottom = '12px';
+                lineDiv.style.fontFamily = 'monospace';
                 
                 typewriterEl.appendChild(lineDiv);
                 
@@ -1398,9 +1405,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(typeChar, 30);
                     } else {
                         lineIdx++;
-                        // If next line is AI, show thinking spinner
                         if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
-                            aiLoader.classList.remove('hidden');
+                            if (aiLoader) aiLoader.classList.remove('hidden');
                             setTimeout(typeLine, 1400); 
                         } else {
                             setTimeout(typeLine, 600);
@@ -1409,13 +1415,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 typeChar();
             } else {
-                expandBtn.classList.add('visible');
+                if (expandBtn) expandBtn.classList.add('visible');
             }
         }
         typeLine();
     }
-});
 
+    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
+    if (expandBtn) {
+        expandBtn.onclick = () => {
+            if(!modal) return;
+
+            // Inject technical AI content into the modal
+            document.getElementById("modalTitle").textContent = "PROJECT: NEURAL_BRIDGE // DIAGNOSTICS";
+            const modalDesc = document.getElementById("modalDesc");
+            modalDesc.innerHTML = `
+                <div class="ai-modal-body">
+                    <div class="data-header">
+                        <span>ENCRYPTION: AES-256</span>
+                        <span>STATUS: STABLE_ALPHA</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="status-tag">ACTIVE</span>
+                        <h4>Neural Pathfinding v4.2</h4>
+                        <p>Interprets complex terrain data to generate optimal construction paths while avoiding environmental hazards.</p>
+                    </div>
+                    <div class="log-entry">
+                        <span class="status-tag">STABLE</span>
+                        <h4>LLM Integration Bridge</h4>
+                        <p>Synchronizes Minecraft world-states with Large Language Models for natural language command processing.</p>
+                    </div>
+                </div>
+            `;
+            
+            // Clear standard gallery for technical view
+            const modalGallery = document.getElementById("modalGallery");
+            modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
+
+            // Show the modal
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+    }
+});
 </script>
 
 </body>

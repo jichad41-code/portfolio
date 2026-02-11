@@ -802,6 +802,7 @@ footer {
 
 <body>
 
+  <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3" preload="auto"></audio>
   <!-- EXPANDABLE NAV -->
 <div class="nav-wrapper">
   <button class="nav-toggle" id="navToggle">+</button>
@@ -1400,46 +1401,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. Conversation Typing Logic
-    function playChat(chatArray) {
-        let lineIdx = 0;
-        function typeLine() {
-            if (aiLoader) aiLoader.classList.add('hidden');
+   function playChat(chatArray) {
+    let lineIdx = 0;
+    const typeSound = document.getElementById('type-sound');
 
-            if (lineIdx < chatArray.length) {
-                const lineData = chatArray[lineIdx];
-                const lineDiv = document.createElement('div');
-                lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
-                if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
-                lineDiv.style.marginBottom = '12px';
-                lineDiv.style.fontFamily = 'monospace';
-                
-                typewriterEl.appendChild(lineDiv);
-                
-                let charIdx = 0;
-                const text = lineData.text;
+    function typeLine() {
+        if (aiLoader) aiLoader.classList.add('hidden');
 
-                function typeChar() {
-                    if (charIdx < text.length) {
-                        lineDiv.textContent += text.charAt(charIdx);
-                        charIdx++;
-                        setTimeout(typeChar, 30);
+        if (lineIdx < chatArray.length) {
+            const lineData = chatArray[lineIdx];
+            const lineDiv = document.createElement('div');
+            lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
+            if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
+            lineDiv.style.marginBottom = '12px';
+            lineDiv.style.fontFamily = 'monospace';
+            
+            typewriterEl.appendChild(lineDiv);
+            
+            let charIdx = 0;
+            const text = lineData.text;
+
+            function typeChar() {
+                if (charIdx < text.length) {
+                    lineDiv.textContent += text.charAt(charIdx);
+                    
+                    // ONLY play sound if the AI is typing
+                    if (lineData.role === 'ai' && typeSound) {
+                        typeSound.currentTime = 0; // Reset sound to start
+                        typeSound.play().catch(() => {}); // Play and ignore errors if browser blocks audio
+                    }
+
+                    charIdx++;
+                    setTimeout(typeChar, 30);
+                } else {
+                    lineIdx++;
+                    if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
+                        if (aiLoader) aiLoader.classList.remove('hidden');
+                        setTimeout(typeLine, 1400); 
                     } else {
-                        lineIdx++;
-                        if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
-                            if (aiLoader) aiLoader.classList.remove('hidden');
-                            setTimeout(typeLine, 1400); 
-                        } else {
-                            setTimeout(typeLine, 600);
-                        }
+                        setTimeout(typeLine, 600);
                     }
                 }
-                typeChar();
-            } else {
-                if (expandBtn) expandBtn.classList.add('visible');
             }
+            typeChar();
+        } else {
+            // When typing finishes, show the button and dashboard
+            if (expandBtn) expandBtn.classList.add('visible');
+            const dashboard = document.getElementById('cmd-dashboard');
+            if (dashboard) dashboard.classList.add('active');
         }
-        typeLine();
     }
+    typeLine();
+}
 
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)

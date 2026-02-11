@@ -7,7 +7,7 @@
 
 <style>
 
-  /* ================= EXPANDABLE NA1V ================= */
+  /* ================= EXPANDABLE NAV ================= */
 
 .nav-wrapper {
   position: fixed;
@@ -614,156 +614,133 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-/* --- CONTAINER & FLOATING --- */
-.hype-container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    min-height: 480px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    animation: floatHud 4s ease-in-out infinite;
+/* ================= CYBERPUNK AI DEV ================= */
+
+.ai-dev {
+  margin-top: 24rem;
+  background:
+    linear-gradient(180deg, #0a0618, #05030d);
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes floatHud {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+/* subtle grid background */
+.ai-dev::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(168,85,247,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,85,247,.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: .15;
+  pointer-events: none;
 }
 
-.float-shadow {
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 20px;
-    background: rgba(168, 85, 247, 0.15);
-    filter: blur(20px);
-    border-radius: 50%;
-    z-index: -1;
-    animation: shadowScale 4s ease-in-out infinite;
+/* GLITCH HEADING */
+.glitch {
+  position: relative;
+  color: #fff;
+  letter-spacing: 3px;
 }
 
-@keyframes shadowScale {
-    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.3; }
-    50% { transform: translateX(-50%) scale(0.8); opacity: 0.1; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
-/* --- LOADING STYLES --- */
-.glitch-hype-text {
-    font-family: monospace;
-    font-size: 1.5rem;
-    letter-spacing: 4px;
-    color: var(--accent-strong);
-    text-shadow: 0 0 15px var(--accent);
-    margin-bottom: 25px;
+.glitch::before {
+  color: #00f7ff;
+  animation: glitchTop 2s infinite linear alternate-reverse;
 }
 
-.progress-bar-wrapper {
-    width: 320px;
-    height: 4px;
-    background: rgba(168, 85, 247, 0.1);
-    margin: 0 auto 15px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(168, 85, 247, 0.2);
+.glitch::after {
+  color: #ff00c8;
+  animation: glitchBottom 1.8s infinite linear alternate-reverse;
 }
 
-.progress-bar-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-strong);
-    box-shadow: 0 0 20px var(--accent);
+@keyframes glitchTop {
+  0% { clip-path: inset(0 0 85% 0); transform: translate(-2px,-2px); }
+  100% { clip-path: inset(0 0 60% 0); transform: translate(2px,2px); }
 }
 
-.loading-meta {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    font-family: monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
+@keyframes glitchBottom {
+  0% { clip-path: inset(60% 0 0 0); transform: translate(2px,0); }
+  100% { clip-path: inset(40% 0 0 0); transform: translate(-2px,0); }
 }
 
-/* --- HOLOGRAPHIC CARD --- */
-.holographic-card {
-    display: none;
-    width: 100%;
-    background: rgba(24, 18, 45, 0.4);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 20px;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.2);
+/* TERMINAL */
+.ai-terminal {
+  margin: 4rem auto 0;
+  max-width: 900px;
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: rgba(10,5,25,.95);
+  border: 1px solid rgba(168,85,247,.5);
+
+  box-shadow:
+    0 0 30px rgba(168,85,247,.5),
+    0 0 100px rgba(0,255,255,.15);
 }
 
-.holographic-card.active {
-    display: flex;
-    animation: cardAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* header */
+.ai-terminal-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  background: rgba(20,10,45,.9);
+  border-bottom: 1px solid rgba(168,85,247,.4);
+  gap: 10px;
 }
 
-@keyframes cardAppear {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
 
-.system-specs {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(168, 85, 247, 0.2);
-    opacity: 0;
-    transition: opacity 1s ease;
+.red { background: #ff3b3b; }
+.yellow { background: #ffcc00; }
+.green { background: #00ff88; }
+
+.terminal-title {
+  margin-left: auto;
+  font-size: .85rem;
+  color: #00f7ff;
+  letter-spacing: 1px;
 }
 
-.spec-row {
-    display: flex;
-    justify-content: space-between;
-    font-family: monospace;
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    color: var(--muted);
+/* body */
+.ai-terminal-body {
+  padding: 30px;
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  color: #00ffcc;
+  min-height: 260px;
+  position: relative;
 }
 
-.mod-summary {
-    margin: 15px 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text);
+/* scanning line */
+.ai-terminal-body::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0,255,255,.4);
+  animation: scan 4s linear infinite;
 }
 
-.modal-trigger-btn {
-    margin-top: 15px;
-    width: 100%;
-    padding: 14px;
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent-strong);
-    font-weight: 800;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 8px;
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
 }
 
-.modal-trigger-btn:hover {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 0 25px var(--accent);
-}
-
-.scanline {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, rgba(168, 85, 247, 0.05) 50%);
-    background-size: 100% 4px;
-    z-index: 20;
-    pointer-events: none;
-    border-radius: 30px;
-}
 </style>
 </head>
 
@@ -834,60 +811,29 @@ footer {
 
 </section>
 
-  <div style="height: 18rem;"></div>
+  <section class="mods-section ai-dev" id="ai-dev">
 
-<section class="mods-section" id="ai-hype-section">
-    <h2 class="section-title">In Development</h2>
-    
-    <div class="hype-container" id="hypeContainer">
-        <div class="scanline"></div>
+  <h2 class="section-title glitch" data-text="IN DEVELOPMENT">
+    IN DEVELOPMENT
+  </h2>
 
-        <div class="loading-state" id="loadingState">
-            <h3 class="glitch-hype-text" id="decode-text">SOMETHING BIG IS LOADING...</h3>
-            <div class="progress-bar-wrapper">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-            <div class="loading-meta">
-                <p>DECRYPTING: <span id="percent">0%</span></p>
-                <p>CORE: STABLE</p>
-            </div>
-        </div>
+  <div class="ai-terminal">
 
-        <div class="holographic-card" id="aiTerminal">
-            <div class="terminal-header">
-                <div class="terminal-dots">
-                    <span class="dot red"></span>
-                    <span class="dot amber"></span>
-                    <span class="dot green"></span>
-                </div>
-                <span class="terminal-title">ROX_AI_CORE.sh</span>
-            </div>
-
-            <div class="terminal-content">
-                <div id="terminalText"></div>
-                
-                <div class="system-specs" id="systemSpecs">
-                    <div class="spec-row"><span>MODULE:</span> <span>Neural_Pathfinding_v4</span></div>
-                    <div class="spec-row"><span>ENGINE:</span> <span>Minecraft_Bridge_LLM</span></div>
-                    <div class="spec-row"><span>ACCESS:</span> <span style="color: #fca5a5;">ENCRYPTED_ALPHA</span></div>
-                    
-                    <p class="mod-summary">
-                        Integrating real-time voice processing and automated blueprint generation. Turning Minecraft into a collaborative environment between player and machine.
-                    </p>
-
-                    <button class="modal-trigger-btn" id="openModalBtn">
-                        ACCESS FULL PROJECT LOGS
-                    </button>
-                </div>
-            </div>
-            <div class="terminal-footer">ENCRYPTION KEY: ROX_99_ALPHA</div>
-        </div>
-        
-        <div class="float-shadow"></div>
+    <div class="ai-terminal-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="terminal-title">AI_ASSISTANT.sys</span>
     </div>
+
+    <div class="ai-terminal-body">
+      <pre id="aiTypewriter"></pre>
+    </div>
+
+  </div>
+
 </section>
 
-<div style="height: 18rem;"></div>
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1336,103 +1282,48 @@ function resetAutoRotate() {
 applyPositions();
 resetAutoRotate();
 
-document.addEventListener('DOMContentLoaded', () => {
-    const hypeStage = document.getElementById('hypeContainer');
-    const decodeText = document.getElementById('decode-text');
-    const progressBar = document.getElementById('progressBar');
-    const percentText = document.getElementById('percent');
-    const terminal = document.getElementById('aiTerminal');
-    const terminalText = document.getElementById('terminalText');
-    const specs = document.getElementById('systemSpecs');
-    const modalBtn = document.getElementById('openModalBtn');
+/* ===== AI TERMINAL TYPEWRITER ===== */
 
-    let hasStarted = false;
+const aiOutput = `
+> Booting AI_ASSISTANT.sys ...
+> Neural Interface: ONLINE
+> Command Engine: ACTIVE
+> Language Processing: READY
 
-    // Trigger animation when the section is scrolled into view
-    const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !hasStarted) {
-            hasStarted = true;
-            startBoot();
-        }
-    }, { threshold: 0.6 });
+AI Assistant Mod
 
-    observer.observe(hypeStage);
+• Natural in-game interaction
+• Answers any question instantly
+• Explains mechanics clearly
+• Executes commands for the player
+• Context-aware assistance system
 
-    // Matrix Decryption Effect for text
-    function decryptEffect(element, finalValue) {
-        const chars = '!<>-_\\/[]{}—=+*^?#________';
-        let iteration = 0;
-        const interval = setInterval(() => {
-            element.innerText = finalValue.split("").map((char, index) => {
-                if(index < iteration) return finalValue[index];
-                return chars[Math.floor(Math.random() * chars.length)];
-            }).join("");
-            if(iteration >= finalValue.length) clearInterval(interval);
-            iteration += 1 / 3;
-        }, 30);
+STATUS: IN DEVELOPMENT
+`;
+
+const aiEl = document.getElementById("aiTypewriter");
+
+if (aiEl) {
+  let i = 0;
+
+  function typeAI() {
+    if (i < aiOutput.length) {
+      aiEl.textContent += aiOutput.charAt(i);
+      i++;
+      setTimeout(typeAI, 18);
     }
+  }
 
-    function startBoot() {
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 1.5;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                setTimeout(revealProject, 500);
-            }
-            progressBar.style.width = progress + '%';
-            percentText.textContent = Math.floor(progress) + '%';
-            
-            // Randomly flicker the text decryption
-            if(Math.random() > 0.95) decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
-        }, 50);
+  const aiObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      typeAI();
+      aiObserver.disconnect();
     }
+  }, { threshold: 0.6 });
 
-    function revealProject() {
-        document.getElementById('loadingState').style.display = 'none';
-        terminal.classList.add('active');
-        
-        const lines = [
-            { type: 'ai', text: "> [SYSTEM]: BOOT_COMPLETE" },
-            { type: 'ai', text: "> NEURAL_ASSISTANT_V4 ONLINE" }
-        ];
+  aiObserver.observe(aiEl);
+}
 
-        let lineIdx = 0;
-        function type() {
-            if (lineIdx < lines.length) {
-                const p = document.createElement('p');
-                p.className = `glitch-line`;
-                p.style.color = 'var(--accent-strong)';
-                p.style.fontFamily = 'monospace';
-                p.style.marginBottom = '10px';
-                p.textContent = lines[lineIdx].text;
-                terminalText.appendChild(p);
-                lineIdx++;
-                setTimeout(type, 800);
-            } else {
-                specs.style.opacity = '1';
-            }
-        }
-        type();
-    }
-
-    // Modal link - uses your existing modal structure
-    modalBtn.onclick = () => {
-        const modal = document.getElementById("modModal");
-        if(modal) {
-            document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
-            document.getElementById("modalDesc").innerHTML = `
-                <div style="background:#000; padding:20px; border-radius:12px; border:1px solid var(--accent); font-family:monospace;">
-                    <p style="color:var(--accent-strong); margin-bottom:10px;">> Accessing Alpha encrypted development files...</p>
-                    <p style="color:var(--muted); font-size:0.9rem;">The Neural Assistant bridges real-time LLM logic with Minecraft world-state data. It enables automated construction via natural language and advanced entity threat assessment.</p>
-                </div>
-            `;
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        }
-    };
-});
 
 </script>
 

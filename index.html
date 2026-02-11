@@ -1001,35 +1001,346 @@ footer {
 /* ===== PIXEL PARTICLES ===== */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
-function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener("resize", resize); resize();
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
 
 const particles = Array.from({ length: 90 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    size: Math.floor(Math.random() * 3) + 2,
-    vx: (Math.random() - 0.5) * 0.12,
-    vy: -Math.random() * 0.35 - 0.1,
-    a: Math.random() * 0.5 + 0.3
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  size: Math.floor(Math.random() * 3) + 2,
+  vx: (Math.random() - 0.5) * 0.12,
+  vy: -Math.random() * 0.35 - 0.1,
+  a: Math.random() * 0.5 + 0.3
 }));
 
 function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const p of particles) {
-        ctx.globalAlpha = p.a;
-        ctx.shadowColor = "rgba(168,85,247,0.6)";
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = "#a855f7";
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-        p.x += p.vx; p.y += p.vy;
-        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const p of particles) {
+    ctx.globalAlpha = p.a;
+    ctx.shadowColor = "rgba(168,85,247,0.6)";
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = "#a855f7";
+    ctx.fillRect(p.x, p.y, p.size, p.size);
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.y < -10) {
+      p.y = canvas.height + 10;
+      p.x = Math.random() * canvas.width;
     }
-    requestAnimationFrame(drawParticles);
+  }
+  requestAnimationFrame(drawParticles);
 }
 drawParticles();
 
-/* ===== UI INITIALIZATION ===== */
+/* ===== HERO SCROLL + BRAND ===== */
+const hero = document.getElementById("hero");
+const heroText = document.getElementById("heroText");
+const brand = document.getElementById("brandSticky");
+
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  const raw = Math.min(y / 500, 1);
+  const p = 1 - Math.pow(1 - raw, 3);
+
+  hero.style.transform = `translateY(${p * -120}px)`;
+  hero.style.opacity = 1 - p * 0.6;
+  hero.style.backgroundSize = `${110 + p * 6}%`;
+  hero.style.backgroundPositionY = `${50 - p * 6}%`;
+  heroText.style.transform = `translateY(${p * -40}px)`;
+
+  brand.classList.toggle("active", p > 0.55);
+});
+  /* ===== ABOUT STATS COUNT UP (RESTORED) ===== */
+const stats = document.querySelectorAll(".stat h3");
+
+const statObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const target = parseFloat(el.dataset.count);
+    const isDecimal = target % 1 !== 0;
+    const suffix = el.textContent.includes("+") ? "+" : "";
+    const start = performance.now();
+    const duration = 1200;
+
+    function animate(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = target * eased;
+
+      el.textContent = isDecimal
+        ? value.toFixed(1)
+        : Math.floor(value);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        el.textContent = target + suffix;
+      }
+    }
+
+    requestAnimationFrame(animate);
+    statObserver.unobserve(el);
+  });
+}, { threshold: 0.6 });
+
+stats.forEach(stat => statObserver.observe(stat));
+ /* ===== ABOUT TYPEWRITER (LOCKED + MICRO TICK FEEL) ===== */
+const typeTarget = document.getElementById("about-typewriter");
+
+if (typeTarget) {
+  const text = typeTarget.dataset.text;
+  let index = 0;
+  let started = false;
+
+  const typeObserver = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || started) return;
+    started = true;
+
+    function type() {
+      if (index >= text.length) return;
+
+      const char = text.charAt(index);
+      typeTarget.textContent += char;
+
+      // micro visual "tick"
+      typeTarget.style.opacity = "0.92";
+      requestAnimationFrame(() => {
+        typeTarget.style.opacity = "1";
+      });
+
+      index++;
+
+      // subtle human-like pauses
+      let delay = 22;
+      if (char === "," || char === ".") delay = 140;
+      if (char === " ") delay = 18;
+
+      setTimeout(type, delay);
+    }
+
+    type();
+  }, { threshold: 0.6 });
+
+  typeObserver.observe(typeTarget);
+}
+  /* ===== COPY DISCORD ID ===== */
+const discordEl = document.querySelector(".copy-discord");
+
+if (discordEl) {
+  discordEl.addEventListener("click", () => {
+    const text = discordEl.dataset.copy;
+
+    navigator.clipboard.writeText(text).then(() => {
+      discordEl.classList.add("copied");
+
+      setTimeout(() => {
+        discordEl.classList.remove("copied");
+      }, 1200);
+    });
+  });
+}
+/* ===== EXPANDABLE NAV ===== */
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+
+navToggle.addEventListener("click", () => {
+  navToggle.classList.toggle("open");
+  navMenu.classList.toggle("open");
+});
+/* ===== NAV TOP FIX ===== */
+const navTop = document.getElementById("navTop");
+
+if (navTop) {
+  navTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+}
+/* ===== SMOOTH SCROLL FOR NAV LINKS ===== */
+document.querySelectorAll(".nav-menu a").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+
+    const targetId = link.getAttribute("href");
+
+    if (targetId === "#") {
+      // Top button
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      const y = target.getBoundingClientRect().top + window.pageYOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth"
+      });
+    }
+  });
+});
+/* ===== ACTIVE NAV HIGHLIGHT ===== */
+const sections = [
+  { id: "mods", link: "#mods" },
+  { id: "about", link: "#about" },
+  { id: "contact", link: "#contact" }
+];
+
+const navLinks = document.querySelectorAll(".nav-menu a");
+
+function updateActiveNav() {
+  let current = "";
+
+  sections.forEach(section => {
+    const el = document.getElementById(section.id);
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.35) {
+      current = section.link;
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === current
+    );
+  });
+}
+
+window.addEventListener("scroll", updateActiveNav);
+updateActiveNav();
+/* ===== MOD CARD MODAL ===== */
+const modal = document.getElementById("modModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalDesc = document.getElementById("modalDesc");
+const modalGallery = document.getElementById("modalGallery");
+const modalClose = document.querySelector(".mod-modal-close");
+const modalBackdrop = document.querySelector(".mod-modal-backdrop");
+
+document.querySelectorAll(".mod-card").forEach(card => {
+  card.addEventListener("click", () => {
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
+
+    modalGallery.innerHTML = "";
+
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
+
+    if (images.length) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+});
+
+function closeModal() {
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+modalClose.addEventListener("click", closeModal);
+modalBackdrop.addEventListener("click", closeModal);
+
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
+/* ===== FEATURED ROTATING SPOTLIGHT (CENTER-BASED) ===== */
+
+const featuredCards = Array.from(document.querySelectorAll(".featured-card"));
+
+let positions = ["pos-left", "pos-center", "pos-right"];
+
+function applyPositions() {
+  featuredCards.forEach((card, i) => {
+    card.classList.remove("pos-left", "pos-center", "pos-right");
+    card.classList.add(positions[i]);
+  });
+}
+
+// rotate cards so next one comes to center
+function rotateCards() {
+  positions.unshift(positions.pop()); // right → center → left
+  applyPositions();
+}
+
+/* ===== FEATURED CARD → MODAL ===== */
+
+featuredCards.forEach((card, index) => {
+  card.addEventListener("click", () => {
+
+    // If NOT center → rotate into center
+    if (!card.classList.contains("pos-center")) {
+      while (!card.classList.contains("pos-center")) {
+        rotateCards();
+      }
+      resetAutoRotate();
+      return;
+    }
+
+    // If CENTER → open modal
+    modalTitle.textContent = card.dataset.title || "";
+    modalDesc.textContent = card.dataset.desc || "";
+    modalGallery.innerHTML = "";
+
+    const images = card.dataset.images
+      ? card.dataset.images.split(",")
+      : [];
+
+    if (images.length && images[0]) {
+      images.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src.trim();
+        modalGallery.appendChild(img);
+      });
+    } else {
+      modalGallery.innerHTML =
+        "<p style='color:var(--muted)'>No images available.</p>";
+    }
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+});
+
+
+let autoRotateTimer;
+
+function resetAutoRotate() {
+  clearInterval(autoRotateTimer);
+  autoRotateTimer = setInterval(rotateCards, 3100);
+}
+
+// init
+applyPositions();
+resetAutoRotate();
+
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Element Selection
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
     const decodeText = document.getElementById('decode-text');
@@ -1040,21 +1351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiLoader = document.getElementById('ai-loader');
     const modal = document.getElementById("modModal");
 
-    // RESTORED: Decryption Text Effect function
-    function decryptEffect(element, finalValue) {
-        const chars = '!<>-_\\/[]{}—=+*^?#________';
-        let iteration = 0;
-        const interval = setInterval(() => {
-            element.innerText = finalValue.split("").map((char, index) => {
-                if(index < iteration) return finalValue[index];
-                return chars[Math.floor(Math.random() * chars.length)];
-            }).join("");
-            if(iteration >= finalValue.length) clearInterval(interval);
-            iteration += 1 / 3;
-        }, 30);
-    }
-
-    // 1. Loading Bar Sequence
+    // 2. Loading Bar Logic
     let progress = 0;
     const loadingInterval = setInterval(() => {
         progress += Math.random() * 1.8;
@@ -1065,14 +1362,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (progressBar) progressBar.style.width = progress + '%';
         if (percentText) percentText.textContent = Math.floor(progress) + '%';
-        
-        // Use the restored decryptEffect
-        if(Math.random() > 0.97 && progress < 100 && decodeText) {
-            decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
-        }
     }, 60);
 
-    // 2. Transition to Terminal
+    // 3. Transition to Terminal
     function startReveal() {
         if (loadingStage) loadingStage.classList.add('hidden');
         if (revealBox) revealBox.classList.remove('hidden');
@@ -1087,11 +1379,12 @@ document.addEventListener('DOMContentLoaded', () => {
         playChat(chat);
     }
 
-    // 3. Conversation Logic
+    // 4. Conversation Typing Logic
     function playChat(chatArray) {
         let lineIdx = 0;
         function typeLine() {
             if (aiLoader) aiLoader.classList.add('hidden');
+
             if (lineIdx < chatArray.length) {
                 const lineData = chatArray[lineIdx];
                 const lineDiv = document.createElement('div');
@@ -1099,34 +1392,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
                 lineDiv.style.marginBottom = '12px';
                 lineDiv.style.fontFamily = 'monospace';
+                
                 typewriterEl.appendChild(lineDiv);
                 
                 let charIdx = 0;
                 const text = lineData.text;
+
                 function typeChar() {
                     if (charIdx < text.length) {
                         lineDiv.textContent += text.charAt(charIdx);
-                        charIdx++; setTimeout(typeChar, 30);
+                        charIdx++;
+                        setTimeout(typeChar, 30);
                     } else {
                         lineIdx++;
                         if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
                             if (aiLoader) aiLoader.classList.remove('hidden');
                             setTimeout(typeLine, 1400); 
-                        } else { setTimeout(typeLine, 600); }
+                        } else {
+                            setTimeout(typeLine, 600);
+                        }
                     }
                 }
                 typeChar();
-            } else if (expandBtn) { expandBtn.classList.add('visible'); }
+            } else {
+                if (expandBtn) expandBtn.classList.add('visible');
+            }
         }
         typeLine();
     }
 
-    // 4. Modal Connection
+    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
     if (expandBtn) {
         expandBtn.onclick = () => {
             if(!modal) return;
+
+            // Inject technical AI content into the modal
             document.getElementById("modalTitle").textContent = "PROJECT: NEURAL_BRIDGE // DIAGNOSTICS";
-            document.getElementById("modalDesc").innerHTML = `
+            const modalDesc = document.getElementById("modalDesc");
+            modalDesc.innerHTML = `
                 <div class="ai-modal-body">
                     <div class="data-header">
                         <span>ENCRYPTION: AES-256</span>
@@ -1135,47 +1438,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="log-entry">
                         <span class="status-tag">ACTIVE</span>
                         <h4>Neural Pathfinding v4.2</h4>
-                        <p>Interprets voxel data to generate construction paths while avoiding hazards.</p>
+                        <p>Interprets complex terrain data to generate optimal construction paths while avoiding environmental hazards.</p>
                     </div>
                     <div class="log-entry">
                         <span class="status-tag">STABLE</span>
                         <h4>LLM Integration Bridge</h4>
-                        <p>Synchronizes world-states with LLMs for natural language processing.</p>
+                        <p>Synchronizes Minecraft world-states with Large Language Models for natural language command processing.</p>
                     </div>
-                </div>`;
+                </div>
+            `;
+            
+            // Clear standard gallery for technical view
             const modalGallery = document.getElementById("modalGallery");
-            if(modalGallery) modalGallery.innerHTML = "<p style='color:var(--muted); text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED]</p>";
+            modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
+
+            // Show the modal
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
         };
     }
-
-    // 5. Modal Close Logic (RESTORED)
-    const modalClose = document.querySelector(".mod-modal-close");
-    const modalBackdrop = document.querySelector(".mod-modal-backdrop");
-    const closeModal = () => { modal.classList.remove("active"); document.body.style.overflow = ""; };
-    if (modalClose) modalClose.onclick = closeModal;
-    if (modalBackdrop) modalBackdrop.onclick = closeModal;
 });
-
-/* ===== HERO SCROLL + BRAND ===== */
-window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    const hero = document.getElementById("hero");
-    const brand = document.getElementById("brandSticky");
-    if(hero) { hero.style.opacity = 1 - (y / 500) * 0.6; }
-    if(brand) brand.classList.toggle("active", y > 400);
-});
-
-/* ===== NAV TOGGLE ===== */
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-if(navToggle) {
-    navToggle.addEventListener("click", () => {
-        navToggle.classList.toggle("open");
-        navMenu.classList.toggle("open");
-    });
-}
 </script>
 
 </body>

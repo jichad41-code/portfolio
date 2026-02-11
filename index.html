@@ -1752,11 +1752,6 @@ footer {
                     <span class="control amber"></span>
                     <span class="control green"></span>
                 </div>
-              <div id="cmd-dashboard" class="command-dashboard hidden">
-    <span class="cmd-tag">/locate_stronghold</span>
-    <span class="cmd-tag">/supply_obsidian</span>
-    <span class="cmd-tag">/sync_voice</span>
-</div>
                 <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
             </div>
             <div class="terminal-body">
@@ -1768,7 +1763,11 @@ footer {
                         <span class="flicker-text">AI is thinking...</span>
                     </div>
                 </div>
-
+<div id="cmd-dashboard" class="command-dashboard">
+    <span class="cmd-tag">/locate_stronghold</span>
+    <span class="cmd-tag">/supply_obsidian</span>
+    <span class="cmd-tag">/sync_voice</span>
+</div>
                 <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
             </div>
         </div>
@@ -2299,8 +2298,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 typeChar();
-            } else {
+           } else {
+                // When typing finishes, show the button and dashboard
                 if (expandBtn) expandBtn.classList.add('visible');
+                
+                const dashboard = document.getElementById('cmd-dashboard');
+                if (dashboard) {
+                    dashboard.classList.add('active');
+                }
             }
         }
         typeLine();

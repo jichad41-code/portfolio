@@ -6,91 +6,7 @@
 <title>Rox — Minecraft Mod Developer</title>
 
 <style>
-
-  /* ================= EXPANDABLE NAV ================= */
-
-.nav-wrapper {
-  position: fixed;
-  top: 22px;
-  left: 28px;
-  z-index: 1001;
-}
-
-.nav-toggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--accent-strong);
-
-  background: rgba(24,18,45,.65);
-  backdrop-filter: blur(14px);
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 40px rgba(168,85,247,.35);
-
-  transition: transform .35s cubic-bezier(.22,1,.36,1);
-}
-
-.nav-toggle.open {
-  transform: rotate(45deg);
-}
-
-.nav-menu {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: row;
-  gap: 22px;
-  align-items: center;
-
-  padding: 14px 20px;
-  border-radius: 18px;
-
-  background: rgba(24,18,45,.65);
-  backdrop-filter: blur(18px);
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 70px rgba(168,85,247,.35);
-
-  opacity: 0;
-  transform: translateY(-10px) scale(.96);
-  pointer-events: none;
-
-  transition:
-    opacity .35s ease,
-    transform .35s cubic-bezier(.22,1,.36,1);
-}
-
-.nav-menu.open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-.nav-menu a {
-  text-decoration: none;
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.nav-menu a:hover {
-  color: var(--accent-strong);
-}
-/* === ACTIVE NAV LINK === */
-.nav-menu a.active {
-  color: var(--accent-strong);
-  text-shadow:
-    0 0 10px rgba(168,85,247,.8),
-    0 0 30px rgba(168,85,247,.6);
-}
-
+/* ================= GLOBAL VARIABLES ================= */
 :root {
   --bg: #0b0614;
   --bg-alt: #120a24;
@@ -99,7 +15,7 @@
   --muted: #b7aedf;
   --accent: #a855f7;
   --accent-strong: #c084fc;
-}  
+}   
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,7 +34,53 @@ body {
   pointer-events: none;
 }
 
-/* ================= STICKY BRAND ================= */
+/* ================= EXPANDABLE NAV ================= */
+.nav-wrapper {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  z-index: 1001;
+}
+
+.nav-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+  background: rgba(24,18,45,.65);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 0 1px rgba(168,85,247,.35), 0 0 40px rgba(168,85,247,.35);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.nav-toggle.open { transform: rotate(45deg); }
+
+.nav-menu {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 18px;
+  background: rgba(24,18,45,.65);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 0 1px rgba(168,85,247,.35), 0 0 70px rgba(168,85,247,.35);
+  opacity: 0;
+  transform: translateY(-10px) scale(.96);
+  pointer-events: none;
+  transition: opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.nav-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.nav-menu a { text-decoration: none; color: var(--text); font-size: 1rem; font-weight: 500; }
+.nav-menu a:hover, .nav-menu a.active { color: var(--accent-strong); text-shadow: 0 0 10px rgba(168,85,247,.8); }
+
+/* ================= HERO ================= */
 .brand-sticky {
   position: fixed;
   top: 22px;
@@ -131,83 +93,31 @@ body {
   transform: translateY(-10px) scale(0.85);
   transition: all .4s cubic-bezier(.22,1,.36,1);
   z-index: 1000;
-  cursor: pointer;
 }
-.brand-sticky.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
+.brand-sticky.active { opacity: 1; transform: translateY(0) scale(1); }
 
-/* ================= HERO ================= */
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding-left: clamp(2.5rem, 8vw, 6rem);
-  overflow: hidden;
   z-index: 1;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(168,85,247,0.35), transparent 60%),
-    linear-gradient(180deg, rgba(10,6,20,0.35), rgba(10,6,20,0.9)),
-    url("rox1-illustration.png");
-  background-size: 110%;
-  background-position: center right;
-  background-repeat: no-repeat;
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 260px;
-  background: linear-gradient(
-    to bottom,
-    rgba(11,6,20,0),
-    rgba(11,6,20,1)
-  );
-}
-
-.hero-overlay {
-  max-width: 520px;
-  position: relative;
-  z-index: 2;
-}
-.hero-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  background: radial-gradient(circle at 30% 40%, rgba(168,85,247,0.35), transparent 60%), linear-gradient(180deg, rgba(10,6,20,0.35), rgba(10,6,20,0.9));
+  background-size: cover;
 }
 
 .hero-name {
   font-size: clamp(4.5rem, 10vw, 7.5rem);
   font-weight: 900;
-  line-height: 1.05;
-  margin: 0;
+  line-height: 0.88;
   color: #e9d5ff;
-  text-shadow:
-    0 0 40px rgba(168,85,247,.8),
-    0 0 90px rgba(168,85,247,.65),
-    0 0 180px rgba(168,85,247,.45);
+  text-shadow: 0 0 40px rgba(168,85,247,.8), 0 0 90px rgba(168,85,247,.65);
 }
 
+.hero-sub { color: var(--muted); margin-top: 14px; }
 
-.hero-sub {
-  margin-top: .35rem;
-  font-size: 1.05rem;
-  color: var(--muted);
-  letter-spacing: .02em;
-}
-
-  .hero-overlay {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* ================= SECTIONS ================= */
+/* ================= MOD SECTIONS ================= */
 .mods-section {
   position: relative;
   z-index: 1;
@@ -222,428 +132,78 @@ body {
   border-left: 4px solid var(--accent);
   padding-left: 1rem;
 }
-/* ================= FEATURED SPOTLIGHT ================= */
 
+/* ================= FEATURED CAROUSEL ================= */
 .featured-carousel {
+  position: relative;
+  height: 350px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 64px;
 }
 
 .featured-card {
+  position: absolute;
   width: 420px;
-  min-height: 240px;
   padding: 36px;
   border-radius: 26px;
   cursor: pointer;
-
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.35),
-    0 0 70px rgba(168,85,247,.35);
-
-  opacity: .45;
-  transform: scale(.88);
-  transition:
-    transform .6s cubic-bezier(.22,1,.36,1),
-    opacity .4s ease,
-    box-shadow .6s cubic-bezier(.22,1,.36,1);
+  background: linear-gradient(180deg, rgba(70,40,140,.35), rgba(10,5,30,.95));
+  box-shadow: 0 0 0 1px rgba(168,85,247,.35), 0 0 70px rgba(168,85,247,.35);
+  transition: all .6s cubic-bezier(.22,1,.36,1);
 }
 
+.featured-card.pos-left { transform: translateX(-460px) scale(.88); opacity: .45; z-index: 1; }
+.featured-card.pos-center { transform: translateX(0) scale(1.08); opacity: 1; z-index: 3; box-shadow: 0 0 0 1px rgba(168,85,247,.7), 0 0 160px rgba(168,85,247,.65); }
+.featured-card.pos-right { transform: translateX(460px) scale(.88); opacity: .45; z-index: 1; }
 
-
-@media (max-width: 900px) {
-  .featured-carousel {
-    gap: 24px;
-    flex-direction: column;
-  }
-
-  .featured-card {
-    width: 100%;
-  }
-}
-
-/* ===== FEATURED POSITION STATES ===== */
-
-.featured-card {
-  position: absolute;
-}
-
-.featured-carousel {
-  position: relative;
-  height: 300px;
-}
-
-/* LEFT */
-.featured-card.pos-left {
-  transform: translateX(-460px) scale(.88);
-  opacity: .45;
-  z-index: 1;
-}
-
-/* CENTER (ONLY spotlight) */
-.featured-card.pos-center {
-  transform: translateX(0) scale(1.08);
-  opacity: 1;
-  z-index: 3;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 160px rgba(168,85,247,.65),
-    0 0 280px rgba(168,85,247,.45);
-}
-
-/* RIGHT */
-.featured-card.pos-right {
-  transform: translateX(460px) scale(.88);
-  opacity: .45;
-  z-index: 1;
-}
-
-/* ================= ALL MODS ================= */
-.mods-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(360px, 1fr));
-  gap: 56px;
-}
-
-.mods-grid-last {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 56px;
-  margin-top: 56px;
-}
-
+/* ================= ALL MODS GRID ================= */
+.mods-grid { display: grid; grid-template-columns: repeat(3, minmax(300px, 1fr)); gap: 40px; }
 .mod-card {
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    rgba(70,40,140,.35),
-    rgba(10,5,30,.95)
-  );
+  background: linear-gradient(180deg, rgba(70,40,140,.35), rgba(10,5,30,.95));
   border-radius: 22px;
   padding: 32px;
   min-height: 260px;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 80px rgba(168,85,247,.35),
-    inset 0 0 0 rgba(255,255,255,0);
-
-  transition:
-    transform .45s cubic-bezier(.22,1,.36,1),
-    box-shadow .45s cubic-bezier(.22,1,.36,1);
-}
-
-/* soft inner glow */
-.mod-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    120% 80% at 50% 0%,
-    rgba(255,255,255,.12),
-    transparent 60%
-  );
-  opacity: .35;
-  pointer-events: none;
-}
-
-.mod-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.7),
-    0 0 140px rgba(168,85,247,.65),
-    0 0 260px rgba(168,85,247,.45);
-}
-  .mod-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-top: 12px;
-  color: var(--text);
-  letter-spacing: .01em;
-  transition: transform .3s ease, color .3s ease;
-}
-
-/* subtle interaction */
-.mod-card:hover .mod-title {
-  transform: translateY(-2px);
-  color: var(--accent-strong);
-}
-
-.tag {
-  transition: all .3s ease;
-}
-
-.mod-card:hover .tag {
-  background: rgba(168,85,247,.45);
-  box-shadow: 0 0 20px rgba(168,85,247,.6);
-}
-.mod-card {
   cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(168,85,247,.45), 0 0 80px rgba(168,85,247,.35);
+  transition: all .45s cubic-bezier(.22,1,.36,1);
 }
+.mod-card:hover { transform: translateY(-10px); box-shadow: 0 0 0 1px rgba(168,85,247,.7), 0 0 140px rgba(168,85,247,.65); }
+.tag { display: inline-block; font-size: .7rem; padding: 6px 12px; border-radius: 999px; background: rgba(168,85,247,.3); margin-bottom: 12px; }
 
-
-.tag {
-  display: inline-block;
-  font-size: .7rem;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(168,85,247,.3);
-  margin-bottom: 12px;
-}
-
-/* ================= ABOUT ================= */
-.about {
-  margin-top: 24rem;
-  background: linear-gradient(
-    180deg,
-    rgba(18,10,36,.85),
-    rgba(11,6,20,1)
-  );
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 64px;
-}
-
-.about-text p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--muted);
-}
-
-.about-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-}
-
-.stat {
-  background: rgba(24,18,45,.65);
-  border-radius: 18px;
-  padding: 28px;
-  box-shadow: 0 0 60px rgba(168,85,247,.25);
-}
-
-.stat h3 {
-  font-size: 2rem;
-  color: var(--accent-strong);
-}
-
-/* ================= GET IN TOUCH ================= */
-.contact {
-  margin-top: 24rem;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.contact-grid img {
-  width: 100%;
-  max-width: 520px;
-  border-radius: 26px;
-}
-
-.contact-info {
-  background: rgba(24,18,45,.65);
-  border-radius: 20px;
-  padding: 28px 32px;
-
-  width: fit-content;           /* KEY FIX */
-  box-shadow: 0 0 60px rgba(168,85,247,.25);
-}
-
-.contact-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 1.05rem;
-  color: var(--muted);
-}
-
-.contact-row:not(:last-child) {
-  margin-bottom: 18px;
-}
-
-.contact-row svg {
-  width: 22px;
-  height: 22px;
-  fill: var(--accent-strong);
-  filter: drop-shadow(0 0 8px rgba(168,85,247,.6));
-  flex-shrink: 0;
-}
-
-.copy-discord {
-  cursor: pointer;
-  position: relative;
-}
-
-.copy-discord:hover {
-  text-decoration: underline;
-}
-
-.copy-discord::after {
-  content: "Copied!";
-  position: absolute;
-  top: -26px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(24,18,45,.9);
-  color: var(--accent-strong);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
-}
-
-.copy-discord.copied::after {
-  opacity: 1;
-}
-
-/* ================= FOOTER ================= */
-footer {
-  text-align: center;
-  padding: 3rem;
-  color: var(--muted);
-  font-size: .85rem;
-  position: relative;
-  z-index: 1;
-}
-
-@media(max-width: 900px) {
-  .featured-grid,
-  .mods-grid,
-  .mods-grid-last,
-  .about-grid,
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-}
-  .hero-name {
-  line-height: 0.88;          /* tighter glyph box */
-  margin-bottom: 14px;        /* controlled spacing */
-}
-
-.hero-sub {
-  margin-top: 0;              /* remove default paragraph offset */
-  line-height: 1.2;
-}
-/* ================= MOD MODAL ================= */
-.mod-modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  z-index: 2000;
-}
-
-.mod-modal.active {
-  display: block;
-}
-
-.mod-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(5, 2, 15, 0.75);
-  backdrop-filter: blur(6px);
-}
-
-.mod-modal-content {
-  position: relative;
-  max-width: 900px;
-  max-height: 85vh;
-  margin: 5vh auto;
-  background: linear-gradient(180deg, rgba(30,20,60,.95), rgba(10,5,30,.98));
-  border-radius: 26px;
-  padding: 40px;
-  overflow-y: auto;
-
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.45),
-    0 0 120px rgba(168,85,247,.6);
-
-  animation: modalIn .45s cubic-bezier(.22,1,.36,1);
-}
-
-@keyframes modalIn {
-  from {
-    transform: translateY(40px) scale(.96);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.mod-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 22px;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.mod-modal-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
-  margin-top: 28px;
-}
-
-.mod-modal-gallery img {
-  width: 100%;
-  border-radius: 16px;
-}
-/* --- CONTAINER SETUP --- */
+/* ================= IN DEVELOPMENT (ENHANCED BOX) ================= */
 .hype-stage-wrapper {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    min-height: 300px;
+    min-height: 380px;
     display: flex;
     justify-content: center;
     align-items: center;
+    perspective: 1000px;
 }
 
 .hidden { display: none !important; }
 
-/* --- PHASE 1: LOADING SCREEN STYLES --- */
+.loading-state { text-align: center; width: 100%; }
+
 .glitch-hype-text {
     font-family: monospace;
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
     color: var(--accent-strong);
     text-shadow: 0 0 15px var(--accent);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
 }
 
 .progress-bar-wrapper {
     width: 100%;
-    max-width: 400px;
-    height: 4px;
+    max-width: 450px;
+    height: 6px;
     background: rgba(168, 85, 247, 0.1);
     border-radius: 10px;
     border: 1px solid rgba(168, 85, 247, 0.2);
-    margin: 0 auto 10px;
+    margin: 0 auto 15px;
     overflow: hidden;
 }
 
@@ -651,82 +211,117 @@ footer {
     width: 0%;
     height: 100%;
     background: var(--accent-strong);
-    box-shadow: 0 0 15px var(--accent);
+    box-shadow: 0 0 20px var(--accent);
 }
 
 .loading-meta {
     display: flex;
     justify-content: space-between;
     font-family: monospace;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--muted);
-    max-width: 400px;
+    max-width: 450px;
     margin: 0 auto;
 }
 
-/* --- PHASE 2: THE REVEAL BOX --- */
+/* THE REVEAL TERMINAL BOX */
 .reveal-box {
     width: 100%;
-    background: rgba(24, 18, 45, 0.6); /* Dark semi-transparent */
-    backdrop-filter: blur(12px);      /* Blur background behind box */
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 18px;
-    box-shadow: 0 0 40px rgba(168, 85, 247, 0.2);
+    background: rgba(24, 18, 45, 0.65);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(168, 85, 247, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.25);
     overflow: hidden;
-    animation: boxGlitchIn 0.4s ease-out;
+    animation: boxPopIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-@keyframes boxGlitchIn {
-    0% { opacity: 0; transform: scale(0.9) skew(5deg); }
-    100% { opacity: 1; transform: scale(1) skew(0deg); }
+@keyframes boxPopIn {
+    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .terminal-header {
-    background: rgba(168, 85, 247, 0.1);
-    padding: 12px 20px;
+    background: rgba(168, 85, 247, 0.15);
+    padding: 14px 22px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(168, 85, 247, 0.2);
 }
 
-.terminal-dots { display: flex; gap: 6px; margin-right: 15px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; }
+.terminal-dots { display: flex; gap: 8px; margin-right: 18px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
 .red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
+.terminal-title { font-family: monospace; font-size: 0.85rem; color: var(--muted); }
 
-.terminal-body { padding: 30px; }
+.terminal-body { padding: 40px; }
 
 .typewriter-text {
     font-family: monospace;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1.15rem;
+    line-height: 1.7;
     color: var(--text);
-    min-height: 60px;
+    min-height: 70px;
+    white-space: pre-wrap;
 }
 
 .expand-data-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 30px;
+    padding: 12px 28px;
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent-strong);
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
-    opacity: 0; /* Hidden until typewriter ends */
-    transition: 0.3s;
+    font-weight: 700;
+    font-family: monospace;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
 }
 
-.expand-data-btn.visible { opacity: 1; }
-.expand-data-btn:hover { background: var(--accent); color: white; }
+.expand-data-btn.visible { opacity: 1; transform: translateY(0); }
+.expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 30px var(--accent); }
+
+/* ================= ABOUT / CONTACT ================= */
+.about { margin-top: 15rem; background: linear-gradient(180deg, rgba(18,10,36,.85), rgba(11,6,20,1)); }
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; }
+.about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.stat { background: rgba(24,18,45,.65); border-radius: 18px; padding: 28px; box-shadow: 0 0 60px rgba(168,85,247,.25); }
+.stat h3 { font-size: 2rem; color: var(--accent-strong); }
+
+.contact { margin-top: 15rem; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.contact-grid img { width: 100%; max-width: 520px; border-radius: 26px; }
+.contact-info { background: rgba(24,18,45,.65); border-radius: 20px; padding: 28px 32px; width: fit-content; box-shadow: 0 0 60px rgba(168,85,247,.25); }
+.contact-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; color: var(--muted); }
+.contact-row svg { width: 22px; height: 22px; fill: var(--accent-strong); }
+
+/* ================= MODAL ================= */
+.mod-modal { position: fixed; inset: 0; display: none; z-index: 2000; }
+.mod-modal.active { display: block; }
+.mod-modal-backdrop { position: absolute; inset: 0; background: rgba(5, 2, 15, 0.75); backdrop-filter: blur(6px); }
+.mod-modal-content { position: relative; max-width: 900px; max-height: 85vh; margin: 5vh auto; background: linear-gradient(180deg, rgba(30,20,60,.95), rgba(10,5,30,.98)); border-radius: 26px; padding: 40px; overflow-y: auto; box-shadow: 0 0 120px rgba(168,85,247,.6); animation: modalIn .45s cubic-bezier(.22,1,.36,1); }
+@keyframes modalIn { from { transform: translateY(40px) opacity: 0; } to { transform: translateY(0) opacity: 1; } }
+.mod-modal-close { position: absolute; top: 20px; right: 22px; font-size: 2rem; background: none; border: none; color: var(--text); cursor: pointer; }
+.mod-modal-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-top: 28px; }
+.mod-modal-gallery img { width: 100%; border-radius: 16px; }
+
+footer { text-align: center; padding: 3rem; color: var(--muted); font-size: .85rem; }
+
+@media(max-width: 900px) {
+  .mods-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .featured-carousel { height: 600px; flex-direction: column; }
+  .featured-card { width: 100%; position: relative; transform: none !important; opacity: 1 !important; margin-bottom: 20px; }
+}
 </style>
 </head>
 
 <body>
 
-  <!-- EXPANDABLE NAV -->
 <div class="nav-wrapper">
   <button class="nav-toggle" id="navToggle">+</button>
-
   <nav class="nav-menu" id="navMenu">
     <a href="#" id="navTop">Top</a>
     <a href="#mods">Mods</a>
@@ -735,542 +330,138 @@ footer {
   </nav>
 </div>
 
-
 <canvas id="particles"></canvas>
-
 <div class="brand-sticky" id="brandSticky">ROX</div>
 
 <header class="hero" id="hero">
-  <div id="top"></div>
-
- <div class="hero-overlay">
-  <div class="hero-text" id="heroText">
-    <h1 class="hero-name">ROX</h1>
-    <p class="hero-sub">Minecraft Mod Developer</p>
+  <div class="hero-overlay">
+    <div class="hero-text" id="heroText">
+      <h1 class="hero-name">ROX</h1>
+      <p class="hero-sub">Minecraft Mod Developer</p>
+    </div>
   </div>
-</div>
 </header>
 
 <main>
-
-<section class="mods-section" id="mods">
-
-  <h2 class="section-title">Featured Mods</h2>
-<div class="featured-carousel">
-  <div class="featured-card"
-    data-title="Better Dungeons"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Flagship</span>
-    <h3>Better Dungeons</h3>
-    <p>Procedural dungeons with handcrafted pacing.</p>
-  </div>
-
-  <div class="featured-card"
-    data-title="Better Dungeons1"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Core</span>
-    <h3>Core Engine</h3>
-    <p>Optimized systems and shared infrastructure.</p>
-  </div>
-
-  <div class="featured-card"
-    data-title="Better Dungeons2"
-     data-desc="Procedural dungeons with handcrafted pacing."
-     data-images="fd1.png,fd2.png">
-    <span class="tag">Systems</span>
-    <h3>World Systems</h3>
-    <p>Deep control over terrain and progression.</p>
-  </div>
-</div>
-
-
-</section>
-
-  <div style="height: 18rem;"></div>
-
-<section class="mods-section" id="ai-hype-section">
-    <h2 class="section-title">In Development</h2>
-    
-    <div class="hype-stage-wrapper">
-        <div id="loading-stage" class="loading-state">
-            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
-            <div class="progress-bar-wrapper">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-            <div class="loading-meta">
-                <p>DECRYPTING: <span id="percent">0%</span></p>
-                <p>CORE: STABLE</p>
-            </div>
-        </div>
-
-        <div id="reveal-box" class="reveal-box hidden">
-            <div class="terminal-header">
-                <div class="terminal-dots">
-                    <span class="dot red"></span>
-                    <span class="dot amber"></span>
-                    <span class="dot green"></span>
-                </div>
-                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
-            </div>
-            <div class="terminal-body">
-                <p id="typewriter-content" class="typewriter-text"></p>
-                <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
-            </div>
-        </div>
+  <section class="mods-section" id="mods">
+    <h2 class="section-title">Featured Mods</h2>
+    <div class="featured-carousel">
+      <div class="featured-card pos-left" data-title="Better Dungeons" data-desc="Procedural dungeons with handcrafted pacing." data-images="fd1.png,fd2.png">
+        <span class="tag">Flagship</span>
+        <h3>Better Dungeons</h3>
+        <p>Procedural dungeons with handcrafted pacing.</p>
+      </div>
+      <div class="featured-card pos-center" data-title="Core Engine" data-desc="Optimized systems and shared infrastructure." data-images="fd1.png,fd2.png">
+        <span class="tag">Core</span>
+        <h3>Core Engine</h3>
+        <p>Optimized systems and shared infrastructure.</p>
+      </div>
+      <div class="featured-card pos-right" data-title="World Systems" data-desc="Deep control over terrain and progression." data-images="fd1.png,fd2.png">
+        <span class="tag">Systems</span>
+        <h3>World Systems</h3>
+        <p>Deep control over terrain and progression.</p>
+      </div>
     </div>
-</section>
+  </section>
 
-<div style="height: 18rem;"></div>
-<section class="mods-section">
-  <h2 class="section-title">All Mods</h2>
-  <div class="mods-grid">
-    <div class="mod-card"
-      data-title="Ben 10 100 Days"
-     data-desc="Turn in the different phases of Ben 10."
-     data-images="mod1.png,mod2.png,mod3.png">
-      <span class="tag">Gameplay</span><h3 class="mod-title">Ben 10 100 Days</h3></div>
-    <div class="mod-card"
-      data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression." >
-      <span class="tag">Gameplay</span><h3 class="mod-title">Goku 100 Days</h3></div>
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Gameplay</span><h3 class="mod-title">Attack On Titan 100 days</h3></div>
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Gameplay</span><h3 class="mod-title">Custom Boss Mod</h3></div>
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Camo Block MOD</h3></div>
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Worldgen</span><h3 class="mod-title">Minecraft But Chunks Are Random</h3></div>
-  </div>
+  <section class="mods-section" id="ai-hype-section">
+      <h2 class="section-title">In Development</h2>
+      <div class="hype-stage-wrapper">
+          <div id="loading-stage" class="loading-state">
+              <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
+              <div class="progress-bar-wrapper">
+                  <div id="progressBar" class="progress-bar-fill"></div>
+              </div>
+              <div class="loading-meta">
+                  <p>DECRYPTING: <span id="percent">0%</span></p>
+                  <p>CORE: STABLE</p>
+              </div>
+          </div>
 
-  <div class="mods-grid-last">
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Gameplay</span><h3 class="mod-title">Bionic Immortal Mod</h3></div>
-    <div class="mod-card"
-       data-title="Goku 100 Days"
-  data-desc="Survive 100 days as Goku with custom abilities and progression.">
-      <span class="tag">Utility</span><h3 class="mod-title">Minecraft but Drops Are Guns Mod</h3></div>
-  </div>
-</section>
+          <div id="reveal-box" class="reveal-box hidden">
+              <div class="terminal-header">
+                  <div class="terminal-dots">
+                      <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
+              </div>
+              <div class="terminal-body">
+                  <p id="typewriter-content" class="typewriter-text"></p>
+                  <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+              </div>
+          </div>
+      </div>
+  </section>
 
-<section class="mods-section about" id="about">
-
-  <h2 class="section-title">About Me</h2>
-  <div class="about-grid">
-    <div class="about-text">
-      <p id="about-typewriter" data-text="I’m Rox, a Minecraft mod developer focused on building systems that players understand instinctively. I turn complex ideas into polished, intuitive mods through thoughtful design, balanced mechanics, and reliable code."></p>
-
+  <section class="mods-section">
+    <h2 class="section-title">All Mods</h2>
+    <div class="mods-grid">
+      <div class="mod-card" data-title="Ben 10 100 Days" data-desc="Turn into the different phases of Ben 10."><span class="tag">Gameplay</span><h3 class="mod-title">Ben 10 100 Days</h3></div>
+      <div class="mod-card" data-title="Goku 100 Days" data-desc="Survive as Goku."><span class="tag">Gameplay</span><h3 class="mod-title">Goku 100 Days</h3></div>
+      <div class="mod-card" data-title="Attack On Titan"><span class="tag">Gameplay</span><h3 class="mod-title">Attack On Titan 100 Days</h3></div>
     </div>
-    <div class="about-stats">
-      <div class="stat"><h3 data-count="2">0+</h3><p>Years Experience</p></div>
-      <div class="stat"><h3 data-count="100">0+</h3><p>Published Mods</p></div>
-      <div class="stat"><h3 data-count="50">0+</h3><p>Clients Served</p></div>
-      <div class="stat"><h3 data-count="4.6">0</h3><p>Avg Rating</p></div>
+  </section>
+
+  <section class="mods-section about" id="about">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p id="about-typewriter" data-text="I’m Rox, a Minecraft mod developer focused on building systems that players understand instinctively. I turn complex ideas into polished, intuitive mods through thoughtful design and reliable code."></p>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><h3 data-count="2">0</h3><p>Years Experience</p></div>
+        <div class="stat"><h3 data-count="100">0</h3><p>Published Mods</p></div>
+        <div class="stat"><h3 data-count="50">0</h3><p>Clients Served</p></div>
+        <div class="stat"><h3 data-count="4.6">0</h3><p>Avg Rating</p></div>
+      </div>
     </div>
-  </div>
-</section>
-
-<section class="mods-section contact" id="contact">
-
-  <h2 class="section-title">Get In Touch</h2>
-  <div class="contact-grid">
-    <img src="roxcontact1.png" alt="Contact">
-   <div class="contact-info">
-
-  <div class="contact-row">
-    <!-- Gmail icon -->
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-    </svg>
-    <span>rox@gmail.com</span>
-  </div>
-
-  <div class="contact-row">
-    <!-- Discord official icon -->
-    <svg viewBox="0 0 245 240" aria-hidden="true">
-      <path d="M104.4 104.6c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zm36.2 0c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1 0-6.1-4.5-11.1-10.2-11.1z"/>
-      <path d="M189.5 20h-134C24.5 20 10 34.5 10 52.3v135.4c0 17.8 14.5 32.3 32.3 32.3h113.1l-5.3-18.5 12.8 11.9 12.1 11.2 21.5 19V52.3C196.5 34.5 182 20 164.2 20zM163 157s-5.2-6.2-9.5-11.7c18.8-5.3 26-17.1 26-17.1-5.9 3.9-11.5 6.6-16.6 8.5-7.2 3-14.1 5-20.9 6.2-13.9 2.6-26.6 1.9-37.5-.1-8.3-1.6-15.5-3.9-21.4-6.2-3.3-1.3-6.9-3-10.5-5.1-.4-.2-.8-.4-1.2-.7-.1-.1-.2-.1-.3-.2-1.3-.7-2-1.2-2-1.2s7 11.5 25.4 16.9c-4.3 5.5-9.6 12-9.6 12-31.7-1-43.7-21.8-43.7-21.8 0-46.2 20.7-83.7 20.7-83.7 20.7-15.5 40.4-15 40.4-15l1.4 1.6c-25.9 7.5-37.8 18.8-37.8 18.8s3.2-1.7 8.5-4c15.4-6.8 27.6-8.6 32.6-9.1.8-.1 1.5-.2 2.3-.2 8.3-1.1 17.7-1.4 27.5-.3 13 1.5 26.9 5.4 41 13.4 0 0-11.3-10.8-35.6-18.3l2-2.3s19.7-.5 40.4 15c0 0 20.7 37.5 20.7 83.7 0 0-12.1 20.8-43.8 21.8z"/>
-    </svg>
-    <span class="copy-discord" data-copy="kratos_897">kratos_897</span>
-
-  </div>
-
-</div>
-
-  </div>
-</section>
-
+  </section>
 </main>
 
 <footer>© 2026 Rox · Built for Minecraft modding</footer>
-<!-- ===== MOD MODAL ===== -->
+
 <div class="mod-modal" id="modModal">
   <div class="mod-modal-backdrop"></div>
-
   <div class="mod-modal-content">
     <button class="mod-modal-close">&times;</button>
-
     <h2 id="modalTitle"></h2>
     <p id="modalDesc"></p>
-
     <div class="mod-modal-gallery" id="modalGallery"></div>
   </div>
 </div>
 
 <script>
-/* ===== PIXEL PARTICLES ===== */
+/* ===== PARTICLES ===== */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener("resize", resize); resize();
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-const particles = Array.from({ length: 90 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  size: Math.floor(Math.random() * 3) + 2,
-  vx: (Math.random() - 0.5) * 0.12,
-  vy: -Math.random() * 0.35 - 0.1,
-  a: Math.random() * 0.5 + 0.3
+const particles = Array.from({ length: 80 }, () => ({
+  x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+  size: Math.random() * 2 + 1, vx: (Math.random() - 0.5) * 0.2, vy: -Math.random() * 0.5 - 0.1, a: Math.random()
 }));
 
-function drawParticles() {
+function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (const p of particles) {
-    ctx.globalAlpha = p.a;
-    ctx.shadowColor = "rgba(168,85,247,0.6)";
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = "#a855f7";
-    ctx.fillRect(p.x, p.y, p.size, p.size);
-
-    p.x += p.vx;
-    p.y += p.vy;
-
-    if (p.y < -10) {
-      p.y = canvas.height + 10;
-      p.x = Math.random() * canvas.width;
-    }
-  }
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* ===== HERO SCROLL + BRAND ===== */
-const hero = document.getElementById("hero");
-const heroText = document.getElementById("heroText");
-const brand = document.getElementById("brandSticky");
-
-window.addEventListener("scroll", () => {
-  const y = window.scrollY;
-  const raw = Math.min(y / 500, 1);
-  const p = 1 - Math.pow(1 - raw, 3);
-
-  hero.style.transform = `translateY(${p * -120}px)`;
-  hero.style.opacity = 1 - p * 0.6;
-  hero.style.backgroundSize = `${110 + p * 6}%`;
-  hero.style.backgroundPositionY = `${50 - p * 6}%`;
-  heroText.style.transform = `translateY(${p * -40}px)`;
-
-  brand.classList.toggle("active", p > 0.55);
-});
-  /* ===== ABOUT STATS COUNT UP (RESTORED) ===== */
-const stats = document.querySelectorAll(".stat h3");
-
-const statObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-
-    const el = entry.target;
-    const target = parseFloat(el.dataset.count);
-    const isDecimal = target % 1 !== 0;
-    const suffix = el.textContent.includes("+") ? "+" : "";
-    const start = performance.now();
-    const duration = 1200;
-
-    function animate(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const value = target * eased;
-
-      el.textContent = isDecimal
-        ? value.toFixed(1)
-        : Math.floor(value);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        el.textContent = target + suffix;
-      }
-    }
-
-    requestAnimationFrame(animate);
-    statObserver.unobserve(el);
+  particles.forEach(p => {
+    ctx.globalAlpha = p.a; ctx.fillStyle = "#a855f7"; ctx.fillRect(p.x, p.y, p.size, p.size);
+    p.x += p.vx; p.y += p.vy; if(p.y < 0) p.y = canvas.height;
   });
-}, { threshold: 0.6 });
+  requestAnimationFrame(draw);
+} draw();
 
-stats.forEach(stat => statObserver.observe(stat));
- /* ===== ABOUT TYPEWRITER (LOCKED + MICRO TICK FEEL) ===== */
-const typeTarget = document.getElementById("about-typewriter");
-
-if (typeTarget) {
-  const text = typeTarget.dataset.text;
-  let index = 0;
-  let started = false;
-
-  const typeObserver = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting || started) return;
-    started = true;
-
-    function type() {
-      if (index >= text.length) return;
-
-      const char = text.charAt(index);
-      typeTarget.textContent += char;
-
-      // micro visual "tick"
-      typeTarget.style.opacity = "0.92";
-      requestAnimationFrame(() => {
-        typeTarget.style.opacity = "1";
-      });
-
-      index++;
-
-      // subtle human-like pauses
-      let delay = 22;
-      if (char === "," || char === ".") delay = 140;
-      if (char === " ") delay = 18;
-
-      setTimeout(type, delay);
-    }
-
-    type();
-  }, { threshold: 0.6 });
-
-  typeObserver.observe(typeTarget);
-}
-  /* ===== COPY DISCORD ID ===== */
-const discordEl = document.querySelector(".copy-discord");
-
-if (discordEl) {
-  discordEl.addEventListener("click", () => {
-    const text = discordEl.dataset.copy;
-
-    navigator.clipboard.writeText(text).then(() => {
-      discordEl.classList.add("copied");
-
-      setTimeout(() => {
-        discordEl.classList.remove("copied");
-      }, 1200);
-    });
-  });
-}
-/* ===== EXPANDABLE NAV ===== */
+/* ===== NAV & SCROLL ===== */
 const navToggle = document.getElementById("navToggle");
 const navMenu = document.getElementById("navMenu");
+navToggle.onclick = () => { navToggle.classList.toggle("open"); navMenu.classList.toggle("open"); };
 
-navToggle.addEventListener("click", () => {
-  navToggle.classList.toggle("open");
-  navMenu.classList.toggle("open");
-});
-/* ===== NAV TOP FIX ===== */
-const navTop = document.getElementById("navTop");
-
-if (navTop) {
-  navTop.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-}
-/* ===== SMOOTH SCROLL FOR NAV LINKS ===== */
-document.querySelectorAll(".nav-menu a").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-
-    const targetId = link.getAttribute("href");
-
-    if (targetId === "#") {
-      // Top button
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const target = document.querySelector(targetId);
-      if (!target) return;
-
-      const y = target.getBoundingClientRect().top + window.pageYOffset;
-
-      window.scrollTo({
-        top: y,
-        behavior: "smooth"
-      });
-    }
-  });
-});
-/* ===== ACTIVE NAV HIGHLIGHT ===== */
-const sections = [
-  { id: "mods", link: "#mods" },
-  { id: "about", link: "#about" },
-  { id: "contact", link: "#contact" }
-];
-
-const navLinks = document.querySelectorAll(".nav-menu a");
-
-function updateActiveNav() {
-  let current = "";
-
-  sections.forEach(section => {
-    const el = document.getElementById(section.id);
-    if (!el) return;
-
-    const rect = el.getBoundingClientRect();
-    if (rect.top <= window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.35) {
-      current = section.link;
-    }
-  });
-
-  navLinks.forEach(link => {
-    link.classList.toggle(
-      "active",
-      link.getAttribute("href") === current
-    );
-  });
-}
-
-window.addEventListener("scroll", updateActiveNav);
-updateActiveNav();
-/* ===== MOD CARD MODAL ===== */
-const modal = document.getElementById("modModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalDesc = document.getElementById("modalDesc");
-const modalGallery = document.getElementById("modalGallery");
-const modalClose = document.querySelector(".mod-modal-close");
-const modalBackdrop = document.querySelector(".mod-modal-backdrop");
-
-document.querySelectorAll(".mod-card").forEach(card => {
-  card.addEventListener("click", () => {
-    modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
-
-    modalGallery.innerHTML = "";
-
-    const images = card.dataset.images
-      ? card.dataset.images.split(",")
-      : [];
-
-    if (images.length) {
-      images.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src.trim();
-        modalGallery.appendChild(img);
-      });
-    } else {
-      modalGallery.innerHTML =
-        "<p style='color:var(--muted)'>No images available.</p>";
-    }
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
+window.addEventListener("scroll", () => {
+  const brand = document.getElementById("brandSticky");
+  brand.classList.toggle("active", window.scrollY > 400);
 });
 
-function closeModal() {
-  modal.classList.remove("active");
-  document.body.style.overflow = "";
-}
-
-modalClose.addEventListener("click", closeModal);
-modalBackdrop.addEventListener("click", closeModal);
-
-window.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeModal();
-});
-/* ===== FEATURED ROTATING SPOTLIGHT (CENTER-BASED) ===== */
-
-const featuredCards = Array.from(document.querySelectorAll(".featured-card"));
-
-let positions = ["pos-left", "pos-center", "pos-right"];
-
-function applyPositions() {
-  featuredCards.forEach((card, i) => {
-    card.classList.remove("pos-left", "pos-center", "pos-right");
-    card.classList.add(positions[i]);
-  });
-}
-
-// rotate cards so next one comes to center
-function rotateCards() {
-  positions.unshift(positions.pop()); // right → center → left
-  applyPositions();
-}
-
-/* ===== FEATURED CARD → MODAL ===== */
-
-featuredCards.forEach((card, index) => {
-  card.addEventListener("click", () => {
-
-    // If NOT center → rotate into center
-    if (!card.classList.contains("pos-center")) {
-      while (!card.classList.contains("pos-center")) {
-        rotateCards();
-      }
-      resetAutoRotate();
-      return;
-    }
-
-    // If CENTER → open modal
-    modalTitle.textContent = card.dataset.title || "";
-    modalDesc.textContent = card.dataset.desc || "";
-    modalGallery.innerHTML = "";
-
-    const images = card.dataset.images
-      ? card.dataset.images.split(",")
-      : [];
-
-    if (images.length && images[0]) {
-      images.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src.trim();
-        modalGallery.appendChild(img);
-      });
-    } else {
-      modalGallery.innerHTML =
-        "<p style='color:var(--muted)'>No images available.</p>";
-    }
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
-});
-
-
-let autoRotateTimer;
-
-function resetAutoRotate() {
-  clearInterval(autoRotateTimer);
-  autoRotateTimer = setInterval(rotateCards, 3100);
-}
-
-// init
-applyPositions();
-resetAutoRotate();
-
+/* ===== IN DEVELOPMENT LOGIC ===== */
 document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
@@ -1280,7 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
 
-    // 1. Decryption Effect logic
     function decryptEffect(element, finalValue) {
         const chars = '!<>-_\\/[]{}—=+*^?#________';
         let iteration = 0;
@@ -1294,33 +484,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
 
-    // 2. Loading Bar logic
     let progress = 0;
     const interval = setInterval(() => {
         progress += Math.random() * 1.8;
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
-            setTimeout(startReveal, 500); 
+            setTimeout(() => {
+                loadingStage.classList.add('hidden');
+                revealBox.classList.remove('hidden');
+                typeWriter("> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Project Status: ALPHA_READY.", 0);
+            }, 500); 
         }
         progressBar.style.width = progress + '%';
         percentText.textContent = Math.floor(progress) + '%';
-        
-        if(Math.random() > 0.96 && progress < 100) {
-            decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
-        }
+        if(Math.random() > 0.96 && progress < 100) decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
     }, 60);
 
-    // 3. Reveal the styled box
-    function startReveal() {
-        loadingStage.classList.add('hidden');
-        revealBox.classList.remove('hidden');
-        
-        const message = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Project Status: ALPHA_READY.";
-        typeWriter(message, 0);
-    }
-
-    // 4. Typewriter logic
     function typeWriter(text, i) {
         if (i < text.length) {
             typewriterEl.textContent += text.charAt(i);
@@ -1330,19 +510,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 5. Button logic
     expandBtn.onclick = () => {
         const modal = document.getElementById("modModal");
-        if(modal) {
-            document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
-            document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files...";
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        }
+        document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
+        document.getElementById("modalDesc").textContent = "Accessing Alpha encrypted development files. This mod uses local LLM bridging to automate complex player tasks and construction.";
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
     };
-});  
+});
 
+/* ===== MODAL & CAROUSEL LOGIC ===== */
+const featuredCards = document.querySelectorAll(".featured-card");
+let positions = ["pos-left", "pos-center", "pos-right"];
+
+function updateCarousel() {
+    featuredCards.forEach((c, i) => {
+        c.className = "featured-card " + positions[i];
+    });
+}
+
+featuredCards.forEach((card, i) => {
+    card.onclick = () => {
+        if(!card.classList.contains("pos-center")) {
+            positions.push(positions.shift());
+            updateCarousel();
+        } else {
+            document.getElementById("modalTitle").textContent = card.dataset.title;
+            document.getElementById("modalDesc").textContent = card.dataset.desc;
+            document.getElementById("modModal").classList.add("active");
+        }
+    }
+});
+
+document.querySelector(".mod-modal-close").onclick = () => {
+    document.getElementById("modModal").classList.remove("active");
+    document.body.style.overflow = "";
+};
 </script>
-
 </body>
 </html>

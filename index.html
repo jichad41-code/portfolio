@@ -776,6 +776,73 @@ footer {
 }
 .log-entry h4 { color: var(--accent-strong); margin-bottom: 5px; }
 .status-tag { float: right; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
+
+  /* --- ENHANCED AI MODAL STYLES --- */
+.ai-modal-body {
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+    padding: 10px 0;
+}
+
+.data-header {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(168, 85, 247, 0.08);
+    padding: 12px 18px;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 0.8rem;
+    color: var(--accent-strong);
+}
+
+.status-live {
+    color: #27c93f;
+    text-shadow: 0 0 10px #27c93f;
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.log-entry {
+    background: rgba(24, 18, 45, 0.45);
+    border-left: 3px solid var(--accent);
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 0 12px 12px 0;
+    transition: background 0.3s ease;
+}
+
+.log-entry:hover {
+    background: rgba(168, 85, 247, 0.05);
+}
+
+.log-entry h4 {
+    color: var(--accent-strong);
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+}
+
+.log-entry p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.status-tag {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+    float: right;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+}
   
 </style>
 </head>
@@ -1422,41 +1489,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
-    if (expandBtn) {
-        expandBtn.onclick = () => {
-            if(!modal) return;
+   /* ===== UPDATED AI SYSTEM DATA MODAL ===== */
+if (expandBtn) {
+    expandBtn.onclick = () => {
+        const modal = document.getElementById("modModal");
+        if (!modal) return;
 
-            // Inject technical AI content into the modal
-            document.getElementById("modalTitle").textContent = "PROJECT: NEURAL_BRIDGE // DIAGNOSTICS";
-            const modalDesc = document.getElementById("modalDesc");
-            modalDesc.innerHTML = `
-                <div class="ai-modal-body">
-                    <div class="data-header">
-                        <span>ENCRYPTION: AES-256</span>
-                        <span>STATUS: STABLE_ALPHA</span>
-                    </div>
-                    <div class="log-entry">
-                        <span class="status-tag">ACTIVE</span>
-                        <h4>Neural Pathfinding v4.2</h4>
-                        <p>Interprets complex terrain data to generate optimal construction paths while avoiding environmental hazards.</p>
-                    </div>
-                    <div class="log-entry">
-                        <span class="status-tag">STABLE</span>
-                        <h4>LLM Integration Bridge</h4>
-                        <p>Synchronizes Minecraft world-states with Large Language Models for natural language command processing.</p>
-                    </div>
+        // Set Futuristic Title
+        document.getElementById("modalTitle").textContent = "NEURAL_ASSISTANT // CAPABILITIES_REPORT";
+        
+        const modalDesc = document.getElementById("modalDesc");
+        modalDesc.innerHTML = `
+            <div class="ai-modal-body">
+                <div class="data-header">
+                    <span>TYPE: NEURAL_BRIDGE_V4</span>
+                    <span>VOICE_SYNC: <span class="status-live">ONLINE</span></span>
                 </div>
-            `;
-            
-            // Clear standard gallery for technical view
-            const modalGallery = document.getElementById("modalGallery");
-            modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
 
-            // Show the modal
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        };
-    }
+                <div class="log-entry">
+                    <span class="status-tag">COMMUNICATION</span>
+                    <h4>Natural Language Interaction</h4>
+                    <p>The assistant processes real-time voice input and replies via text. It behaves like a secondary player, offering companionship and technical support during survival or creative sessions.</p>
+                </div>
+
+                <div class="log-entry">
+                    <span class="status-tag">UTILITY</span>
+                    <h4>System Command Execution</h4>
+                    <p>No need for manual typing. Ask the AI to "Set time to day" or "Locate the nearest Stronghold," and it will execute the appropriate server commands and provide precise coordinates immediately.</p>
+                </div>
+
+                <div class="log-entry">
+                    <span class="status-tag">LOGISTICS</span>
+                    <h4>Material & Resource Logic</h4>
+                    <p>The AI can be tasked with supplying specific blocks. Request an item, and the assistant will calculate the logistics to provide it or guide you to the exact chunk where resources are plentiful.</p>
+                </div>
+            </div>
+        `;
+
+        // Update Gallery Placeholder
+        const modalGallery = document.getElementById("modalGallery");
+        if (modalGallery) {
+            modalGallery.innerHTML = \`
+                <div style="grid-column: 1/-1; text-align: center; padding: 25px; border: 1px dashed var(--accent); border-radius: 12px; background: rgba(168, 85, 247, 0.05);">
+                    <p style="color: var(--accent-strong); font-size: 0.85rem; font-family: monospace;">
+                        [SIGNAL DETECTED: WAITING FOR PLAYER VOICE INPUT...]
+                    </p>
+                </div>
+            \`;
+        }
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    };
+}
 });
 </script>
 

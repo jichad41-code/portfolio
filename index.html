@@ -614,12 +614,11 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-/* --- CONTAINER & SHARED --- */
 .hype-stage-wrapper {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    min-height: 350px;
+    min-height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -627,7 +626,7 @@ footer {
 
 .hidden { display: none !important; }
 
-/* --- LOADING STYLES (From your code) --- */
+/* LOADING SCREEN */
 .glitch-hype-text {
     font-family: monospace;
     font-size: 1.4rem;
@@ -636,7 +635,25 @@ footer {
     margin-bottom: 20px;
 }
 
-/* --- THE REVEAL BOX STYLES --- */
+.progress-bar-wrapper {
+    width: 100%;
+    max-width: 400px;
+    height: 4px;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    margin: 0 auto 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-strong);
+    box-shadow: 0 0 15px var(--accent);
+}
+
+/* THE BOX (REVEAL BOX) */
 .reveal-box {
     width: 100%;
     background: rgba(24, 18, 45, 0.6);
@@ -649,8 +666,7 @@ footer {
 }
 
 @keyframes boxGlitchIn {
-    0% { opacity: 0; transform: scale(0.9) skew(5deg); filter: hue-rotate(90deg); }
-    50% { opacity: 0.8; transform: skew(-2deg); }
+    0% { opacity: 0; transform: scale(0.9) skew(5deg); }
     100% { opacity: 1; transform: scale(1) skew(0deg); }
 }
 
@@ -677,19 +693,19 @@ footer {
 
 .expand-data-btn {
     margin-top: 20px;
-    padding: 12px 24px;
+    padding: 10px 20px;
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent-strong);
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    opacity: 0; /* Hidden until typewriter finishes */
+    opacity: 0;
     transition: 0.3s;
 }
 
 .expand-data-btn.visible { opacity: 1; }
-.expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 15px var(--accent); }
+.expand-data-btn:hover { background: var(--accent); color: white; }
 </style>
 </head>
 
@@ -759,32 +775,31 @@ footer {
 
 
 </section>
-
-  <div style="height: 18rem;"></div>
+<div style="height: 18rem;"></div>
 
 <section class="mods-section" id="ai-hype-section">
     <h2 class="section-title">In Development</h2>
     
     <div class="hype-stage-wrapper">
-        <div class="loading-stage" id="hypeContainer">
-            <div class="loading-content" id="loadingState">
-                <h3 class="glitch-hype-text" id="decode-text">SOMETHING BIG IS LOADING...</h3>
-                <div class="progress-bar-wrapper">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
-                <div class="loading-meta">
-                    <p>DECRYPTING: <span id="percent">0%</span></p>
-                    <p>CORE: STABLE</p>
-                </div>
+        <div id="loading-stage" class="loading-state">
+            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
+            <div class="progress-bar-wrapper">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div class="loading-meta">
+                <p>DECRYPTING: <span id="percent">0%</span></p>
+                <p>CORE: STABLE</p>
             </div>
         </div>
 
         <div id="reveal-box" class="reveal-box hidden">
             <div class="terminal-header">
                 <div class="terminal-dots">
-                    <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+                    <span class="dot red"></span>
+                    <span class="dot amber"></span>
+                    <span class="dot green"></span>
                 </div>
-                <span class="terminal-title">ROX_AI_LOGS.sh</span>
+                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
             </div>
             <div class="terminal-body">
                 <p id="typewriter-content" class="typewriter-text"></p>
@@ -795,6 +810,7 @@ footer {
 </section>
 
 <div style="height: 18rem;"></div>
+  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1247,12 +1263,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
     const decodeText = document.getElementById('decode-text');
-    const loadingStage = document.getElementById('loadingState');
+    const loadingStage = document.getElementById('loading-stage');
     const revealBox = document.getElementById('reveal-box');
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
 
-    // Matrix/Hacker Decryption Effect from your code
+    // Matrix/Hacker Decryption Effect
     function decryptEffect(element, finalValue) {
         const chars = '!<>-_\\/[]{}—=+*^?#________';
         let iteration = 0;
@@ -1266,19 +1282,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
 
-    // Progress Bar Logic from your code
+    // Loading Bar Logic
     let progress = 0;
     const interval = setInterval(() => {
         progress += Math.random() * 1.8;
-        
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
-            decodeText.innerText = "DECRYPTION COMPLETE";
-            decodeText.style.color = "#27c93f";
-            setTimeout(startReveal, 800); // Transition to the cool box
+            setTimeout(startReveal, 500); 
         }
-
         progressBar.style.width = progress + '%';
         percentText.textContent = Math.floor(progress) + '%';
         
@@ -1287,31 +1299,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 60);
 
-    // Handover to Phase 2
+    // Reveal the styled terminal box
     function startReveal() {
         loadingStage.classList.add('hidden');
         revealBox.classList.remove('hidden');
         
-        // Hint text about the AI Mod
-        const message = "> [SYSTEM]: ACCESS_GRANTED... \n> [DATA]: Project Rox-AI integrates real-time Neural Networks into Minecraft. Auto-building, intelligent threat detection, and natural language commands. Current Status: ALPHA_01.";
+        const message = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Project Status: ALPHA_READY.";
         typeWriter(message, 0);
     }
 
+    // Typewriter Effect
     function typeWriter(text, i) {
         if (i < text.length) {
             typewriterEl.textContent += text.charAt(i);
             setTimeout(() => typeWriter(text, i + 1), 35);
         } else {
-            expandBtn.classList.add('visible'); // Show button when text is done
+            expandBtn.classList.add('visible');
         }
     }
 
-    // Modal Connection
+    // Expand Button -> Trigger Modal
     expandBtn.onclick = () => {
         const modal = document.getElementById("modModal");
         if(modal) {
             document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
-            document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files... <br> Connection: STABLE.";
+            document.getElementById("modalDesc").innerHTML = "Accessing encrypted Alpha files...";
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
         }

@@ -614,65 +614,82 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
-:root {
-    --accent: #a855f7;
-    --accent-strong: #c084fc;
-    --text: #f2efff;
-    --muted: #b7aedf;
-}
-
-.loading-stage {
+/* --- CONTAINER & SHARED --- */
+.hype-stage-wrapper {
     width: 100%;
-    max-width: 500px;
-    margin: 100px auto;
-    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.hidden { display: none !important; }
+
+/* --- LOADING STYLES (Your Code) --- */
 .glitch-hype-text {
     font-family: monospace;
-    font-size: 1.2rem;
-    letter-spacing: 3px;
+    font-size: 1.4rem;
     color: var(--accent-strong);
     text-shadow: 0 0 15px var(--accent);
     margin-bottom: 20px;
 }
 
-.progress-bar-wrapper {
+/* --- THE REVEAL BOX (The Fix) --- */
+.reveal-box {
     width: 100%;
-    height: 4px;
-    background: rgba(168, 85, 247, 0.1);
-    border-radius: 10px;
+    background: rgba(24, 18, 45, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.2);
     overflow: hidden;
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    margin-bottom: 10px;
+    animation: boxGlitchIn 0.4s ease-out; /* Adds the glitch appearance */
 }
 
-.progress-bar-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-strong);
-    box-shadow: 0 0 20px var(--accent);
-    transition: width 0.1s ease-out;
+@keyframes boxGlitchIn {
+    0% { opacity: 0; transform: scale(0.9) skew(5deg); filter: hue-rotate(90deg); }
+    50% { opacity: 0.8; transform: skew(-2deg); }
+    100% { opacity: 1; transform: scale(1) skew(0deg); }
 }
 
-.loading-meta {
+.terminal-header {
+    background: rgba(168, 85, 247, 0.1);
+    padding: 12px 20px;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.terminal-dots { display: flex; gap: 6px; margin-right: 15px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.red { background: #ff5f56; } .amber { background: #ffbd2e; } .green { background: #27c93f; }
+
+.terminal-body { padding: 30px; }
+
+.typewriter-text {
     font-family: monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    padding: 0 5px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
 }
 
-/* Subtle pulse for the whole unit */
-@keyframes textPulse {
-    from { opacity: 0.6; }
-    to { opacity: 1; }
+.expand-data-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0;
+    transition: 0.3s;
 }
 
-.loading-content {
-    animation: textPulse 1.5s infinite alternate;
-}
+.expand-data-btn.visible { opacity: 1; }
+.expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 15px var(--accent); }
 </style>
 </head>
 
@@ -743,20 +760,39 @@ footer {
 
 </section>
 
-  <div class="loading-stage" id="hypeContainer">
-    <div class="loading-content" id="loadingState">
-        <h3 class="glitch-hype-text" id="decode-text">SOMETHING BIG IS LOADING...</h3>
-        
-        <div class="progress-bar-wrapper">
-            <div class="progress-bar-fill" id="progressBar"></div>
+  <div style="height: 18rem;"></div>
+
+<section class="mods-section" id="ai-hype-section">
+    <h2 class="section-title">In Development</h2>
+    
+    <div class="hype-stage-wrapper">
+        <div id="loading-stage" class="loading-stage">
+            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
+            <div class="progress-bar-wrapper">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div class="loading-meta">
+                <p>DECRYPTING: <span id="percent">0%</span></p>
+                <p>CORE_LINK: ESTABLISHING...</p>
+            </div>
         </div>
-        
-        <div class="loading-meta">
-            <p>DECRYPTING: <span id="percent">0%</span></p>
-            <p>CORE: STABLE</p>
+
+        <div id="reveal-box" class="reveal-box hidden">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+                </div>
+                <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
+            </div>
+            <div class="terminal-body">
+                <p id="typewriter-content" class="typewriter-text"></p>
+                <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<div style="height: 18rem;"></div>
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1206,49 +1242,69 @@ applyPositions();
 resetAutoRotate();
 
 document.addEventListener('DOMContentLoaded', () => {
-    const decodeText = document.getElementById('decode-text');
     const progressBar = document.getElementById('progressBar');
     const percentText = document.getElementById('percent');
+    const decodeText = document.getElementById('decode-text');
+    const loadingStage = document.getElementById('loading-stage');
+    const revealBox = document.getElementById('reveal-box');
+    const typewriterEl = document.getElementById('typewriter-content');
+    const expandBtn = document.getElementById('expand-btn');
 
-    // Matrix/Hacker Decryption Effect
+    // Matrix effect from your code
     function decryptEffect(element, finalValue) {
         const chars = '!<>-_\\/[]{}—=+*^?#________';
         let iteration = 0;
-        
         const interval = setInterval(() => {
-            element.innerText = finalValue.split("")
-                .map((char, index) => {
-                    if(index < iteration) return finalValue[index];
-                    return chars[Math.floor(Math.random() * chars.length)];
-                })
-                .join("");
-            
+            element.innerText = finalValue.split("").map((char, index) => {
+                if(index < iteration) return finalValue[index];
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join("");
             if(iteration >= finalValue.length) clearInterval(interval);
             iteration += 1 / 3;
         }, 30);
     }
 
-    // Progress Bar Logic
+    // Progress Bar logic from your code
     let progress = 0;
     const interval = setInterval(() => {
-        // Random increments to make it feel like "real" data decryption
-        progress += Math.random() * 1.8; 
-        
+        progress += Math.random() * 1.8;
         if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
-            decodeText.innerText = "DECRYPTION COMPLETE";
-            decodeText.style.color = "#27c93f"; // Green for success
+            setTimeout(startReveal, 500); // Transition once finished
         }
-
         progressBar.style.width = progress + '%';
         percentText.textContent = Math.floor(progress) + '%';
-        
-        // Randomly trigger the flicker/decrypt effect during the load
         if(Math.random() > 0.96 && progress < 100) {
             decryptEffect(decodeText, "SOMETHING BIG IS LOADING...");
         }
     }, 60);
+
+    function startReveal() {
+        loadingStage.classList.add('hidden');
+        revealBox.classList.remove('hidden');
+        
+        const message = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Initializing real-time LLM bridge. Status: ALPHA_READY.";
+        typeWriter(message, 0);
+    }
+
+    function typeWriter(text, i) {
+        if (i < text.length) {
+            typewriterEl.textContent += text.charAt(i);
+            setTimeout(() => typeWriter(text, i + 1), 35);
+        } else {
+            expandBtn.classList.add('visible');
+        }
+    }
+
+    // Modal Trigger
+    expandBtn.onclick = () => {
+        const modal = document.getElementById("modModal");
+        document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
+        document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files... <br> Connection: STABLE.";
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    };
 });
 
 </script>

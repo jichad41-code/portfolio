@@ -1571,14 +1571,13 @@ document.addEventListener('click', () => {
     typeLine();
 }
 // --- COMMAND TAG INTERACTION ---
+// --- COMMAND TAG INTERACTION ---
 document.querySelectorAll('.cmd-tag').forEach(tag => {
     tag.addEventListener('click', () => {
         const cmd = tag.getAttribute('data-command');
         
-        // 1. Show thinking loader to simulate processing
         if (aiLoader) aiLoader.classList.remove('hidden');
 
-        // 2. Create the player "input" line visually
         const playerLine = document.createElement('div');
         playerLine.style.color = 'var(--text)';
         playerLine.style.marginBottom = '12px';
@@ -1586,7 +1585,6 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
         playerLine.textContent = `> ${cmd}`;
         typewriterEl.appendChild(playerLine);
 
-        // 3. AI processes and then replies
         setTimeout(() => {
             if (aiLoader) aiLoader.classList.add('hidden');
             
@@ -1596,120 +1594,102 @@ document.querySelectorAll('.cmd-tag').forEach(tag => {
             aiReply.style.marginBottom = '12px';
             aiReply.style.fontFamily = 'monospace';
             
-            // Logic to determine the AI's specific answer
-            let response = "> [ROX-AI]: Accessing database... command acknowledged.";
+            if(cmd.includes('stronghold')) {
+                aiReply.textContent = "> [ROX-AI]: Stronghold localized. Seed-match found.";
+                typewriterEl.appendChild(aiReply);
 
-        if(cmd.includes('stronghold')) {
-    const aiReply = document.createElement('div');
-    aiReply.style.color = 'var(--accent-strong)';
-    aiReply.textContent = "> [ROX-AI]: Stronghold localized. Seed-match found.";
-    typewriterEl.appendChild(aiReply);
+                const wrapper = document.createElement('div');
+                wrapper.className = "map-data-wrapper";
 
-    // Create the wrapper for Map + Coords
-    const wrapper = document.createElement('div');
-    wrapper.className = "map-data-wrapper";
+                const mapDiv = document.createElement('div');
+                mapDiv.className = "stronghold-map";
+                
+                const blueprint = [
+                    1,1,1,1,1,1,1,1,
+                    1,0,0,1,2,2,1,1,
+                    1,0,0,1,2,2,1,1,
+                    1,1,0,1,1,1,1,1,
+                    1,0,0,0,0,3,3,1,
+                    1,0,1,1,0,3,3,1,
+                    1,0,0,0,0,0,0,1,
+                    1,1,1,1,1,1,1,1
+                ];
 
-    // 1. The Map
-    const mapDiv = document.createElement('div');
-    mapDiv.className = "stronghold-map";
-    
-    // Static "Randomized" Pattern (1=Wall, 2=Portal, 3=Lava, 0=Empty)
-    const blueprint = [
-        1,1,1,1,1,1,1,1,
-        1,0,0,1,2,2,1,1,
-        1,0,0,1,2,2,1,1,
-        1,1,0,1,1,1,1,1,
-        1,0,0,0,0,3,3,1,
-        1,0,1,1,0,3,3,1,
-        1,0,0,0,0,0,0,1,
-        1,1,1,1,1,1,1,1
-    ];
+                blueprint.forEach(cell => {
+                    const pixel = document.createElement('div');
+                    pixel.className = "px " + (cell === 1 ? 'stone' : cell === 2 ? 'portal' : cell === 3 ? 'lava' : 'empty');
+                    mapDiv.appendChild(pixel);
+                });
 
-    blueprint.forEach(cell => {
-        const pixel = document.createElement('div');
-        pixel.className = "px " + (cell === 1 ? 'stone' : cell === 2 ? 'portal' : cell === 3 ? 'lava' : 'empty');
-        mapDiv.appendChild(pixel);
-    });
+                const coordDiv = document.createElement('div');
+                coordDiv.className = "coord-display";
+                coordDiv.innerHTML = `
+                    BLOCK: <span class="coord-val">END_PORTAL_FRAME</span><br>
+                    LOC_X: <span class="coord-val">-1422</span><br>
+                    LOC_Y: <span class="coord-val">32</span><br>
+                    LOC_Z: <span class="coord-val">890</span><br>
+                    STATUS: <span style="color:#27c93f">REACHABLE</span>
+                `;
 
-    // 2. The Coordinates
-    const coordDiv = document.createElement('div');
-    coordDiv.className = "coord-display";
-    coordDiv.innerHTML = `
-        BLOCK: <span class="coord-val">END_PORTAL_FRAME</span><br>
-        LOC_X: <span class="coord-val">-1422</span><br>
-        LOC_Y: <span class="coord-val">32</span><br>
-        LOC_Z: <span class="coord-val">890</span><br>
-        STATUS: <span style="color:#27c93f">REACHABLE</span>
-    `;
-
-    wrapper.appendChild(mapDiv);
-    wrapper.appendChild(coordDiv);
-    typewriterEl.appendChild(wrapper);
-}
-          else if(cmd.includes('obsidian')) {
+                wrapper.appendChild(mapDiv);
+                wrapper.appendChild(coordDiv);
+                typewriterEl.appendChild(wrapper);
+            } 
+            else if(cmd.includes('obsidian')) {
                 aiReply.textContent = "> [ROX-AI]: Material request approved. Delivering 64x Obsidian blocks.";
-                typewriterEl.appendChild(aiReply); // This was likely missing
+                typewriterEl.appendChild(aiReply);
             } 
             else if(cmd.includes('voice')) {
                 aiReply.textContent = "> [ROX-AI]: Neural bridge synced. Monitoring voice frequency now.";
-                typewriterEl.appendChild(aiReply); // This was likely missing
+                typewriterEl.appendChild(aiReply);
             }
-            // Keeps the newest text visible
+
             const terminalBody = document.querySelector('.terminal-body');
-            terminalBody.scrollTo({
-                top: terminalBody.scrollHeight,
-                behavior: 'smooth'
-            });
-        }, 1200); // 1.2 second "thinking" delay
+            terminalBody.scrollTo({ top: terminalBody.scrollHeight, behavior: 'smooth' });
+        }, 1200);
     });
 });
 
- 
-    // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
-   // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
-    if (expandBtn) {
-        expandBtn.onclick = () => {
-            if(!modal) return;
+// --- 5. THE CLICKABLE BUTTON LOGIC (FIXED) ---
+if (expandBtn) {
+    expandBtn.addEventListener('click', () => {
+        const targetModal = document.getElementById("modModal");
+        if(!targetModal) return;
 
-            // Set Futuristic Title
-            document.getElementById("modalTitle").textContent = "NEURAL_ASSISTANT // CAPABILITIES_REPORT";
-            
-            const modalDesc = document.getElementById("modalDesc");
-            modalDesc.innerHTML = `
-                <div class="ai-modal-body">
-                    <div class="data-header">
-                        <span>INTERFACE: NEURAL_BRIDGE_V4</span>
-                        <span>VOICE_SYNC: <span class="status-live">ONLINE</span></span>
-                    </div>
-
-                    <div class="log-entry">
-                        <span class="status-tag">INTEL</span>
-                        <h4>Real-Time Voice Companion</h4>
-                        <p>Rox-AI hears you. Talk to it like another player; it processes your voice input and replies via text. It acts as a companion, discussing survival strategies or planning complex builds with you in real-time.</p>
-                    </div>
-
-                    <div class="log-entry">
-                        <span class="status-tag">UTILITY</span>
-                        <h4>Autonomous Command Execution</h4>
-                        <p>Hands-free administration. Ask the AI to "Find the nearest stronghold," "Set weather to clear," or "Teleport us home." It executes server commands and provides coordinates for any location immediately.</p>
-                    </div>
-
-                    <div class="log-entry" style="border-color: #ffbd2e;">
-                        <span class="status-tag" style="background:#ffbd2e;">LOGISTICS</span>
-                        <h4>Resource & Block Supply</h4>
-                        <p>Task the AI with supplying specific materials. It can manage coordinates for rare ores, give you specific blocks on request, and track your inventory to ensure you never run out of supplies.</p>
-                    </div>
+        document.getElementById("modalTitle").textContent = "NEURAL_ASSISTANT // CAPABILITIES_REPORT";
+        
+        const modalDescEl = document.getElementById("modalDesc");
+        modalDescEl.innerHTML = `
+            <div class="ai-modal-body">
+                <div class="data-header">
+                    <span>INTERFACE: NEURAL_BRIDGE_V4</span>
+                    <span>VOICE_SYNC: <span class="status-live">ONLINE</span></span>
                 </div>
-            `;
-            
-            const modalGallery = document.getElementById("modalGallery");
-            modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
+                <div class="log-entry">
+                    <span class="status-tag">INTEL</span>
+                    <h4>Real-Time Voice Companion</h4>
+                    <p>Rox-AI hears you. Talk to it like another player; it processes your voice input and replies via text.</p>
+                </div>
+                <div class="log-entry">
+                    <span class="status-tag">UTILITY</span>
+                    <h4>Autonomous Command Execution</h4>
+                    <p>Hands-free administration. Ask the AI to find structures or set weather immediately.</p>
+                </div>
+                <div class="log-entry" style="border-color: #ffbd2e;">
+                    <span class="status-tag" style="background:#ffbd2e;">LOGISTICS</span>
+                    <h4>Resource & Block Supply</h4>
+                    <p>Task the AI with supplying specific materials and tracking inventory coordinates.</p>
+                </div>
+            </div>
+        `;
+        
+        const modalGalleryEl = document.getElementById("modalGallery");
+        modalGalleryEl.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
 
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        };
-    }
-});
+        targetModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    });
+}
 </script>
 
 </body>

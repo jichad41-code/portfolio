@@ -776,6 +776,26 @@ footer {
 }
 .log-entry h4 { color: var(--accent-strong); margin-bottom: 5px; }
 .status-tag { float: right; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
+
+  /* --- AI MODAL STATUS PULSE --- */
+.status-live { 
+    color: #27c93f; 
+    text-shadow: 0 0 10px #27c93f; 
+    font-weight: bold;
+    animation: statusPulse 2s infinite; 
+}
+
+@keyframes statusPulse { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0.4; } 
+}
+
+.log-entry p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-top: 5px;
+}
   
 </style>
 </head>
@@ -1422,37 +1442,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
+   // 5. THE CLICKABLE BUTTON LOGIC (The Modal Trigger)
     if (expandBtn) {
         expandBtn.onclick = () => {
             if(!modal) return;
 
-            // Inject technical AI content into the modal
-            document.getElementById("modalTitle").textContent = "PROJECT: NEURAL_BRIDGE // DIAGNOSTICS";
+            // Set Futuristic Title
+            document.getElementById("modalTitle").textContent = "NEURAL_ASSISTANT // CAPABILITIES_REPORT";
+            
             const modalDesc = document.getElementById("modalDesc");
             modalDesc.innerHTML = `
                 <div class="ai-modal-body">
                     <div class="data-header">
-                        <span>ENCRYPTION: AES-256</span>
-                        <span>STATUS: STABLE_ALPHA</span>
+                        <span>INTERFACE: NEURAL_BRIDGE_V4</span>
+                        <span>VOICE_SYNC: <span class="status-live">ONLINE</span></span>
                     </div>
+
                     <div class="log-entry">
-                        <span class="status-tag">ACTIVE</span>
-                        <h4>Neural Pathfinding v4.2</h4>
-                        <p>Interprets complex terrain data to generate optimal construction paths while avoiding environmental hazards.</p>
+                        <span class="status-tag">INTEL</span>
+                        <h4>Real-Time Voice Companion</h4>
+                        <p>Rox-AI hears you. Talk to it like another player; it processes your voice input and replies via text. It acts as a companion, discussing survival strategies or planning complex builds with you in real-time.</p>
                     </div>
+
                     <div class="log-entry">
-                        <span class="status-tag">STABLE</span>
-                        <h4>LLM Integration Bridge</h4>
-                        <p>Synchronizes Minecraft world-states with Large Language Models for natural language command processing.</p>
+                        <span class="status-tag">UTILITY</span>
+                        <h4>Autonomous Command Execution</h4>
+                        <p>Hands-free administration. Ask the AI to "Find the nearest stronghold," "Set weather to clear," or "Teleport us home." It executes server commands and provides coordinates for any location immediately.</p>
+                    </div>
+
+                    <div class="log-entry" style="border-color: #ffbd2e;">
+                        <span class="status-tag" style="background:#ffbd2e;">LOGISTICS</span>
+                        <h4>Resource & Block Supply</h4>
+                        <p>Task the AI with supplying specific materials. It can manage coordinates for rare ores, give you specific blocks on request, and track your inventory to ensure you never run out of supplies.</p>
                     </div>
                 </div>
             `;
             
-            // Clear standard gallery for technical view
             const modalGallery = document.getElementById("modalGallery");
             modalGallery.innerHTML = "<p style='color:var(--muted); font-size:0.8rem; text-align:center; grid-column:1/-1;'>[VISUAL DATA ENCRYPTED - ALPHA ACCESS ONLY]</p>";
 
-            // Show the modal
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
         };

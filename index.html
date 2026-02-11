@@ -858,6 +858,33 @@ footer {
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent); }
 
+  /* --- AI THINKING LOADER --- */
+.ai-thinking-loader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: var(--accent-strong);
+    opacity: 0.8;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(168, 85, 247, 0.3);
+    border-top-color: var(--accent-strong);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Ensure the hidden class works */
+.hidden { display: none !important; }
   
 </style>
 </head>
@@ -969,6 +996,14 @@ footer {
                 </button>
             </div>
         </div>
+  <div class="terminal-body">
+    <div id="typewriter-content" class="typewriter-text"></div>
+    <div id="ai-loader" class="ai-thinking-loader hidden">
+        <div class="spinner"></div>
+        <span>AI is thinking...</span>
+    </div>
+    <button id="expand-btn" class="expand-data-btn">EXPAND SYSTEM DATA</button>
+</div>
     </div>
 </section>
 
@@ -1485,14 +1520,17 @@ function startReveal() {
 function playChat(chatArray) {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
+    const aiLoader = document.getElementById('ai-loader'); // Select the loader
     let lineIdx = 0;
 
     function typeLine() {
+        // Ensure loader is hidden when we start typing
+        aiLoader.classList.add('hidden');
+
         if (lineIdx < chatArray.length) {
             const lineData = chatArray[lineIdx];
             const lineDiv = document.createElement('div');
             
-            // Player text is white, AI text glows purple
             lineDiv.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
             if (lineData.role === 'ai') lineDiv.style.textShadow = '0 0 10px var(--accent)';
             lineDiv.style.marginBottom = '12px';
@@ -1510,7 +1548,14 @@ function playChat(chatArray) {
                     setTimeout(typeChar, 30);
                 } else {
                     lineIdx++;
-                    setTimeout(typeLine, 700); // Pause before the next person speaks
+                    
+                    // IF THE NEXT LINE IS AI, SHOW THE LOADER
+                    if (lineIdx < chatArray.length && chatArray[lineIdx].role === 'ai') {
+                        aiLoader.classList.remove('hidden');
+                        setTimeout(typeLine, 1200); // Wait 1.2s for "thinking"
+                    } else {
+                        setTimeout(typeLine, 600); // Standard pause for player
+                    }
                 }
             }
             typeChar();

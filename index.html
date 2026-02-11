@@ -718,6 +718,27 @@ footer {
 
 .expand-data-btn.visible { opacity: 1; }
 .expand-data-btn:hover { background: var(--accent); color: white; }
+
+  .terminal-body {
+    padding: 30px;
+    max-height: 350px; /* Limits height */
+    overflow-y: auto;  /* Adds scroll if conversation is long */
+}
+
+/* Custom Scrollbar for the terminal box */
+.terminal-body::-webkit-scrollbar {
+    width: 4px;
+}
+.terminal-body::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+.typewriter-text div {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    line-height: 1.4;
+}
 </style>
 </head>
 
@@ -1312,23 +1333,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 60);
 
     // 3. Reveal the styled box
-    function startReveal() {
-        loadingStage.classList.add('hidden');
-        revealBox.classList.remove('hidden');
-        
-        const message = "> [SYSTEM]: DECRYPTION_SUCCESSFUL... \n> [INFO]: Integrating Neural Assistant Core into Minecraft world-state. Project Status: ALPHA_READY.";
-        typeWriter(message, 0);
-    }
+   /* ===== UPDATED IN-DEV LOGIC ===== */
+function startReveal() {
+    const loadingStage = document.getElementById('loading-stage');
+    const revealBox = document.getElementById('reveal-box');
+    
+    loadingStage.classList.add('hidden');
+    revealBox.classList.remove('hidden');
+    
+    // The conversation data
+    const conversation = [
+        { role: "player", text: "> /rox_ai build simple wheat farm" },
+        { role: "ai",     text: "> [ROX-AI]: Command received. Analyzing local resources..." },
+        { role: "player", text: "> Where are you building?" },
+        { role: "ai",     text: "> [ROX-AI]: 15 blocks SE of current position. ETA: 45 seconds." },
+        { role: "player", text: "> Thanks." },
+        { role: "ai",     text: "> [ROX-AI]: Affirmative. Standing by for further instructions." }
+    ];
 
-    // 4. Typewriter logic
-    function typeWriter(text, i) {
-        if (i < text.length) {
-            typewriterEl.textContent += text.charAt(i);
-            setTimeout(() => typeWriter(text, i + 1), 35);
+    playConversation(conversation);
+}
+
+function playConversation(chatArray) {
+    const typewriterEl = document.getElementById('typewriter-content');
+    const expandBtn = document.getElementById('expand-btn');
+    let lineIndex = 0;
+
+    function typeLine() {
+        if (lineIndex < chatArray.length) {
+            const lineData = chatArray[lineIndex];
+            const lineElement = document.createElement('div');
+            
+            // Apply different colors based on who is speaking
+            lineElement.style.color = lineData.role === 'ai' ? 'var(--accent-strong)' : 'var(--text)';
+            lineElement.style.marginBottom = '8px';
+            lineElement.style.textShadow = lineData.role === 'ai' ? '0 0 8px var(--accent)' : 'none';
+            
+            typewriterEl.appendChild(lineElement);
+            
+            let charIndex = 0;
+            const text = lineData.text;
+
+            function typeChar() {
+                if (charIndex < text.length) {
+                    lineElement.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeChar, 30);
+                } else {
+                    lineIndex++;
+                    setTimeout(typeLine, 600); // Pause before next person speaks
+                }
+            }
+            typeChar();
         } else {
             expandBtn.classList.add('visible');
         }
     }
+    typeLine();
+}
 
     // 5. Button logic
     expandBtn.onclick = () => {

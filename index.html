@@ -674,7 +674,7 @@ footer {
 }
 
 /* --- TERMINAL BOX STYLES --- */
-.reveal-box {
+.-box {
     width: 100%;
     background: rgba(24, 18, 45, 0.7);
     backdrop-filter: blur(15px);
@@ -1595,6 +1595,29 @@ footer {
     color: var(--muted);
     margin-top: 5px;
 }
+
+  .command-dashboard {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.cmd-tag {
+    font-family: monospace;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
+    border-radius: 5px;
+    cursor: default;
+    transition: all 0.3s ease;
+}
+.cmd-tag:hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 15px var(--accent);
+}
   
 </style>
 </head>
@@ -1691,6 +1714,11 @@ footer {
                     <span class="control amber"></span>
                     <span class="control green"></span>
                 </div>
+              <div id="cmd-dashboard" class="command-dashboard hidden">
+    <span class="cmd-tag">/locate_stronghold</span>
+    <span class="cmd-tag">/supply_obsidian</span>
+    <span class="cmd-tag">/sync_voice</span>
+</div>
                 <span class="terminal-title">ROX_NEURAL_LOGS.sh</span>
             </div>
             <div class="terminal-body">

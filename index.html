@@ -614,6 +614,7 @@ footer {
   width: 100%;
   border-radius: 16px;
 }
+/* --- CONTAINER SETUP --- */
 .hype-stage-wrapper {
     width: 100%;
     max-width: 900px;
@@ -626,7 +627,7 @@ footer {
 
 .hidden { display: none !important; }
 
-/* LOADING SCREEN */
+/* --- PHASE 1: LOADING SCREEN STYLES --- */
 .glitch-hype-text {
     font-family: monospace;
     font-size: 1.4rem;
@@ -653,11 +654,21 @@ footer {
     box-shadow: 0 0 15px var(--accent);
 }
 
-/* THE BOX (REVEAL BOX) */
+.loading-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* --- PHASE 2: THE REVEAL BOX --- */
 .reveal-box {
     width: 100%;
-    background: rgba(24, 18, 45, 0.6);
-    backdrop-filter: blur(12px);
+    background: rgba(24, 18, 45, 0.6); /* Dark semi-transparent */
+    backdrop-filter: blur(12px);      /* Blur background behind box */
     border: 1px solid rgba(168, 85, 247, 0.4);
     border-radius: 18px;
     box-shadow: 0 0 40px rgba(168, 85, 247, 0.2);
@@ -689,6 +700,7 @@ footer {
     font-size: 1.1rem;
     line-height: 1.6;
     color: var(--text);
+    min-height: 60px;
 }
 
 .expand-data-btn {
@@ -700,7 +712,7 @@ footer {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    opacity: 0;
+    opacity: 0; /* Hidden until typewriter ends */
     transition: 0.3s;
 }
 
@@ -775,14 +787,15 @@ footer {
 
 
 </section>
-<div style="height: 18rem;"></div>
+
+  <div style="height: 18rem;"></div>
 
 <section class="mods-section" id="ai-hype-section">
     <h2 class="section-title">In Development</h2>
     
     <div class="hype-stage-wrapper">
         <div id="loading-stage" class="loading-state">
-            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING UP...</h3>
+            <h3 id="decode-text" class="glitch-hype-text">SOMETHING BIG IS LOADING...</h3>
             <div class="progress-bar-wrapper">
                 <div id="progressBar" class="progress-bar-fill"></div>
             </div>
@@ -810,7 +823,6 @@ footer {
 </section>
 
 <div style="height: 18rem;"></div>
-  
 <section class="mods-section">
   <h2 class="section-title">All Mods</h2>
   <div class="mods-grid">
@@ -1268,7 +1280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriterEl = document.getElementById('typewriter-content');
     const expandBtn = document.getElementById('expand-btn');
 
-    // Matrix/Hacker Decryption Effect
+    // 1. Decryption Effect logic
     function decryptEffect(element, finalValue) {
         const chars = '!<>-_\\/[]{}—=+*^?#________';
         let iteration = 0;
@@ -1282,7 +1294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 30);
     }
 
-    // Loading Bar Logic
+    // 2. Loading Bar logic
     let progress = 0;
     const interval = setInterval(() => {
         progress += Math.random() * 1.8;
@@ -1299,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 60);
 
-    // Reveal the styled terminal box
+    // 3. Reveal the styled box
     function startReveal() {
         loadingStage.classList.add('hidden');
         revealBox.classList.remove('hidden');
@@ -1308,7 +1320,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typeWriter(message, 0);
     }
 
-    // Typewriter Effect
+    // 4. Typewriter logic
     function typeWriter(text, i) {
         if (i < text.length) {
             typewriterEl.textContent += text.charAt(i);
@@ -1318,17 +1330,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Expand Button -> Trigger Modal
+    // 5. Button logic
     expandBtn.onclick = () => {
         const modal = document.getElementById("modModal");
         if(modal) {
             document.getElementById("modalTitle").textContent = "Neural AI Assistant Logs";
-            document.getElementById("modalDesc").innerHTML = "Accessing encrypted Alpha files...";
+            document.getElementById("modalDesc").innerHTML = "Accessing Alpha encrypted development files...";
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
         }
     };
-});
+});  
 
 </script>
 
